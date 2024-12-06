@@ -1,5 +1,22 @@
+;;; Iter Vitae 
+
+;; Copyright (C) 2024 Josep Jesus Bigorra Algaba
+
+;; iter-vitae is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; iter-vitae is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 (define iter-vitae-display-name `((_ . "Josep Bigorra")))
+
 (define iter-vitae-job-title `((_ . "Software Engineer")))
 
 (define iter-vitae-personal-contact
@@ -56,27 +73,17 @@
     ))
 
 (define iter-vitae-education
-  `(((entity . ((all . "Universidade do Algarve, Faro, Portugal")))
+  `(((entity . ((_ . "Universidade do Algarve, Faro, Portugal")))
      (position . ((en . "IT Associate's degree")
                   (nl . "ICT HBO")))
      (time . ((en . "September 2017 => September 2019")
               (nl . "September 2017 => September 2019")))
      (experience . (((en . "Graduated with 190/200 score. Obtained maximum score for software engineering internship.")
                      (nl . "Afgestudeerd met 190/200 score. Max cijfer gehaald voor software ingenieur stage."))
-                    ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
+                    ((_ . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
      
      )))
 
-
-(define iter-vitae-titles
-  `((education . ((en . "Education") (nl . "Opleiding")))
-    (driver-license . ((en . "Driving") (nl . "Rijbewijs")))
-    (interests-hobbies . ((en . "My free time") (nl . "Mijn vrije tijd")))
-    (language . ((en . "Languages") (nl . "Taalvaardigheid")))
-    (my-links . ((en . "Me on the Internet") (nl . "Ik op Internet")))
-    (short-intro . ((en . "Who am I ?") (nl . "Wie ben ik ?")))
-    (work-experience . ((en . "Work experience") (nl . "Werkervaring")))
-    ))
 
 (define iter-vitae-short-intro
   `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
