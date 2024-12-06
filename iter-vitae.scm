@@ -21,6 +21,8 @@
 
 (define iter-vitae-short-intro `())
 
+(define iter-vitae-jobs `())
+
 (define iter-vitae-font 'intel-one-mono)
 
 (define iter-vitae-palette 'ef-cyprus)

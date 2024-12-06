@@ -94,8 +94,8 @@
 (define joe-job-liderlink
   `((name . ((_ . "Liderlink Business Solutions")))
     (location . ((_ . "Parchal, Portugal")))
-    (position . ((en . "Back-end developer internship")
-                 (nl . "Back-end ontwikkelar stage")))
+    (position . ((en . "Back-end Developer internship")
+                 (nl . "Back-end Ontwikkelaar stage")))
     (time . ((en . "February 2019 => July 2019")
              (nl . "Februari 2019 => Juli 2019")))
     (experience .
@@ -127,7 +127,7 @@
                    ((en . "Server-side rendering front-end applications, communicating with several APIs.")
                     (nl . "Server-side rendering frontend-applicaties, communicatie met meerdere API's."))
                    ((en . "Jenkins Groovy scripted pipelines with unit tests.")
-                    (nl . "Jenkins Groovy scripted pipelines met unittests."))
+                    (nl . "Jenkins Groovy scripted pipelines met unit tests."))
                    ((en . "FreeBSD & Linux server experience, jails and pf Firewall.")
                     (nl . "FreeBSD & Linux server-ervaring, jails en pf Firewall."))
                    ((en . "Introduced Agile working methodology and Extreme Programming.")
@@ -144,7 +144,7 @@
              (nl . "Januari 2022 => Maart 2023")))
     (experience .
                 (((en . "Experience in Go, REST APIs, event-driven micro-services.")
-                  (nl . "Ervaring in Go, REST API's, event-driven microservices."))
+                  (nl . "Ervaring in Go, REST API's, event-driven micro-services."))
                  ((en . "Experience in Java, Spring Boot and Gradle, Maven.")
                   (nl . "Ervaring in Java, Spring Boot en Gradle, Maven."))
                  ((en . "Apache Beam, Dataflow, data-pipelines.")
@@ -160,8 +160,52 @@
                  ))))
 
 
+(define joe-job-zorgdomein
+  `((name . ((_ . "ZorgDomein B.V.")))
+    (location . ((en . "Breukelen, The Netherlands") (nl . "Breukelen, Nederland")))
+    (position . ((en . "Software Engineer")
+                 (nl . "Software Ingenieur")))
+    (time . ((en . "April 2023 => July 2024")
+             (nl . "April 2023 => Juli 2024")))
+    (experience .
+                (((en . "Experience in Scala, REST APIs, distributed microservices, using functional programming.")
+                  (nl . "Ervaring met Scala, REST API's, gedistribueerde microservices, functioneel programmeren."))
+                 ((en . "Working with Kafka, PostgreSQL, Elasticsearch.")
+                  (nl . "Werken met Kafka, PostgreSQL, Elasticsearch."))
+                 ((en . "Integration testing, black-box testing, testcontainers, unit, E2E testing, security assessment.")
+                  (nl . "Integratie-testen, black-box-testen, testcontainers, unit, E2E-testen, beveiligingsbeoordeling."))
+                 ((en . "Python data pipelines with Spark and AWS Glue for a product tagging system.")
+                  (nl . "Python-datapijplijnen met Spark en AWS Glue voor een producttagsysteem."))
+                 ((en . "Amazon AWS, EC2, Cloudfront, S3 buckets.")
+                  (nl . "Amazon AWS, EC2, Cloudfront, S3-buckets"))
+                 ((en . "Introducing Nix development shells and flakes along with teaching and mentoring in reproducible builds.")
+                  (nl . "Introductie van Nix-ontwikkelingshells en -flakes, samen met lesgeven en mentoring in reproduceerbare builds"))
+                 ((en . "Kubernetes and Docker, ArgoCD, Helm charts.")
+                  (nl . "Kubernetes en Docker, ArgoCD, Helm-grafieken"))
+                 ))))
+
+(define joe-job-vandebron
+  `((name . ((_ . "Vandebron B.V.")))
+    (location . ((en . "Amsterdam, The Netherlands") (nl . "Amsterdam, Nederland")))
+    (position . ((en . "Software Engineer")
+                 (nl . "Software Ingenieur")))
+    (time . ((en . "August 2023 => present")
+             (nl . "Augustus 2023 => heden")))
+    (experience .
+                (((en . "Back-end, asynchronous and event-driven services with Scala, REST APIs")
+                  (nl . "Back-end, asynchroon en event-driven services met Scala, REST API's"))
+                 ((en . "Distributed micro-services, Kafka, PostgreSQL, Elasticsearch")
+                  (nl . "Gedistribueerde micro-services, Kafka, PostgreSQL, Elasticsearch"))
+                 ((en . "Functional programming, domain modeling")
+                  (nl . "Functioneel programmeren, domein-modellering"))
+                 ((en . "Kubernetes and Docker, ArgoCD, Helm charts")
+                  (nl . "Kubernetes en Docker, ArgoCD, Helm-grafieken"))
+                 ))))
+
 (define iter-vitae-jobs
-  `(joe-job-ikea
+  `(joe-job-vandebron
+    joe-job-zorgdomein
+    joe-job-ikea
     joe-job-pro-warehouse
     joe-job-liderlink))
 
