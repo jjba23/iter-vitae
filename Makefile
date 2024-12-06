@@ -15,5 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-persona-joe:
-	GUILE_AUTOCOMPILE=0 guile main.scm --locale nl --persona joe
+define persona
+	GUILE_AUTOCOMPILE=0 guile main.scm --locale $(2) --persona $(1)
+endef
+
+persona-joe-nl:
+	$(call persona,"joe","nl")
+persona-joe-en:
+	$(call persona,"joe","en")
