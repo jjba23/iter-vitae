@@ -153,6 +153,7 @@
 ;;                 ((en . "Distributed micro-services, Kafka, PostgreSQL, Elasticsearch")
 ;;                  (nl . "..."))
 ;;                 ))))
+;;
 (define iter-vitae-jobs `())
 
 ;; Main font family for the curriculum vitae
