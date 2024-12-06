@@ -1,6 +1,6 @@
 
-(define iter-vitae-display-name `((all . "Josep Bigorra")))
-(define iter-vitae-job-title `((all . "Software Engineer")))
+(define iter-vitae-display-name `((_ . "Josep Bigorra")))
+(define iter-vitae-job-title `((_ . "Software Engineer")))
 
 (define iter-vitae-personal-contact
   `((emails . ("jjbigorra@gmail.com"))
@@ -12,8 +12,8 @@
     (linkedin . ("linkedin.com/in/josepjba"))))
 
 (define iter-vitae-address-lines
-  `(((all . "1441KH Purmerend"))
-    ((all . "Netherlands"))))
+  `(((_ . "1441KH Purmerend"))
+    ((_ . "Netherlands"))))
 
 (define iter-vitae-driver-license
   `(((en . "B driver's license, vehicles up to 3,5t")
@@ -55,26 +55,116 @@
                            (writing . 4)))))
     ))
 
-    (define iter-vitae-education
-      `(((entity-name . ((all . "Universidade do Algarve, Faro, Portugal")))
-         (position-name . ((en . "IT Associate's degree")
-                           (nl . "ICT HBO")))
-         (time-worked . ((en . "September 2017 => September 2019")
-                         (nl . "September 2017 => September 2019")))
-         (experience-points . (((en . "Graduated with 190/200 score. Obtained maximum score for software engineering internship.")
-                                (nl . "Afgestudeerd met 190/200 score. Max cijfer gehaald voor software ingenieur stage."))
-                               ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
-         
-         )))
+(define iter-vitae-education
+  `(((entity . ((all . "Universidade do Algarve, Faro, Portugal")))
+     (position . ((en . "IT Associate's degree")
+                  (nl . "ICT HBO")))
+     (time . ((en . "September 2017 => September 2019")
+              (nl . "September 2017 => September 2019")))
+     (experience . (((en . "Graduated with 190/200 score. Obtained maximum score for software engineering internship.")
+                     (nl . "Afgestudeerd met 190/200 score. Max cijfer gehaald voor software ingenieur stage."))
+                    ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
+     
+     )))
 
-(define iter-vitae-font 'intel-one-mono)
-(define iter-vitae-palette 'ef-cyprus)
 
 (define iter-vitae-titles
-  `((education . ((en . "Education") (nl . "Opledingen")))
+  `((education . ((en . "Education") (nl . "Opleiding")))
     (driver-license . ((en . "Driving") (nl . "Rijbewijs")))
     (interests-hobbies . ((en . "My free time") (nl . "Mijn vrije tijd")))
-    (language . ((en . "Languages") (nl . "Taalvardigheden")))
+    (language . ((en . "Languages") (nl . "Taalvaardigheid")))
     (my-links . ((en . "Me on the Internet") (nl . "Ik op Internet")))
     (short-intro . ((en . "Who am I ?") (nl . "Wie ben ik ?")))
+    (work-experience . ((en . "Work experience") (nl . "Werkervaring")))
     ))
+
+(define iter-vitae-short-intro
+  `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
+     (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik heb een DevOps mindset en ik ben altijd klaar om te leren, problemen op te lossen, mijn skills verbeteren en de uitdaging aan gaan."))
+    ((en . "I moved to the Netherlands the autumn of 2019, and I was born in 1996 in Barcelona, Spain.")
+     (nl . "Ik ben in de herfst 2019 naar Nederland verhuisd, en ik was in 1996 geboren in Barcelona, Spanje."))
+    ((en . "You could also describe me as a Free Software Advocate, an Emacs user, Guix and Nix enthusiast, Haskell, Lisp, Scala enjoyer, functional programmer, and perfectionist.")
+     (nl . "Je zou mij ook kunnen omschrijven met: Free Software Advocate, GNU Emacs gebruiker, Guix en Nix enthusiast, Haskell, Lisp, Scala genieter, functioneel programmeur, en perfectionistisch."))
+    ((en . "My systems experience revolves around PostgreSQL, Kafka, ElasticSearch, OracleSQL, NoSQL DBs like BigTable, Redis and MongoDB.")
+     (nl . "Mijn systemen ervaring is PostgreSQL, Kafka, Elasticsearch, OracleSQL, NoSQL databases zoals BigTable, Redis en MongoDB."))
+    ((en . "I also love the Ops and infra side of projects, enjoy infrastructure-as-code and reproducible software build processes.")
+     (nl . "Ik ben ook dol op de Ops kant van projecten, ik geniet van infrastructure-as-code en reproduceerbaar software bouw-processen."))
+    ))
+
+(define joe-job-liderlink
+  `((name . ((_ . "Liderlink Business Solutions")))
+    (location . ((_ . "Parchal, Portugal")))
+    (position . ((en . "Back-end developer internship")
+                 (nl . "Back-end ontwikkelar stage")))
+    (time . ((en . "February 2019 => July 2019")
+             (nl . "Februari 2019 => Juli 2019")))
+    (experience .
+                (((en . "Experience with PHP and MySQL, CRUD operations, in several real-estate, hotel and personnel management software.")
+                  (nl . "Ervaring met PHP en MySQL, CRUD-bewerkingen, in verschillende software voor vastgoed-, hotel- en personeelsbeheer."))
+                 ((en . "Client-side scripting with JavaScript and jQuery in combination with server-side templates.")
+                  (nl . "Client-side scripting met JavaScript en jQuery in combinatie met server-side templates."))
+                 ((en . "Android development, Ubuntu server maintenance.")
+                  (nl . "Android-ontwikkeling, Ubuntu-server onderhoud."))
+                 ))))
+
+
+(define joe-job-pro-warehouse
+  `((name . ((_ . "Pro Warehouse B.V.")))
+    (location . ((en . "Amsterdam, The Netherlands")
+                 (nl . "Amsterdam, Nederland")))
+    (position . ((en . "Full-stack Developer, Site Reliability Engineer")
+                 (nl . "Full-stack Ontwikkelaar, Site Reliability Engineer")))
+    (time . ((en . "November 2019 => December 2021")
+             (nl . "November 2019 => December 2021")))
+    (experience . (((en . "Experience with Go (standard & Gin) and PHP (Laravel).")
+                    (nl . "Ervaring met Go (standaard & Gin) en PHP (Laravel)."))
+                   ((en . "Relational MySQL-based applications, with complex queries and multiple joins.")
+                    (nl . "Relationele MySQL-gebaseerde applicaties, met complexe query's en meerdere joins."))
+                   ((en . "Database design, normalization, migration, maintenance, and backup.")
+                    (nl . "Database ontwerp, normalisatie, migratie, onderhoud en back-up."))
+                   ((en . "REST API design, implementation and documentation generation. Secure-by-design practices.")
+                    (nl . "REST API-ontwerp, implementatie en documentatie generatie. Secure-by-design-praktijken."))
+                   ((en . "Server-side rendering front-end applications, communicating with several APIs.")
+                    (nl . "Server-side rendering frontend-applicaties, communicatie met meerdere API's."))
+                   ((en . "Jenkins Groovy scripted pipelines with unit tests.")
+                    (nl . "Jenkins Groovy scripted pipelines met unittests."))
+                   ((en . "FreeBSD & Linux server experience, jails and pf Firewall.")
+                    (nl . "FreeBSD & Linux server-ervaring, jails en pf Firewall."))
+                   ((en . "Introduced Agile working methodology and Extreme Programming.")
+                    (nl . "Agile-werk-methodologie en Extreme Programming geïntroduceerd."))
+                   ))))
+
+(define joe-job-ikea
+  `((name . ((_ . "IKEA - Ingka Digital")))
+    (location . ((en . "Amsterdam, The Netherlands")
+                 (nl . "Amsterdam, Nederland")))
+    (position . ((en . "Software Engineer")
+                 (nl . "Software Ingenieur")))
+    (time . ((en . "January 2022 => March 2023")
+             (nl . "Januari 2022 => Maart 2023")))
+    (experience .
+                (((en . "Experience in Go, REST APIs, event-driven micro-services.")
+                  (nl . "Ervaring in Go, REST API's, event-driven microservices."))
+                 ((en . "Experience in Java, Spring Boot and Gradle, Maven.")
+                  (nl . "Ervaring in Java, Spring Boot en Gradle, Maven."))
+                 ((en . "Apache Beam, Dataflow, data-pipelines.")
+                  (nl . "Apache Beam, Dataflow, data-pipelines."))
+                 ((en . "Google Cloud Platform, Pub/Sub, Serverless computing.")
+                  (nl . "Google Cloud Platform, Pub/Sub, Serverless computing."))
+                 ((en . "Kubernetes and Docker, Terraform, Infrastructure-as-Code.")
+                  (nl . "Kubernetes en Docker, Terraform, Infrastructure-as-Code."))
+                 ((en . "Testing: Integration, Unit, Mock, E2E, Property-based, Testcontainers.")
+                  (nl . "Testen: Integratie, Unit, Mock, E2E, Property-based, Testcontainers"))
+                 ((en . "PostgreSQL, BigTable, ElasticSearch, Redis, Firebase.")
+                  (nl . "PostgreSQL, BigTable, ElasticSearch, Redis, Firebase"))
+                 ))))
+
+
+(define iter-vitae-jobs
+  `(joe-job-ikea
+    joe-job-pro-warehouse
+    joe-job-liderlink))
+
+(define iter-vitae-font 'intel-one-mono)
+
+(define iter-vitae-palette 'ef-cyprus)
