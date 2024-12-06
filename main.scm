@@ -7,16 +7,16 @@
 ;; (load "./populus/joe.scm")
 
 (define* (begin-generation #:key locale persona)
-  (display "iter-vitae") (newline)
-  (display locale) (newline)
-  (display persona) (newline)
+  (display "\niter-vitae working\n") (newline)
   )
 
 (define (main args)
+  (display args)
+  (newline)
   (let* ((option-spec '((locale (single-char #\l) (value "en"))
                         (version (single-char #\v) (value #f))
                         (help    (single-char #\h) (value #f))
-                        (persona    (single-char #\p))))
+                        (persona    (single-char #\p) (required? #t))))
          (options (getopt-long args option-spec))
          (help-wanted (option-ref options 'help #f))
          (version-wanted (option-ref options 'version #f))
@@ -37,6 +37,8 @@ iter-vitae [options]
         (begin
           (display locale-wanted) (newline)
           (display persona-wanted) (newline)
+          (display options) (newline)
+          
           (begin-generation
            #:locale locale-wanted
            #:persona persona-wanted)

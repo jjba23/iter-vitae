@@ -16,4 +16,4 @@
 # along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 persona-joe:
-	GUILE_AUTOCOMPILE=0 guile main.scm --locale=nl --persona=joe
+	GUILE_AUTOCOMPILE=0 guile main.scm --locale nl --persona joe
