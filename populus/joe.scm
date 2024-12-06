@@ -4,8 +4,10 @@
 
 (define iter-vitae-personal-contact
   `((emails . ("jjbigorra@gmail.com"))
-    (phone-numbers . ("+31 639825138"))
-    (blogs . ("jointhefreeworld.org"))
+    (phone-numbers . ("+31 639825138"))))
+
+(define iter-vitae-personal-links
+  `((blogs . ("jointhefreeworld.org"))
     (code . ("codeberg.org/jjba23"))
     (linkedin . ("linkedin.com/in/josepjba"))))
 
@@ -59,11 +61,11 @@
                        (nl . "ICT HBO")))
      (time-worked . ((en . "September 2017 => September 2019")
                      (nl . "September 2017 => September 2019")))
-     (experience-points . (
-                           ((en . "Graduated with 190/200 score. Obtained maximum score for software engineering internship.")
+     (experience-points . (((en . "Graduated with 190/200 score. Obtained maximum score for software engineering internship.")
                             (nl . "Afgestudeerd met 190/200 score. Max cijfer gehaald voor software ingenieur stage."))
-                           ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))
-                           ))
+                           ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
      
-     )
-    ))
+     )))
+
+(define iter-vitae-font 'intel-one-mono)
+(define iter-vitae-palette 'ef-cyprus)
