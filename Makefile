@@ -16,10 +16,20 @@
 # along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 define persona
+	rm -rfv dist
+	mkdir dist
 	GUILE_AUTOCOMPILE=0 guile main.scm --locale $(2) --persona $(1)
+	cp -rfv resources/css dist/
+	cp -rfv resources/js dist/
+	cp -rfv resources/ttf dist/
+	@printf "\n\nall tasks completed\n\n"
 endef
 
 persona-joe-nl:
 	$(call persona,"joe","nl")
 persona-joe-en:
 	$(call persona,"joe","en")
+persona-manon-nl:
+	$(call persona,"manon","nl")
+persona-manon-en:
+	$(call persona,"manon","en")

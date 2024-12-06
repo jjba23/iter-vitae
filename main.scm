@@ -1,4 +1,26 @@
+;;; Iter Vitae 
+
+;; Copyright (C) 2024 Josep Jesus Bigorra Algaba
+
+;; iter-vitae is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; iter-vitae is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+
 (use-modules (ice-9 getopt-long))
+
+(load "./src/tailwind.scm")
+(use-modules (iter-vitae tailwind))
+(load "./src/html.scm")
+(use-modules (iter-vitae html))
 
 ;; load base iter-vitae configuration
 (load "./iter-vitae.scm")
@@ -16,7 +38,14 @@
   (display (format #f "\n\tconfigured with persona: ~a" persona))
   (newline)
   (display-separator)
-  (newline))
+  (newline)
+
+  (with-output-to-file "dist/index.html"
+    (lambda()
+      (display (iter-vitae-curriculum-page))
+      ))
+
+  )
 
 (define (main args)
   (display args)
