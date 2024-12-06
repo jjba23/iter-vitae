@@ -1,0 +1,4 @@
+#+title: Iter Vitae
+
+Iter Vitae is a free software project that aims to make it easy and maintainable to generate an attractive, modern and customizable /Curriculum Vitae/ or /resume/ for yourself.
+
