@@ -41,7 +41,7 @@
   
   (with-output-to-file "dist/index.html"
     (lambda()
-      (display (iter-vitae-curriculum-page))
+      (display (iter-vitae-curriculum-page #:locale locale))
       ))
   )
 
@@ -74,8 +74,8 @@ iter-vitae [options]
 ")))
         (begin          
           (begin-generation
-           #:locale locale-wanted
-           #:persona persona-wanted)
+           #:locale (string->symbol locale-wanted)
+           #:persona (string->symbol persona-wanted))
           ))))
 
 

@@ -32,7 +32,7 @@
   `(((all . "1441KH Purmerend"))
     ((all . "Netherlands"))))
 
-(define iter-vitae-driver-license
+(define iter-vitae-driver-licenses
   `(((en . "B driver's license, vehicles up to 3,5t")
      (nl . "Rijbewijs B, voertuigen t/m 3,5t"))))
 

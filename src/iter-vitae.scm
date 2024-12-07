@@ -69,7 +69,7 @@
 ;;
 ;; `(((all . "B driver's license, vehicles up to 3,5t")))
 ;;
-(define iter-vitae-driver-license `())
+(define iter-vitae-driver-licenses `())
 
 ;; Interests and hobbies of persona
 ;;

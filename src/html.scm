@@ -63,22 +63,56 @@
                   "iter-vitae-word-meaning")))))
 
 
-;; Page
+(define* (iter-vitae-main-body #:key locale)
+  `((h2 (@(class "font-mono text-2xl text-stone-900"))
+        ,(assq-ref-all-or-lang iter-vitae-display-name locale))
+    (p (@(class "font-mono text-stone-900"))
+       ,(assq-ref-all-or-lang iter-vitae-job-title locale))
+    (p (@(class "font-mono text-stone-900"))
+       ,(assq-ref iter-vitae-personal-contact 'emails))
+    (p (@(class "font-mono text-stone-900"))
+       ,(assq-ref iter-vitae-personal-contact 'phone-numbers))
+    (p (@(class "font-mono text-stone-900"))
+       ,(assq-ref iter-vitae-personal-links 'blogs))
+    (p (@(class "font-mono text-stone-900"))
+       ,(assq-ref iter-vitae-personal-links 'code))
+    (p (@(class "font-mono text-stone-900"))
+       ,(assq-ref iter-vitae-personal-links 'linkedin))
+    (p (@(class "font-mono text-stone-900"))
+       ,(map
+         (lambda (address-line)
+           `(span (@(class "mr-4"))
+                  ,(assq-ref-all-or-lang address-line locale)))
+         iter-vitae-address-lines))
+    (p (@(class "font-mono text-stone-900"))
+       ,(map
+         (lambda(driver-license)
+           `(span (@(class "mr-4"))
+                  ,(assq-ref-all-or-lang driver-license locale)))
+         iter-vitae-driver-licenses))
+    
+    (hr (@(class ,hr-class)))
+    ,(map
+      (lambda(intro-line)
+        `(p (@(class "font-mono text-stone-900"))
+            ,(assq-ref-all-or-lang intro-line locale)))
+      iter-vitae-short-intro)
+    
+    (hr (@(class ,hr-class)))
+    ,(map
+      (lambda(interest-hobby)
+        `(p (@(class "font-mono text-stone-900"))
+            ,(assq-ref-all-or-lang interest-hobby locale)))
+      iter-vitae-interests-hobbies)
+    ))
+
 
 (define* (iter-vitae-curriculum-page #:key locale)
-  (define addre (map (lambda (al) `(span (@(class "mr-4")) ,(assq-ref-all-or-lang al locale))) iter-vitae-address-lines))  
   (with-output-to-string
     (lambda ()
       (sxml->xml
        (iter-vitae-html-template
         "Iter Vitae"
-        `((h2 (@(class "font-mono text-2xl text-stone-900")) ,(assq-ref-all-or-lang iter-vitae-display-name locale))
-          (p (@(class "font-mono text-stone-900")) ,(assq-ref-all-or-lang iter-vitae-job-title locale))
-          (p (@(class "font-mono text-stone-900")) ,(assq-ref iter-vitae-personal-contact 'emails))
-          (p (@(class "font-mono text-stone-900")) ,(assq-ref iter-vitae-personal-contact 'phone-numbers))
-          (p (@(class "font-mono text-stone-900")) ,(assq-ref iter-vitae-personal-links 'blogs))
-          (p (@(class "font-mono text-stone-900")) ,(assq-ref iter-vitae-personal-links 'code))
-          (p (@(class "font-mono text-stone-900")) ,(assq-ref iter-vitae-personal-links 'linkedin))
-          (p (@(class "font-mono text-stone-900")) ,addre)
-          )))))
+        (iter-vitae-main-body #:locale locale)
+        ))))
   )
