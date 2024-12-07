@@ -17,16 +17,10 @@
 
 (use-modules (ice-9 getopt-long))
 
-(load "./src/tailwind.scm")
-(use-modules (iter-vitae tailwind))
+
 (load "./src/html.scm")
 (use-modules (iter-vitae html))
 
-;; load base iter-vitae configuration
-(load "./iter-vitae.scm")
-
-;; choose configuration for wanted persona
-;; (load "./populus/joe.scm")
 
 (define (display-separator)
   (display "\n====================================================\n"))
@@ -40,11 +34,11 @@
   (display-separator)
   (newline)
 
+
   (with-output-to-file "dist/index.html"
     (lambda()
       (display (iter-vitae-curriculum-page))
       ))
-
   )
 
 (define (main args)
@@ -59,7 +53,7 @@
          
          (help-wanted (option-ref options 'help #f))
          (version-wanted (option-ref options 'version #f))
-         (persona-wanted (option-ref options 'persona "joe"))
+         (persona-wanted (option-ref options 'persona ""))
          (locale-wanted (option-ref options 'locale "en")))
     
     (if (or version-wanted help-wanted)

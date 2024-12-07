@@ -15,14 +15,15 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
+(define-module (iter-vitae))
 
 ;; Full name of persona
 ;;
 ;; example:
 ;;
-;; `((_ . "Josep Bigorra"))
+;; `((all . "Josep Bigorra"))
 ;;
-(define iter-vitae-display-name `())
+(define-public iter-vitae-display-name `())
 
 ;; Primary job title of persona
 ;;
@@ -30,7 +31,7 @@
 ;;
 ;; `((en . "Software Engineer") (nl . "..."))
 ;;
-(define iter-vitae-job-title `())
+(define-public iter-vitae-job-title `())
 
 ;; Contact details of persona
 ;;
@@ -39,7 +40,7 @@
 ;; `((emails . ("someone@example.com"))
 ;;   (phone-numbers . ("+351 123 456 789")))
 ;;
-(define iter-vitae-personal-contact `())
+(define-public iter-vitae-personal-contact `())
 
 ;; Personal links of persona
 ;;
@@ -49,7 +50,7 @@
 ;;   (code . ("codeberg.org/jjba23"))
 ;;   (linkedin . ("linkedin.com/in/josepjba")))
 ;;
-(define iter-vitae-personal-links `())
+(define-public iter-vitae-personal-links `())
 
 ;; Address lines of persona
 ;;
@@ -59,18 +60,18 @@
 ;;
 ;; example:
 ;;
-;; `(((_ . "1441KH Purmerend"))
-;;   ((_ . "Netherlands")))
+;; `(((all . "1441KH Purmerend"))
+;;   ((all . "Netherlands")))
 ;;
-(define iter-vitae-address-lines `())
+(define-public iter-vitae-address-lines `())
 
 ;; Driver license details of persona
 ;;
 ;; example:
 ;;
-;; `(((_ . "B driver's license, vehicles up to 3,5t")))
+;; `(((all . "B driver's license, vehicles up to 3,5t")))
 ;;
-(define iter-vitae-driver-license `())
+(define-public iter-vitae-driver-license `())
 
 ;; Interests and hobbies of persona
 ;;
@@ -79,7 +80,7 @@
 ;; `(((en . "I love playing classical and electric guitar.")
 ;;    (nl . "...")))
 ;;
-(define iter-vitae-interests-hobbies `())
+(define-public iter-vitae-interests-hobbies `())
 
 ;; Language skills of persona
 ;;
@@ -99,28 +100,28 @@
 ;;                          (speaking . 3)
 ;;                          (writing . 2))))))
 ;;
-(define iter-vitae-languages `())
+(define-public iter-vitae-languages `())
 
 ;; Education and certifications of persona
 ;;
 ;; example:
 ;;
-;; `(((entity . ((_ . "Universidade do Algarve, Faro, Portugal")))
+;; `(((entity . ((all . "Universidade do Algarve, Faro, Portugal")))
 ;;    (position . ((en . "IT Associate's degree")
 ;;                 (nl . "...")))
 ;;    (time . ((en . "September 2017 => September 2019")
 ;;             (nl . "...")))
 ;;    (experience . (((en . "Graduated with 190/200 score. Obtained maximum score for software engineering internship.")
 ;;                    (nl . "..."))
-;;                   ((_ . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
+;;                   ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))
 
 ;;    )))
 ;;
-(define iter-vitae-education `())
+(define-public iter-vitae-education `())
 
 ;; Document titles of the curriculum vitae
 ;;
-(define iter-vitae-titles
+(define-public iter-vitae-titles
   `((education . ((en . "Education") (nl . "Opleiding")))
     (driver-license . ((en . "Driving") (nl . "Rijbewijs")))
     (interests-hobbies . ((en . "My free time") (nl . "Mijn vrije tijd")))
@@ -137,11 +138,11 @@
 ;; `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
 ;;    (nl . "...")))
 ;;
-(define iter-vitae-short-intro `())
+(define-public iter-vitae-short-intro `())
 
 ;; Jobs and internships of persona
 ;;
-;; `(((name . ((_ . "Some Company B.V.")))
+;; `(((name . ((all . "Some Company B.V.")))
 ;;    (location . ((en . "New York City, United States") (nl . "...")))
 ;;    (position . ((en . "Software Engineer")
 ;;                 (nl . "...")))
@@ -154,18 +155,18 @@
 ;;                  (nl . "..."))
 ;;                 ))))
 ;;
-(define iter-vitae-jobs `())
+(define-public iter-vitae-jobs `())
 
 ;; Main font family for the curriculum vitae
 ;; choose between:
 ;;
 ;; intel-one-mono
 ;;
-(define iter-vitae-font 'intel-one-mono)
+(define-public iter-vitae-font 'intel-one-mono)
 
 ;; Palette to be used for the curriculum vitae
 ;; choose between:
 ;;
 ;; ef-cyprus
 ;;
-(define iter-vitae-palette 'ef-cyprus)
+(define-public iter-vitae-palette 'ef-cyprus)
