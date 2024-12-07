@@ -18,9 +18,11 @@
 (use-modules (ice-9 getopt-long))
 
 
+(load "./src/utils.scm")
+(load "./src/tailwind.scm")
 (load "./src/html.scm")
-(use-modules (iter-vitae html))
-
+;; load base iter-vitae configuration
+(load "./src/iter-vitae.scm")
 
 (define (display-separator)
   (display "\n====================================================\n"))
@@ -33,8 +35,10 @@
   (newline)
   (display-separator)
   (newline)
-
-
+  
+  ;; choose person to generate curriculum vitae for
+  (load (format #f "./populus/~a.scm" persona))
+  
   (with-output-to-file "dist/index.html"
     (lambda()
       (display (iter-vitae-curriculum-page))

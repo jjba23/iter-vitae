@@ -15,30 +15,28 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(define-module (iter-vitae))
+(define iter-vitae-display-name `((all . "Josep Bigorra")))
 
-(define-public iter-vitae-display-name `((all . "Josep Bigorra")))
+(define iter-vitae-job-title `((all . "Software Engineer")))
 
-(define-public iter-vitae-job-title `((all . "Software Engineer")))
-
-(define-public iter-vitae-personal-contact
+(define iter-vitae-personal-contact
   `((emails . ("jjbigorra@gmail.com"))
     (phone-numbers . ("+31 639825138"))))
 
-(define-public iter-vitae-personal-links
+(define iter-vitae-personal-links
   `((blogs . ("jointhefreeworld.org"))
     (code . ("codeberg.org/jjba23"))
     (linkedin . ("linkedin.com/in/josepjba"))))
 
-(define-public iter-vitae-address-lines
+(define iter-vitae-address-lines
   `(((all . "1441KH Purmerend"))
     ((all . "Netherlands"))))
 
-(define-public iter-vitae-driver-license
+(define iter-vitae-driver-license
   `(((en . "B driver's license, vehicles up to 3,5t")
      (nl . "Rijbewijs B, voertuigen t/m 3,5t"))))
 
-(define-public iter-vitae-interests-hobbies
+(define iter-vitae-interests-hobbies
   `(((en . "I love playing classical and electric guitar.")
      (nl . "Ik ben dol op klassieke en elektrische gitaar."))
     ((en . "I like building and tweaking computers, blogging about my tech opinions and discoveries and playing strategy games sometimes.")
@@ -46,7 +44,7 @@
     ((en . "You might also find me doing CrossFit, sanding furniture down, removing weeds from the garden, or improving my house.")
      (nl . "Ik ben ook te vinden in de CrossFit gym, meubels aan het schuren, onkruid weg aan het halen of mijn huis aan het verbeteren."))))
 
-(define-public iter-vitae-languages
+(define iter-vitae-languages
   `((en . ((name . ((en . "English")
                     (nl . "Engels")))
            (proficiency . ((reading . 4)
@@ -74,7 +72,7 @@
                            (writing . 4)))))
     ))
 
-(define-public iter-vitae-education
+(define iter-vitae-education
   `(((entity . ((all . "Universidade do Algarve, Faro, Portugal")))
      (position . ((en . "IT Associate's degree")
                   (nl . "ICT HBO")))
@@ -87,7 +85,7 @@
      )))
 
 
-(define-public iter-vitae-short-intro
+(define iter-vitae-short-intro
   `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
      (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik heb een DevOps mindset en ik ben altijd klaar om te leren, problemen op te lossen, mijn skills verbeteren en de uitdaging aan gaan."))
     ((en . "I moved to the Netherlands the autumn of 2019, and I was born in 1996 in Barcelona, Spain.")
@@ -100,7 +98,7 @@
      (nl . "Ik ben ook dol op de Ops kant van projecten, ik geniet van infrastructure-as-code en reproduceerbaar software bouw-processen."))
     ))
 
-(define-public joe-job-liderlink
+(define joe-job-liderlink
   `((name . ((all . "Liderlink Business Solutions")))
     (location . ((all . "Parchal, Portugal")))
     (position . ((en . "Back-end Developer internship")
@@ -117,7 +115,7 @@
                  ))))
 
 
-(define-public joe-job-pro-warehouse
+(define joe-job-pro-warehouse
   `((name . ((all . "Pro Warehouse B.V.")))
     (location . ((en . "Amsterdam, The Netherlands")
                  (nl . "Amsterdam, Nederland")))
@@ -143,7 +141,7 @@
                     (nl . "Agile-werk-methodologie en Extreme Programming geïntroduceerd."))
                    ))))
 
-(define-public joe-job-ikea
+(define joe-job-ikea
   `((name . ((all . "IKEA - Ingka Digital")))
     (location . ((en . "Amsterdam, The Netherlands")
                  (nl . "Amsterdam, Nederland")))
@@ -169,7 +167,7 @@
                  ))))
 
 
-(define-public joe-job-zorgdomein
+(define joe-job-zorgdomein
   `((name . ((all . "ZorgDomein B.V.")))
     (location . ((en . "Breukelen, The Netherlands") (nl . "Breukelen, Nederland")))
     (position . ((en . "Software Engineer")
@@ -193,7 +191,7 @@
                   (nl . "Kubernetes en Docker, ArgoCD, Helm-grafieken"))
                  ))))
 
-(define-public joe-job-vandebron
+(define joe-job-vandebron
   `((name . ((all . "Vandebron B.V.")))
     (location . ((en . "Amsterdam, The Netherlands") (nl . "Amsterdam, Nederland")))
     (position . ((en . "Software Engineer")
@@ -211,13 +209,13 @@
                   (nl . "Kubernetes en Docker, ArgoCD, Helm-grafieken"))
                  ))))
 
-(define-public iter-vitae-jobs
+(define iter-vitae-jobs
   `(joe-job-vandebron
     joe-job-zorgdomein
     joe-job-ikea
     joe-job-pro-warehouse
     joe-job-liderlink))
 
-(define-public iter-vitae-font 'intel-one-mono)
+(define iter-vitae-font 'intel-one-mono)
 
-(define-public iter-vitae-palette 'ef-cyprus)
+(define iter-vitae-palette 'ef-cyprus)

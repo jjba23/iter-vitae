@@ -15,30 +15,30 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(define-module (iter-vitae tailwind)
-  #:use-module (ice-9 popen)
-  #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 time)
-  #:use-module (ice-9 format)
-  #:use-module (ice-9 string-fun)
-  #:use-module (ice-9 iconv)
-  #:use-module (ice-9 futures))
 
-(define-public button-class
-  (string-join
-   '("bg-green-500/75"
-     "text-stone-300"
-     "rounded-xl"
-     "cursor-pointer"
-     "p-2"
-     "border"
-     "w-fit"
-     "m-2"
-     "text-lg"
-     "font-mono"
-     "font-bold") " "))
+(use-modules (ice-9 popen)
+             (ice-9 textual-ports)
+             (ice-9 time)
+             (ice-9 format)
+             (ice-9 string-fun)
+             (ice-9 iconv)
+             (ice-9 futures))
 
-(define-public nav-button-class
+(define button-class
+(string-join
+ '("bg-green-500/75"
+   "text-stone-300"
+   "rounded-xl"
+   "cursor-pointer"
+   "p-2"
+   "border"
+   "w-fit"
+   "m-2"
+   "text-lg"
+   "font-mono"
+   "font-bold") " "))
+
+(define nav-button-class
   (string-join
    '(
      "text-green-500/75"
@@ -51,7 +51,7 @@
      "text-xl"
      "font-bold") " "))
 
-(define-public danger-button-class
+(define danger-button-class
   (string-join
    '("rounded-xl"
      "bg-red-700"
@@ -65,7 +65,7 @@
      "font-mono"
      "m-2") " "))
 
-(define-public input-class
+(define input-class
   (string-join
    '("rounded-xl"
      "border"
@@ -78,17 +78,17 @@
      "font-mono"
      ) " "))
 
-(define-public hr-class
+(define hr-class
   (string-join
    '("my-6" "border-t-2" "border-t-stone-600") " "))
 
-(define-public h2-class
+(define h2-class
   (string-join
    '("text-3xl" "text-stone-300" "my-4" "font-bold" "font-mono") " "))
 
 
 
-(define-public textarea-class
+(define textarea-class
   (string-join
    '("rounded-xl"
      "border"
@@ -103,5 +103,5 @@
      "min-h-64"
      ) " "))
 
-(define-public dash-link-face
+(define dash-link-face
   "text-stone-300 font-bold cursor-pointer text-xl font-mono")
