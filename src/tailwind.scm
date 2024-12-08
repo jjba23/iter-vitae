@@ -24,84 +24,27 @@
              (ice-9 iconv)
              (ice-9 futures))
 
-(define button-class
-(string-join
- '("bg-green-500/75"
-   "text-stone-300"
-   "rounded-xl"
-   "cursor-pointer"
-   "p-2"
-   "border"
-   "w-fit"
-   "m-2"
-   "text-lg"
-   "font-mono"
-   "font-bold") " "))
-
-(define nav-button-class
+(define hr/class
   (string-join
-   '(
-     "text-green-500/75"
-     "cursor-pointer"
-     "p-2"
-     "m-2"
-     "border-b-2"
-     "font-mono"
-     "border-b-green-500/25"
-     "text-xl"
-     "font-bold") " "))
+   '("my-6" "border-t-2" "border-t-stone-300") " "))
 
-(define danger-button-class
+
+(define p/class
   (string-join
-   '("rounded-xl"
-     "bg-red-700"
-     "text-stone-300"
-     "font-bold"
-     "w-fit"
-     "border"
-     "text-lg"
-     "cursor-pointer"
-     "p-2"
-     "font-mono"
-     "m-2") " "))
+   '("my-4" "font-mono" "text-md" "text-stone-800")))
 
-(define input-class
+(define small/class
   (string-join
-   '("rounded-xl"
-     "border"
-     "border-stone-500"
-     "p-2"
-     "ml-6"
-     "text-lg"
-     "bg-stone-800"
-     "text-stone-300"
-     "font-mono"
-     ) " "))
+   '("my-2" "font-mono" "text-sm" "text-stone-700")))
 
-(define hr-class
+(define small-a/class
   (string-join
-   '("my-6" "border-t-2" "border-t-stone-600") " "))
+   '("my-2" "font-mono" "text-sm" "text-green-900")))
 
-(define h2-class
+(define h1/class
   (string-join
-   '("text-3xl" "text-stone-300" "my-4" "font-bold" "font-mono") " "))
+   '("my-2" "font-mono" "text-3xl" "text-stone-800")))
 
-
-
-(define textarea-class
+(define h2/class
   (string-join
-   '("rounded-xl"
-     "border"
-     "border-stone-500"
-     "p-2"
-     "ml-6"
-     "w-full"
-     "text-lg"
-     "bg-stone-800"
-     "font-mono"
-     "text-stone-300"
-     "min-h-64"
-     ) " "))
-
-(define dash-link-face
-  "text-stone-300 font-bold cursor-pointer text-xl font-mono")
+   '("my-2" "font-mono" "text-xl" "uppercase" "text-green-800")))

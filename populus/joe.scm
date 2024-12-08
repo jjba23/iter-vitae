@@ -20,13 +20,13 @@
 (define iter-vitae-job-title `((all . "Software Engineer")))
 
 (define iter-vitae-personal-contact
-  `((emails . ("jjbigorra@gmail.com"))
-    (phone-numbers . ("+31 639825138"))))
+  `((emails . "jjbigorra@gmail.com")
+    (phone-numbers . "+31 639825138")))
 
 (define iter-vitae-personal-links
-  `((blogs . ("jointhefreeworld.org"))
-    (code . ("codeberg.org/jjba23"))
-    (linkedin . ("linkedin.com/in/josepjba"))))
+  `((blog . "jointhefreeworld.org")
+    (code . "codeberg.org/jjba23")
+    (linked-in . "linkedin.com/in/josepjba")))
 
 (define iter-vitae-address-lines
   `(((all . "1441KH Purmerend"))
@@ -37,10 +37,10 @@
      (nl . "Rijbewijs B, voertuigen t/m 3,5t"))))
 
 (define iter-vitae-interests-hobbies
-  `(((en . "I love playing classical and electric guitar.")
-     (nl . "Ik ben dol op klassieke en elektrische gitaar."))
-    ((en . "I like building and tweaking computers, blogging about my tech opinions and discoveries and playing strategy games sometimes.")
+  `(((en . "I like building and tweaking computers, blogging about my tech opinions and discoveries and playing strategy games sometimes.")
      (nl . "Ik bouw en speel graag met computers, ik heb een blog waar ik mijn meningen over technologie en andere uit, en soms speel ik strategie spelletjes."))
+    ((en . "I love playing classical and electric guitar.")
+     (nl . "Ik ben dol op klassieke en elektrische gitaar."))
     ((en . "You might also find me doing CrossFit, sanding furniture down, removing weeds from the garden, or improving my house.")
      (nl . "Ik ben ook te vinden in de CrossFit gym, meubels aan het schuren, onkruid weg aan het halen of mijn huis aan het verbeteren."))))
 
@@ -92,10 +92,6 @@
      (nl . "Ik ben in de herfst 2019 naar Nederland verhuisd, en ik was in 1996 geboren in Barcelona, Spanje."))
     ((en . "You could also describe me as a Free Software Advocate, an Emacs user, Guix and Nix enthusiast, Haskell, Lisp, Scala enjoyer, functional programmer, and perfectionist.")
      (nl . "Je zou mij ook kunnen omschrijven met: Free Software Advocate, GNU Emacs gebruiker, Guix en Nix enthusiast, Haskell, Lisp, Scala genieter, functioneel programmeur, en perfectionistisch."))
-    ((en . "My systems experience revolves around PostgreSQL, Kafka, ElasticSearch, OracleSQL, NoSQL DBs like BigTable, Redis and MongoDB.")
-     (nl . "Mijn systemen ervaring is PostgreSQL, Kafka, Elasticsearch, OracleSQL, NoSQL databases zoals BigTable, Redis en MongoDB."))
-    ((en . "I also love the Ops and infra side of projects, enjoy infrastructure-as-code and reproducible software build processes.")
-     (nl . "Ik ben ook dol op de Ops kant van projecten, ik geniet van infrastructure-as-code en reproduceerbaar software bouw-processen."))
     ))
 
 (define joe-job-liderlink
