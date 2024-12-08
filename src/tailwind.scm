@@ -31,11 +31,11 @@
 
 (define p/class
   (string-join
-   '("my-4" "font-mono" "text-md" "text-stone-800")))
+   '("my-4" "font-mono" "text-md" "text-black-800")))
 
 (define small/class
   (string-join
-   '("my-2" "font-mono" "text-sm" "text-stone-700")))
+   '("my-2" "font-mono" "text-sm" "text-black-700")))
 
 (define small-a/class
   (string-join
@@ -43,7 +43,7 @@
 
 (define h1/class
   (string-join
-   '("my-2" "font-mono" "text-3xl" "text-stone-800")))
+   '("my-2" "font-mono" "text-3xl" "text-black-800")))
 
 (define h2/class
   (string-join

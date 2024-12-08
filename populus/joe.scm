@@ -30,7 +30,7 @@
 
 (define iter-vitae-address-lines
   `(((all . "1441KH Purmerend"))
-    ((all . "Netherlands"))))
+    ((en . "The Netherlands") (nl . "Nederland"))))
 
 (define iter-vitae-driver-licenses
   `(((en . "B driver's license, vehicles up to 3,5t")
