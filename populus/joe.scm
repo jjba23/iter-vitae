@@ -212,6 +212,6 @@
     joe-job-pro-warehouse
     joe-job-liderlink))
 
-(define iter-vitae-font 'intel-one-mono)
+(define iter-vitae-font 'monaspace-neon)
 
 (define iter-vitae-palette 'ef-cyprus)

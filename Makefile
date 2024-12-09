@@ -21,7 +21,7 @@ define persona
 	GUILE_AUTOCOMPILE=0 guile main.scm --locale $(2) --persona $(1)
 	cp -rfv resources/css dist/
 	cp -rfv resources/js dist/
-	cp -rfv resources/ttf dist/
+	cp -rfv resources/woff dist/
 	@printf "\n\nall tasks completed\n\n"
 endef
 

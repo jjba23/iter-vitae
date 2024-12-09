@@ -158,9 +158,9 @@
 ;; Main font family for the curriculum vitae
 ;; choose between:
 ;;
-;; intel-one-mono
+;; monaspace-neon
 ;;
-(define iter-vitae-font 'intel-one-mono)
+(define iter-vitae-font 'monaspace-neon)
 
 ;; Palette to be used for the curriculum vitae
 ;; choose between:
