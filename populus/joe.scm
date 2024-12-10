@@ -73,7 +73,18 @@
     ))
 
 (define iter-vitae-education
-  `(((name . ((all . "Universidade do Algarve, Faro, Portugal")))
+  `(((name . ((all . "Leading Self")))
+     (location . ((en . "Maarssen, The Netherlands") (nl . "Maarssen, Nederland")))
+     (position . ((en . "Leadership course")
+                  (nl . "Leiderschap cursus")))
+     (time . ((en . "Summer 2024")
+              (nl . "Zomer 2024")))
+     (experience . (((en . "Took a course on leadership, inter-personal relations and good ways of collaborating and empathizing at the workplace. ")
+                     (nl . "Nam een cursus over leiderschap, relatie met collega's en goede manieren om samen te werken en meer empathie te creeren op de werkplaats."))))
+     
+     )
+    ((name . ((all . "Universidade do Algarve")))
+     (location . ((all . "Faro, Portugal")))
      (position . ((en . "IT Associate's degree")
                   (nl . "ICT HBO")))
      (time . ((en . "September 2017 => September 2019")

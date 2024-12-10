@@ -153,6 +153,27 @@
            ))
    iter-vitae-jobs))
 
+(define* (render-iter-vitae-education #:key locale)
+  (map
+   (lambda(education)
+     `(div (@(class "p-3"))
+           (div (@(class "flex flex-row flex-wrap gap-3 items-center"))
+                (h5 (@(class "text-lg font-bold"))
+                    ,(assq-ref-all-or-lang (assq-ref education 'name) locale))
+                (span "-")
+                (h5 (@(class "text-lg font-bold text-stone-800"))
+                    ,(assq-ref-all-or-lang (assq-ref education 'position) locale)))
+           (h5 (@(class "text-md font-bold text-stone-600"))
+               ,(assq-ref-all-or-lang (assq-ref education 'location) locale))
+           (p (@(class "text-md font-light mb-4"))
+              ,(assq-ref-all-or-lang (assq-ref education 'time) locale))
+           ,(map (lambda(ip)
+                   `(p (@(class ,bullet/class))
+                       ,(assq-ref-all-or-lang ip locale)))
+                 (assq-ref education 'experience))
+           ))
+   iter-vitae-education))
+
 (define* (iter-vitae-main-body #:key locale)
   `((div (@(class "flex flex-row flex-wrap gap-6 justify-between"))
          (div
@@ -173,7 +194,13 @@
          (h4 (@(class ,h4/class))
              ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'work-experience) locale)))
     ,(render-iter-vitae-jobs #:locale locale)
-    
+
+    (hr (@(class ,hr/class)))
+    (div (@(class "flex flex-row flex-wrap gap-3 items-center"))
+         (i (@(class "bx bxs-book-open text-stone-600 text-xl")) "")
+         (h4 (@(class ,h4/class))
+             ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'education) locale)))
+    ,(render-iter-vitae-education #:locale locale)
 
     (div (@(class "flex flex-row flex-wrap gap-4 items-center"))
          (h4 (@(class ,h4/class))
@@ -183,6 +210,10 @@
          ,(render-iter-vitae-driver-licenses #:locale locale))
     
     (hr (@(class ,hr/class)))
+    (div (@(class "flex flex-row flex-wrap gap-3 items-center"))
+         (i (@(class "bx bxs-music text-stone-600 text-xl")) "")
+         (h4 (@(class ,h4/class))
+             ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'interests-hobbies) locale)))
     ,(render-iter-vitae-interests-hobbies #:locale locale)
     (hr (@(class ,hr/class)))
     (div (@(class "flex flex-row flex-wrap gap-2 justify-evenly"))
