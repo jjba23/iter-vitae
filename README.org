@@ -29,6 +29,8 @@ Extensible: Easily add new data types, sections, or features to suit your needs.
 
 ** Showcase
 
+[[file:resources/img/2024-12-10-showcase-cv.png]]
+
 You can see an example of the most up-to-date version of my CV generated with Iter Vitae by visiting my website:
 
 [[https://jointhefreeworld.org/cv/][https://jointhefreeworld.org/cv/]]
