@@ -104,7 +104,7 @@
 ;;
 ;; example:
 ;;
-;; `(((entity . ((all . "Universidade do Algarve, Faro, Portugal")))
+;; `(((name . ((all . "Universidade do Algarve, Faro, Portugal")))
 ;;    (position . ((en . "IT Associate's degree")
 ;;                 (nl . "...")))
 ;;    (time . ((en . "September 2017 => September 2019")

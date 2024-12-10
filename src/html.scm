@@ -48,7 +48,6 @@
 
 (define (page-footer)
   `((div (@(class "block text-center font-mono"))
-         (hr (@(class ,hr/class)))
          (div (@(class "flex flex-row gap-3 flex-wrap justify-center"))
               (small (@(class ,small/class)) "this Curriculum Vitae was rendered with Guile Scheme code"))
          (div (@(class "flex flex-row gap-3 flex-wrap justify-center items-center"))
@@ -133,6 +132,18 @@
          ,(assq-ref-all-or-lang interest-hobby locale)))
    iter-vitae-interests-hobbies))
 
+(define* (render-iter-vitae-jobs #:key locale)
+  (map
+   (lambda(job)
+     `(div (@(class "p-3"))
+           (h4 (@(class "text-lg font-bold")) ,(assq-ref-all-or-lang (assq-ref job 'name) locale))
+           (p (@(class "text-md font-light")) ,(assq-ref-all-or-lang (assq-ref job 'time) locale))
+           ,(map (lambda(ip)
+                   `(p (@(class "text-md")) ,(assq-ref-all-or-lang ip locale)))
+                 (assq-ref job 'experience))
+           ))
+   iter-vitae-jobs))
+
 (define* (iter-vitae-main-body #:key locale)
   `((div (@(class "flex flex-row flex-wrap gap-6 justify-between"))
          (div
@@ -143,9 +154,22 @@
               ,(render-iter-vitae-phone-number #:locale locale)
               ,(render-iter-vitae-address-lines #:locale locale)
               ))
-    ,(render-iter-vitae-driver-licenses #:locale locale)
-    (hr (@(class ,hr/class)))
+
+    (h4 (@(class "text-md font-bold uppercase")) ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'short-intro) locale))
     ,(render-iter-vitae-short-intro #:locale locale)
+
+    (hr (@(class ,hr/class)))
+
+    ,(render-iter-vitae-jobs #:locale locale)
+    
+
+    (div (@(class "flex flex-row flex-wrap gap-4 items-center"))
+         (h4 (@(class "text-md font-bold uppercase"))
+             ,(string-append
+               (assq-ref-all-or-lang (assq-ref iter-vitae-titles 'driver-license) locale)
+               ":"))
+         ,(render-iter-vitae-driver-licenses #:locale locale))
+    
     (hr (@(class ,hr/class)))
     ,(render-iter-vitae-interests-hobbies #:locale locale)
     (hr (@(class ,hr/class)))

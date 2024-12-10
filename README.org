@@ -2,3 +2,10 @@
 
 Iter Vitae is a free software project that aims to make it easy and maintainable to generate an attractive, modern and customizable /Curriculum Vitae/ or /resume/ for yourself.
 
+See the example render of my Curriculum Vitae with this tool in PDF:
+
+[[file:resources/pdf/Iter Vitae.pdf][Iter Vitae.pdf]]
+
+See how I like to hack on this project in Emacs:
+
+[[file:resources/img/2024-12-10T16:44:25,791277181+01:00.png]]

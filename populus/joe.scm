@@ -73,7 +73,7 @@
     ))
 
 (define iter-vitae-education
-  `(((entity . ((all . "Universidade do Algarve, Faro, Portugal")))
+  `(((name . ((all . "Universidade do Algarve, Faro, Portugal")))
      (position . ((en . "IT Associate's degree")
                   (nl . "ICT HBO")))
      (time . ((en . "September 2017 => September 2019")
@@ -182,9 +182,7 @@
                  ((en . "Amazon AWS, EC2, Cloudfront, S3 buckets.")
                   (nl . "Amazon AWS, EC2, Cloudfront, S3-buckets"))
                  ((en . "Introducing Nix development shells and flakes along with teaching and mentoring in reproducible builds.")
-                  (nl . "Introductie van Nix-ontwikkelingshells en -flakes, samen met lesgeven en mentoring in reproduceerbare builds"))
-                 ((en . "Kubernetes and Docker, ArgoCD, Helm charts.")
-                  (nl . "Kubernetes en Docker, ArgoCD, Helm-grafieken"))
+                  (nl . "Introductie van Nix-ontwikkelingshells en -flakes, samen met lesgeven en mentoring in reproduceerbare builds"))                 
                  ))))
 
 (define joe-job-vandebron
@@ -206,11 +204,12 @@
                  ))))
 
 (define iter-vitae-jobs
-  `(joe-job-vandebron
-    joe-job-zorgdomein
-    joe-job-ikea
-    joe-job-pro-warehouse
-    joe-job-liderlink))
+  (list
+   joe-job-vandebron
+   joe-job-zorgdomein
+   joe-job-ikea
+   joe-job-pro-warehouse
+   joe-job-liderlink))
 
 (define iter-vitae-font 'monaspace-neon)
 
