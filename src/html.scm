@@ -41,7 +41,7 @@
             (content "width=device-width, initial-scale=1.0")))
      (script (@(src "https://cdn.tailwindcss.com")) "")
      (script (@(src "js/tailwind.config.js")) ()))
-    (body (@(class ""))
+    (body (@(class "break-words"))
           (div (@(class "container mx-auto my-4"))
                ,@body
                ,(page-footer)))))
@@ -68,19 +68,19 @@
 
 (define* (render-iter-vitae-email #:key locale)
   `((div (@(class "flex gap-1 items-center"))
-         (i (@(class "bx bxs-envelope text-stone-600")) "")
+         (i (@(class "bx bxs-envelope text-stone-600 text-xl")) "")
          (small (@(class ,small/class))
                 ,(assq-ref iter-vitae-personal-contact 'emails)))))
 
 (define* (render-iter-vitae-phone-number #:key locale)
   `((div (@(class "flex gap-1 items-center"))
-         (i (@(class "bx bxs-phone text-stone-600")) "")
+         (i (@(class "bx bxs-phone text-stone-600 text-xl")) "")
          (small (@(class ,small/class))
                 ,(assq-ref iter-vitae-personal-contact 'phone-numbers)))))
 
 (define* (render-iter-vitae-blog-link #:key locale)
   `((div (@(class "flex flex-row gap-1 items-center"))
-         (i (@(class "bx bx-link text-stone-600")) "")
+         (i (@(class "bx bx-link text-stone-600 xl")) "")
          (a (@(class ,small-a/class)
              (target "_blank")
              (href ,(format #f "https://~a" (assq-ref iter-vitae-personal-links 'blog))))
@@ -88,7 +88,7 @@
 
 (define* (render-iter-vitae-code-link #:key locale)
   `((div (@(class "flex flex-row gap-1 items-center"))
-         (i (@(class "bx bx-link text-stone-600")) "")
+         (i (@(class "bx bx-link text-stone-600 text-xl")) "")
          (a (@(class ,small-a/class)
              (target "_blank")
              (href ,(format #f "https://~a" (assq-ref iter-vitae-personal-links 'code))))
@@ -96,7 +96,7 @@
 
 (define* (render-iter-vitae-linked-in-link #:key locale)
   `((div (@(class "flex flex-row gap-1 items-center"))
-         (i (@(class "bx bx-link text-stone-600")) "")
+         (i (@(class "bx bx-link text-stone-600 text-xl")) "")
          (a (@(class ,small-a/class)
              (target "_blank")
              (href ,(format #f "https://~a" (assq-ref iter-vitae-personal-links 'linked-in))))
@@ -136,10 +136,19 @@
   (map
    (lambda(job)
      `(div (@(class "p-3"))
-           (h4 (@(class "text-lg font-bold")) ,(assq-ref-all-or-lang (assq-ref job 'name) locale))
-           (p (@(class "text-md font-light")) ,(assq-ref-all-or-lang (assq-ref job 'time) locale))
+           (div (@(class "flex flex-row flex-wrap gap-3 items-center"))
+                (h5 (@(class "text-lg font-bold"))
+                    ,(assq-ref-all-or-lang (assq-ref job 'name) locale))
+                (span "-")
+                (h5 (@(class "text-lg font-bold text-stone-600"))
+                    ,(assq-ref-all-or-lang (assq-ref job 'position) locale)))
+           (h5 (@(class "text-md font-bold text-stone-600"))
+               ,(assq-ref-all-or-lang (assq-ref job 'location) locale))
+           (p (@(class "text-md font-light mb-4"))
+              ,(assq-ref-all-or-lang (assq-ref job 'time) locale))
            ,(map (lambda(ip)
-                   `(p (@(class "text-md")) ,(assq-ref-all-or-lang ip locale)))
+                   `(p (@(class ,bullet/class))
+                       ,(assq-ref-all-or-lang ip locale)))
                  (assq-ref job 'experience))
            ))
    iter-vitae-jobs))
@@ -155,16 +164,19 @@
               ,(render-iter-vitae-address-lines #:locale locale)
               ))
 
-    (h4 (@(class "text-md font-bold uppercase")) ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'short-intro) locale))
+    (h4 (@(class ,h4/class)) ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'short-intro) locale))
     ,(render-iter-vitae-short-intro #:locale locale)
 
     (hr (@(class ,hr/class)))
-
+    (div (@(class "flex flex-row flex-wrap gap-3 items-center"))
+         (i (@(class "bx bxs-briefcase text-stone-600 text-xl")) "")
+         (h4 (@(class ,h4/class))
+             ,(assq-ref-all-or-lang (assq-ref iter-vitae-titles 'work-experience) locale)))
     ,(render-iter-vitae-jobs #:locale locale)
     
 
     (div (@(class "flex flex-row flex-wrap gap-4 items-center"))
-         (h4 (@(class "text-md font-bold uppercase"))
+         (h4 (@(class ,h4/class))
              ,(string-append
                (assq-ref-all-or-lang (assq-ref iter-vitae-titles 'driver-license) locale)
                ":"))

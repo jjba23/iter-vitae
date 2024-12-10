@@ -31,20 +31,28 @@
 
 (define p/class
   (string-join
-   '("my-4" "font-mono" "text-md" "text-black-800")))
+   '("my-4" "font-mono" "text-md" "text-black-800" "max-w-prose") " "))
+
+(define bullet/class
+  (string-join
+   '("my-3" "ml-4" "font-mono" "text-md" "text-black-700" "max-w-prose") " "))
 
 (define small/class
   (string-join
-   '("my-2" "font-mono" "text-sm" "text-black-700")))
+   '("my-2" "font-mono" "text-sm" "text-black-600") " "))
 
 (define small-a/class
   (string-join
-   '("my-2" "font-mono" "text-sm" "text-green-900")))
+   '("my-2" "font-mono" "text-sm" "text-green-900") " "))
 
 (define h1/class
   (string-join
-   '("my-2" "font-mono" "text-3xl" "text-black-800")))
+   '("my-2" "font-mono" "text-3xl" "text-black-800") " "))
 
 (define h2/class
   (string-join
-   '("my-2" "font-mono" "text-xl" "uppercase" "text-green-800")))
+   '("my-2" "font-mono" "text-2xl" "uppercase" "text-green-800") " "))
+
+(define h4/class
+  (string-join
+   '("text-xl" "font-bold uppercase") " "))
