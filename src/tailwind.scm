@@ -24,35 +24,43 @@
              (ice-9 iconv)
              (ice-9 futures))
 
-(define hr/class
+(define hr/tailwind
   (string-join
-   '("my-6" "border-t-2" "border-t-stone-300") " "))
+   '("my-4" "border-t-2" "border-t-stone-200") " "))
 
 
-(define p/class
+(define p/tailwind
   (string-join
-   '("my-4" "font-mono" "text-md" "text-black-800" "max-w-prose") " "))
+   '("my-4" "font-mono" "text-lg" "text-black-800" "max-w-prose") " "))
 
-(define bullet/class
+(define bullet/tailwind
   (string-join
-   '("my-3" "ml-4" "font-mono" "text-md" "text-black-700" "max-w-prose") " "))
+   '("my-2" "ml-4" "font-mono" "text-lg" "text-black-700" "max-w-prose") " "))
 
-(define small/class
+(define small/tailwind
   (string-join
    '("my-2" "font-mono" "text-sm" "text-black-600") " "))
 
-(define small-a/class
+(define address/tailwind
   (string-join
-   '("my-2" "font-mono" "text-sm" "text-green-900") " "))
+   '("font-mono" "text-lg" "text-black-800") " "))
 
-(define h1/class
+(define small-a/tailwind
   (string-join
-   '("my-2" "font-mono" "text-3xl" "text-black-800") " "))
+   '("my-2" "font-mono" "text-base" "text-green-900") " "))
 
-(define h2/class
+(define h1/tailwind
   (string-join
-   '("my-2" "font-mono" "text-2xl" "uppercase" "text-green-800") " "))
+   '("my-3" "font-mono" "text-3xl" "text-black-800") " "))
 
-(define h4/class
+(define h2/tailwind
   (string-join
-   '("text-xl" "font-bold uppercase") " "))
+   '("my-3" "font-mono" "text-2xl" "uppercase" "text-green-800") " "))
+
+(define h4/tailwind
+  (string-join
+   '("my-2" "text-2xl" "font-bold uppercase") " "))
+
+(define iter-vitae-display-name/tailwind
+  (string-join
+   '("my-3" "font-mono" "text-4xl" "text-black-800" "font-bold") " "))
