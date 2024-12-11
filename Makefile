@@ -26,7 +26,7 @@ define persona
 endef
 
 serve:
-	darkhttpd ./public --port 50011
+	darkhttpd ./public --port 50023
 
 persona-joe-nl:
 	$(call persona,"joe","nl")
