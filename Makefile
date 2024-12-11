@@ -25,6 +25,9 @@ define persona
 	@printf "\n\nall tasks completed\n\n"
 endef
 
+serve:
+	darkhttpd ./public --port 50011
+
 persona-joe-nl:
 	$(call persona,"joe","nl")
 persona-joe-en:
@@ -33,3 +36,12 @@ persona-manon-nl:
 	$(call persona,"manon","nl")
 persona-manon-en:
 	$(call persona,"manon","en")
+
+dev:
+	watchexec -i "dist/**" -r -e scm,css,js -- "make persona-joe-nl && make serve"
+
+
+deploy:
+	make persona-joe-en
+	rm -rf /srv/http/jointhefreeworld.org/cv
+	cp -rf public /srv/http/jointhefreeworld.org/cv
