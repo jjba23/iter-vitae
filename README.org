@@ -7,7 +7,7 @@ Iter Vitae is a free software project that aims to make it easy and maintainable
 
 Everyone has the right to create a professional-looking Curriculum Vitae, using free software, without the constraints of proprietary software, lengthy setup processes, or a lack of freedom to modify layouts.
 
-Traditional word processors like Word or LibreOffice can be cumbersome when trying to create a custom CV.
+Traditional word processors like LibreOffice or similar can be cumbersome when trying to create a custom CV.
 
 Iter Vitae offers an alternative by embracing the spirit of hacking and freedom, enabling you to customize every aspect of your CV.
 
