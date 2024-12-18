@@ -50,6 +50,8 @@ More flexible and configurable running mechanisms are in the making, but for now
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
 
+-----
+
 ** Project Management
 
 *** ⚙️ Work in Progress
