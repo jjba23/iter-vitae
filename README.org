@@ -50,13 +50,30 @@ More flexible and configurable running mechanisms are in the making, but for now
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
 
+** Project Management
 
-** Bonus: Hacking with Emacs
+*** ⚙️ Work in Progress
 
-Want to see how I like to hack on this project? Here's an image showing my Emacs setup as I work on Iter Vitae:
+**** WIP add spoken/read/written language proficiency table, and allow also a simple version of language proficiency when people simply wanna list 1/2 langs.
 
-The development of Iter Vitae is optimized for the use of Emacs, providing a fast, efficient environment for editing and testing Guile Scheme code.
+*** 📓 Backlog
 
-If you're a fellow Emacs user, you’ll feel right at home.
+**** TODO submit project to the GNU project.
 
-[[file:resources/img/2024-12-10T16:44:25,791277181+01:00.png]]
+**** TODO make directories configurable so that iter-vitae can be installed to a system, and read personas from any directory the user wants.
+
+**** TODO implement ef-cyprus, ef-bio and other color schemes
+
+**** TODO implement support for other font types
+
+**** TODO create CLI wizard that will automatically generate a simple Guile Scheme code "persona" for a user configuration.
+
+**** TODO create Guix channel for "trunk" branch, and submit project to Guix packages.
+
+*** ✅ Work done
+
+**** DONE get a proof-of-concept good looking theme shipped and gather feedback
+CLOSED: [2024-12-18 wo 22:25]
+
+**** DONE define a sane and flexible data model for personas
+CLOSED: [2024-12-18 wo 22:25]
