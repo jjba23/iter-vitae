@@ -25,6 +25,7 @@ Work with a sane and flexible multi-lingual compatible data model. The tool is e
 
 Remember that with Guile Scheme, and the Lisp super-powers, everything is hackable and modifyable at any moment, giving you ultimate control and power.
 
+-----
 
 ** Showcase
 
@@ -49,6 +50,20 @@ The only dependencies currently are Guile Scheme (3.0 or newer), the built-in SX
 More flexible and configurable running mechanisms are in the making, but for now some helpers are defined like ~make persona-joe-en~.
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
+
+-----
+
+** Licensing
+
+All of Iter Vitae is released under the terms of the GNU General Public License v3 or newer. We strive to protect your freedoms as user and developer.
+
+However, this tool also uses other code, resources and libraries which vary in licensing. This includes:
+
+- Guile Scheme (GPL v3+)
+- GNU Make (GPL v3+)
+- Monaspace fonts (OFL v1.1+)
+- TailwindCSS (MIT)
+  
 
 -----
 
