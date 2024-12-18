@@ -45,3 +45,5 @@ deploy:
 	make persona-joe-en
 	rm -rf /srv/http/jointhefreeworld.org/cv
 	cp -rf public /srv/http/jointhefreeworld.org/cv
+fmt:
+	find . -maxdepth 2 -name "*.scm" -type f -exec guix style -f {} \;

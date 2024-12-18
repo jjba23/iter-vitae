@@ -21,7 +21,8 @@
 ;;
 ;; `((all . "Josep Bigorra"))
 ;;
-(define iter-vitae-display-name `())
+(define iter-vitae-display-name
+  `())
 
 ;; Primary job title of persona
 ;;
@@ -29,7 +30,8 @@
 ;;
 ;; `((en . "Software Engineer") (nl . "..."))
 ;;
-(define iter-vitae-job-title `())
+(define iter-vitae-job-title
+  `())
 
 ;; Contact details of persona
 ;;
@@ -38,7 +40,8 @@
 ;; `((emails . ("someone@example.com"))
 ;;   (phone-numbers . ("+351 123 456 789")))
 ;;
-(define iter-vitae-personal-contact `())
+(define iter-vitae-personal-contact
+  `())
 
 ;; Personal links of persona
 ;;
@@ -48,7 +51,8 @@
 ;;   (code . ("codeberg.org/jjba23"))
 ;;   (linkedin . ("linkedin.com/in/josepjba")))
 ;;
-(define iter-vitae-personal-links `())
+(define iter-vitae-personal-links
+  `())
 
 ;; Address lines of persona
 ;;
@@ -61,7 +65,8 @@
 ;; `(((all . "1441KH Purmerend"))
 ;;   ((all . "Netherlands")))
 ;;
-(define iter-vitae-address-lines `())
+(define iter-vitae-address-lines
+  `())
 
 ;; Driver license details of persona
 ;;
@@ -69,7 +74,8 @@
 ;;
 ;; `(((all . "B driver's license, vehicles up to 3,5t")))
 ;;
-(define iter-vitae-driver-licenses `())
+(define iter-vitae-driver-licenses
+  `())
 
 ;; Interests and hobbies of persona
 ;;
@@ -78,7 +84,8 @@
 ;; `(((en . "I love playing classical and electric guitar.")
 ;;    (nl . "...")))
 ;;
-(define iter-vitae-interests-hobbies `())
+(define iter-vitae-interests-hobbies
+  `())
 
 ;; Language skills of persona
 ;;
@@ -98,7 +105,8 @@
 ;;                          (speaking . 3)
 ;;                          (writing . 2))))))
 ;;
-(define iter-vitae-languages `())
+(define iter-vitae-languages
+  `())
 
 ;; Education and certifications of persona
 ;;
@@ -116,19 +124,26 @@
 
 ;;    )))
 ;;
-(define iter-vitae-education `())
+(define iter-vitae-education
+  `())
 
 ;; Document titles of the curriculum vitae
 ;;
 (define iter-vitae-titles
-  `((education . ((en . "Education") (nl . "Opleiding")))
-    (driver-license . ((en . "Driving") (nl . "Rijbewijs")))
-    (interests-hobbies . ((en . "My free time") (nl . "Mijn vrije tijd")))
-    (language . ((en . "Languages") (nl . "Taalvaardigheid")))
-    (my-links . ((en . "Me on the Internet") (nl . "Ik op Internet")))
-    (short-intro . ((en . "Who am I ?") (nl . "Wie ben ik ?")))
-    (work-experience . ((en . "Work experience") (nl . "Werkervaring")))
-    ))
+  `((education (en . "Education")
+               (nl . "Opleiding"))
+    (driver-license (en . "Driving")
+                    (nl . "Rijbewijs"))
+    (interests-hobbies (en . "My free time")
+                       (nl . "Mijn vrije tijd"))
+    (language (en . "Languages")
+              (nl . "Taalvaardigheid"))
+    (my-links (en . "Me on the Internet")
+              (nl . "Ik op Internet"))
+    (short-intro (en . "Who am I ?")
+                 (nl . "Wie ben ik ?"))
+    (work-experience (en . "Work experience")
+                     (nl . "Werkervaring"))))
 
 ;; Short introduction about persona
 ;;
@@ -137,7 +152,8 @@
 ;; `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
 ;;    (nl . "...")))
 ;;
-(define iter-vitae-short-intro `())
+(define iter-vitae-short-intro
+  `())
 
 ;; Jobs and internships of persona
 ;;
@@ -154,18 +170,21 @@
 ;;                  (nl . "..."))
 ;;                 ))))
 ;;
-(define iter-vitae-jobs `())
+(define iter-vitae-jobs
+  `())
 
 ;; Main font family for the curriculum vitae
 ;; choose between:
 ;;
 ;; monaspace-neon
 ;;
-(define iter-vitae-font 'monaspace-neon)
+(define iter-vitae-font
+  'monaspace-neon)
 
 ;; Palette to be used for the curriculum vitae
 ;; choose between:
 ;;
 ;; ef-cyprus
 ;;
-(define iter-vitae-palette 'ef-cyprus)
+(define iter-vitae-palette
+  'ef-cyprus)
