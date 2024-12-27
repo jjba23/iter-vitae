@@ -87,6 +87,10 @@ However, this tool also uses other code, resources and libraries which vary in l
 
 **** TODO create Guix channel for "trunk" branch, and submit project to Guix packages.
 
+**** TODO use gettext to internationalize CLI messages and wizards
+
+**** TODO Move internships to Education
+
 *** ✅ Work done
 
 **** DONE get a proof-of-concept good looking theme shipped and gather feedback
