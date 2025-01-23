@@ -71,6 +71,20 @@
                      (speaking . 4)
                      (writing . 4)))))
 
+(define joe-internship-liderlink
+  `((name (all . "Liderlink Business Solutions"))
+    (location (all . "Parchal, Portugal"))
+    (position (en . "Back-end Developer internship")
+              (nl . "Back-end Ontwikkelaar stage"))
+    (time (en . "February 2019 => July 2019")
+          (nl . "Februari 2019 => Juli 2019"))
+    (experience ((en . "Experience with PHP and MySQL, CRUD operations, in several real-estate, hotel and personnel management software.")
+                 (nl . "Ervaring met PHP en MySQL, CRUD-bewerkingen, in verschillende software voor vastgoed-, hotel- en personeelsbeheer."))
+                ((en . "Client-side scripting with JavaScript and jQuery in combination with server-side templates.")
+                 (nl . "Client-side scripting met JavaScript en jQuery in combinatie met server-side templates."))
+                ((en . "Android development, Ubuntu server maintenance.")
+                 (nl . "Android-ontwikkeling, Ubuntu-server onderhoud.")))))
+
 (define iter-vitae-education
   `(((name (all . "Leading Self"))
      (location (en . "Maarssen, The Netherlands")
@@ -83,6 +97,7 @@
                   (nl . "Nam een cursus over leiderschap, relatie met collega's en goede manieren om samen te werken en meer empathie te creeren op de werkplaats.")))
 
      )
+    ,joe-internship-liderlink
     ((name (all . "Universidade do Algarve"))
      (location (all . "Faro, Portugal"))
      (position (en . "IT Associate's degree")
@@ -102,20 +117,6 @@
      (nl . "Ik ben in 2019 naar Nederland verhuisd, en ik was in 1996 geboren in Barcelona, Spanje."))
     ((en . "You could also describe me as a Free Software Advocate, an Emacs user, Guix and Nix enthusiast, Haskell, Lisp, Scala enjoyer, functional programmer, and perfectionist.")
      (nl . "Je zou mij ook kunnen omschrijven met: Free Software Advocate, GNU Emacs gebruiker, Guix en Nix enthusiast, Haskell, Lisp, Scala genieter, functioneel programmeur, en perfectionistisch."))))
-
-(define joe-job-liderlink
-  `((name (all . "Liderlink Business Solutions"))
-    (location (all . "Parchal, Portugal"))
-    (position (en . "Back-end Developer internship")
-              (nl . "Back-end Ontwikkelaar stage"))
-    (time (en . "February 2019 => July 2019")
-          (nl . "Februari 2019 => Juli 2019"))
-    (experience ((en . "Experience with PHP and MySQL, CRUD operations, in several real-estate, hotel and personnel management software.")
-                 (nl . "Ervaring met PHP en MySQL, CRUD-bewerkingen, in verschillende software voor vastgoed-, hotel- en personeelsbeheer."))
-                ((en . "Client-side scripting with JavaScript and jQuery in combination with server-side templates.")
-                 (nl . "Client-side scripting met JavaScript en jQuery in combinatie met server-side templates."))
-                ((en . "Android development, Ubuntu server maintenance.")
-                 (nl . "Android-ontwikkeling, Ubuntu-server onderhoud.")))))
 
 (define joe-job-pro-warehouse
   `((name (all . "Pro Warehouse B.V."))
@@ -199,7 +200,7 @@
 
 (define iter-vitae-jobs
   (list joe-job-vandebron joe-job-zorgdomein joe-job-ikea
-        joe-job-pro-warehouse joe-job-liderlink))
+        joe-job-pro-warehouse))
 
 (define iter-vitae-font
   'monaspace-neon)

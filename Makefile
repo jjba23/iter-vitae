@@ -18,7 +18,7 @@
 define persona
 	rm -rfv dist
 	mkdir dist
-	GUILE_AUTOCOMPILE=0 guile main.scm --locale $(2) --persona $(1)
+	guile --fresh-auto-compile main.scm --locale $(2) --persona $(1)
 	cp -rfv resources/css dist/
 	cp -rfv resources/js dist/
 	cp -rfv resources/woff dist/
