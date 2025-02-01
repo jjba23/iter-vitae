@@ -47,8 +47,8 @@
   (string-join '("my-3" "font-sans" "text-3xl" "text-stone-800") " "))
 
 (define h2/tailwind
-  (string-join '("my-3" "font-sans" "font-bold" "text-2xl" "uppercase" "text-green-800")
-               " "))
+  (string-join '("my-3" "font-sans" "font-bold" "text-2xl" "uppercase"
+                 "text-green-800") " "))
 
 (define h4/tailwind
   (string-join '("my-2" "text-2xl" "font-bold uppercase") " "))

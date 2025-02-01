@@ -157,7 +157,8 @@
                     (span (@ (class "")) "⤷")
                     (div (div (@ (class
                                   "flex flex-row flex-wrap gap-3 items-center"))
-                              (h5 (@ (class "text-xl text-stone-700 font-medium"))
+                              (h5 (@ (class
+                                      "text-xl text-stone-700 font-medium"))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'name)
                                                          locale))
@@ -186,7 +187,8 @@
                     (span (@ (class "")) "⤷")
                     (div (div (@ (class
                                   "flex flex-row flex-wrap gap-3 items-center"))
-                              (h5 (@ (class "text-xl text-stone-700 font-medium"))
+                              (h5 (@ (class
+                                      "text-xl text-stone-700 font-medium"))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'name)
                                                          locale))

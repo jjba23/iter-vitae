@@ -46,4 +46,4 @@ deploy:
 	rm -rfv /srv/http/jointhefreeworld.org/cv
 	cp -rfv dist /srv/http/jointhefreeworld.org/cv
 fmt:
-	find . -maxdepth 4 -name "*.scm" -type f -exec guix style -f {} \;
+	find . -maxdepth 6 -name "*.scm" -type f -exec guix style -f {} \;
