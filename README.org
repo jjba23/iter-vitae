@@ -15,6 +15,7 @@ With this tool, you can define the content, layout, and presentation of your CV 
 
 The tool separates data from its presentation (following the principles of the Model-View-Controller or MVC architecture), so you can focus on the data itself without worrying about formatting or styling.
 
+
 *** Build a Curriculum Vitae for your next 40 years
 
 This tool isn't just about creating a one-off CV — it's designed for long-term use, so you can update and evolve your resume over the years. The software supports multilingual content and is fully extensible, allowing you to add new data entries, customize the design, and even support additional languages.
