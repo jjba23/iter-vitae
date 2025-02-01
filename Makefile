@@ -18,10 +18,10 @@
 define persona
 	rm -rfv dist
 	mkdir dist
-	guile --fresh-auto-compile main.scm --locale $(2) --persona $(1)
+	guix shell -m manifest.scm -- guile --fresh-auto-compile main.scm --locale $(2) --persona $(1)
 	cp -rfv resources/css dist/
 	cp -rfv resources/js dist/
-	cp -rfv resources/woff dist/
+	cp -rfv resources/ttf dist/
 	@printf "\n\nall tasks completed\n\n"
 endef
 

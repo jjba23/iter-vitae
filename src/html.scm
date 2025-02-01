@@ -58,14 +58,14 @@
          ,(render-iter-vitae-blog-link #:locale locale)
          ,(render-iter-vitae-code-link #:locale locale)
          ,(render-iter-vitae-linked-in-link #:locale locale))
-    (div (@ (class "block text-center font-mono"))
+    (div (@ (class "block text-center font-sans"))
          (div (@ (class "flex flex-row gap-3 flex-wrap justify-center"))
               (small (@ (class ,small/tailwind))
-               "this Curriculum Vitae was rendered with Guile Scheme code"))
+               "this Curriculum Vitae was rendered with Lisp (Guile Scheme) code"))
          (div (@ (class
                   "flex flex-row gap-3 flex-wrap justify-center items-center"))
               (small (@ (class ,small/tailwind)) "find the source code here:")
-              (a (@ (class "text-green-900 text-sm font-mono")
+              (a (@ (class "text-green-900 text-sm font-sans")
                     (href "https://codeberg.org/jjba23/iter-vitae"))
                  "codeberg.org/jjba23/iter-vitae")))))
 
@@ -157,12 +157,12 @@
                     (span (@ (class "")) "⤷")
                     (div (div (@ (class
                                   "flex flex-row flex-wrap gap-3 items-center"))
-                              (h5 (@ (class "text-xl font-bold"))
+                              (h5 (@ (class "text-xl text-stone-700 font-medium"))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'name)
                                                          locale))
                               (span "-")
-                              (h5 (@ (class "text-lg font-bold text-stone-600"))
+                              (h5 (@ (class "text-xl text-stone-900 font-bold"))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'position)
                                                          locale)))
@@ -186,12 +186,12 @@
                     (span (@ (class "")) "⤷")
                     (div (div (@ (class
                                   "flex flex-row flex-wrap gap-3 items-center"))
-                              (h5 (@ (class "text-xl font-bold"))
+                              (h5 (@ (class "text-xl text-stone-700 font-medium"))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'name)
                                                          locale))
                               (span "-")
-                              (h5 (@ (class "text-lg font-bold text-stone-800"))
+                              (h5 (@ (class "text-xl text-stone-900 font-bold"))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'position)
                                                          locale)))
