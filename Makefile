@@ -43,7 +43,7 @@ dev:
 
 deploy:
 	make persona-joe-en
-	rm -rfv /srv/http/jointhefreeworld.org/cv
-	cp -rfv dist /srv/http/jointhefreeworld.org/cv
+	rm -rfv /srv/http/jointhefreeworld.org/joe-cv
+	cp -rfv dist /srv/http/jointhefreeworld.org/joe-cv
 fmt:
 	find . -maxdepth 6 -name "*.scm" -type f -exec guix style -f {} \;
