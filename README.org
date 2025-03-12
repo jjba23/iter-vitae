@@ -55,7 +55,7 @@ A Guix channel is also offered, to use as library, and to allow installing to Gu
   (branch "trunk")
   (introduction
    (make-channel-introduction
-    "81f974561ce9731239f2c42a587cb8bab49c8931"
+    "8bc75ce9577741282c0daf21d13aa4287663fe3f"
     (openpgp-fingerprint
      "83BC 6E1C 8726 B8C2 97F8 D16E 24F4 6738 CE11 4AF6"))))
 #+end_src
