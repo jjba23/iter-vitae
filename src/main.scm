@@ -15,13 +15,20 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(use-modules (ice-9 getopt-long))
+;; load modules
+(load "./utils.scm")
+(load "./tailwind.scm")
+(load "./html.scm")
 
-(load "./src/utils.scm")
-(load "./src/tailwind.scm")
-(load "./src/html.scm")
-;; load base iter-vitae configuration
-(load "./src/iter-vitae.scm")
+
+(define-module (iter-vitae main)
+  #:declarative? #f
+  #:use-module (ice-9 getopt-long)
+  #:use-module (iter-vitae utils)
+  #:use-module (iter-vitae html)
+  #:use-module (iter-vitae tailwind))
+
+
 
 (define (display-separator)
   (display "
@@ -37,12 +44,40 @@
   (display-separator)
   (newline)
 
+  ;; load base iter-vitae configuration
+  (load "./iter-vitae.scm")
+
   ;; choose person to generate curriculum vitae for
-  (load (format #f "./populus/~a.scm" persona))
+  (load (format #f "../populus/~a.scm" persona))
+
+  (define p
+    `((display-name . ,iter-vitae-display-name)
+      (job-title . ,iter-vitae-job-title)
+      (personal-contact . ,iter-vitae-personal-contact)
+      (personal-links . ,iter-vitae-personal-links)
+      (address-lines . ,iter-vitae-address-lines)
+      (driver-licenses . ,iter-vitae-driver-licenses)
+      (interests-hobbies . ,iter-vitae-interests-hobbies)
+      (languages . ,iter-vitae-languages)
+      (education . ,iter-vitae-education)
+      (titles . ,iter-vitae-titles)
+      (short-intro . ,iter-vitae-short-intro)
+      (jobs . ,iter-vitae-jobs)
+      (font . ,iter-vitae-font)
+      (palette . ,iter-vitae-palette)))
+
+  (write (assq-ref (assq-ref p 'personal-links) 'blog))
+
+  (display-separator)
+  (display "about to process persona:")
+  (newline)
+  (write p)
+  (newline)
 
   (with-output-to-file "dist/index.html"
     (lambda ()
-      (display (iter-vitae-curriculum-page #:locale locale)))))
+      (display (iter-vitae-curriculum-page #:locale locale
+                                           #:persona p)))))
 
 (define (main args)
   (display args)

@@ -18,7 +18,7 @@
 define persona
 	rm -rfv dist
 	mkdir dist
-	guix shell -m manifest.scm -- guile --fresh-auto-compile main.scm --locale $(2) --persona $(1)
+	guix shell -m manifest.scm -- guile --fresh-auto-compile src/main.scm --locale $(2) --persona $(1)
 	cp -rfv resources/css dist/
 	cp -rfv resources/js dist/
 	cp -rfv resources/ttf dist/
