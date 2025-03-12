@@ -18,10 +18,10 @@
 define persona
 	rm -rfv dist
 	mkdir dist
-	GUILE_AUTOCOMPILE=0 guile main.scm --locale $(2) --persona $(1)
+	guix shell -m manifest.scm -- guile --fresh-auto-compile main.scm --locale $(2) --persona $(1)
 	cp -rfv resources/css dist/
 	cp -rfv resources/js dist/
-	cp -rfv resources/woff dist/
+	cp -rfv resources/ttf dist/
 	@printf "\n\nall tasks completed\n\n"
 endef
 
@@ -43,7 +43,7 @@ dev:
 
 deploy:
 	make persona-joe-en
-	rm -rf /srv/http/jointhefreeworld.org/cv
-	cp -rf public /srv/http/jointhefreeworld.org/cv
+	rm -rfv /srv/http/jointhefreeworld.org/joe-cv
+	cp -rfv dist /srv/http/jointhefreeworld.org/joe-cv
 fmt:
-	find . -maxdepth 4 -name "*.scm" -type f -exec guix style -f {} \;
+	find . -maxdepth 6 -name "*.scm" -type f -exec guix style -f {} \;

@@ -15,6 +15,7 @@ With this tool, you can define the content, layout, and presentation of your CV 
 
 The tool separates data from its presentation (following the principles of the Model-View-Controller or MVC architecture), so you can focus on the data itself without worrying about formatting or styling.
 
+
 *** Build a Curriculum Vitae for your next 40 years
 
 This tool isn't just about creating a one-off CV — it's designed for long-term use, so you can update and evolve your resume over the years. The software supports multilingual content and is fully extensible, allowing you to add new data entries, customize the design, and even support additional languages.
@@ -29,11 +30,9 @@ Remember that with Guile Scheme, and the Lisp super-powers, everything is hackab
 
 ** Showcase
 
-[[file:resources/img/2024-12-18.png]]
-
 You can see an example of the most up-to-date version of my CV generated with Iter Vitae by visiting my website:
 
-[[https://jointhefreeworld.org/cv/][https://jointhefreeworld.org/cv/]]
+[[https://jointhefreeworld.org/cv/][https://jointhefreeworld.org/joe-cv/]]
 
 Alternatively, download a sample PDF of my generated /Curriculum Vitae/, whcih could potentially be a bit more outdated:
 
@@ -86,6 +85,10 @@ However, this tool also uses other code, resources and libraries which vary in l
 **** TODO create CLI wizard that will automatically generate a simple Guile Scheme code "persona" for a user configuration.
 
 **** TODO create Guix channel for "trunk" branch, and submit project to Guix packages.
+
+**** TODO use gettext to internationalize CLI messages and wizards
+
+**** TODO Move internships to Education
 
 *** ✅ Work done
 

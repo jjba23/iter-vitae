@@ -1,1 +1,1 @@
-(specifications->manifest '("guile@3.0" "make"))
+(specifications->manifest '("guile-next" "make"))
