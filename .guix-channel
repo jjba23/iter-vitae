@@ -1,5 +1,4 @@
 (channel
   (version 0)
   (url "https://codeberg.org/jjba23/iter-vitae.git")
-  (directory "src")
-  (keyring-reference "keyring"))
+  (directory "src"))
