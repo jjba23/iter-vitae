@@ -40,6 +40,27 @@ Alternatively, download a sample PDF of my generated /Curriculum Vitae/, whcih c
 
 This sample demonstrates the capabilities of the tool in generating clean, readable, and professional-looking resumes.
 
+** Installing
+
+Iter vitae is quite minimalistic, and has very few dependencies.
+
+All you really need is something that can run Guile Scheme (3.0+)
+
+A Guix channel is also offered, to use as library, and to allow installing to Guix systems:
+
+#+begin_src scheme
+  (channel
+  (name 'iter-vitae)
+  (url "https://codeberg.org/jjba23/iter-vitae")
+  (branch "trunk")
+  (introduction
+   (make-channel-introduction
+    ""
+    (openpgp-fingerprint
+     "83BC 6E1C 8726 B8C2 97F8 D16E 24F4 6738 CE11 4AF6"))))
+#+end_src
+
+
 ** Running
 
 For detailed instructions on building and running the tool, refer to the Makefile.
@@ -66,34 +87,3 @@ However, this tool also uses other code, resources and libraries which vary in l
 
 -----
 
-** Project Management
-
-*** ⚙️ Work in Progress
-
-**** WIP add spoken/read/written language proficiency table, and allow also a simple version of language proficiency when people simply wanna list 1/2 langs.
-
-*** 📓 Backlog
-
-**** TODO submit project to the GNU project.
-
-**** TODO make directories configurable so that iter-vitae can be installed to a system, and read personas from any directory the user wants.
-
-**** TODO implement ef-cyprus, ef-bio and other color schemes
-
-**** TODO implement support for other font types
-
-**** TODO create CLI wizard that will automatically generate a simple Guile Scheme code "persona" for a user configuration.
-
-**** TODO create Guix channel for "trunk" branch, and submit project to Guix packages.
-
-**** TODO use gettext to internationalize CLI messages and wizards
-
-**** TODO Move internships to Education
-
-*** ✅ Work done
-
-**** DONE get a proof-of-concept good looking theme shipped and gather feedback
-CLOSED: [2024-12-18 wo 22:25]
-
-**** DONE define a sane and flexible data model for personas
-CLOSED: [2024-12-18 wo 22:25]
