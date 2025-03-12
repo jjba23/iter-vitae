@@ -16,9 +16,9 @@
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 ;; load modules
-(load "./utils.scm")
-(load "./tailwind.scm")
-(load "./html.scm")
+(load "./iter-vitae/utils.scm")
+(load "./iter-vitae/tailwind.scm")
+(load "./iter-vitae/html.scm")
 
 
 (define-module (iter-vitae main)
@@ -45,7 +45,7 @@
   (newline)
 
   ;; load base iter-vitae configuration
-  (load "./iter-vitae.scm")
+  (load "./iter-vitae/defaults.scm")
 
   ;; choose person to generate curriculum vitae for
   (load (format #f "../populus/~a.scm" persona))
