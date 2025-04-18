@@ -1,6 +1,6 @@
 ;;; Iter Vitae 
 
-;; Copyright (C) 2024 Josep Jesus Bigorra Algaba
+;; Copyright © Josep Jesus Bigorra Algaba
 
 ;; iter-vitae is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -62,15 +62,15 @@
   (define* (iter-vitae-page-footer #:key locale)
     `((hr (@ (class ,hr/tailwind)))
       (div (@ (class "flex flex-row flex-wrap gap-2 justify-evenly"))
-           ,(render-iter-vitae-blog-link #:locale locale)
-           ,(render-iter-vitae-code-link #:locale locale)
-           ,(render-iter-vitae-linked-in-link #:locale locale))
+           ,(render-iter-vitae-blog-link #:locale locale #:persona persona)
+           ,(render-iter-vitae-code-link #:locale locale #:persona persona)
+           ,(render-iter-vitae-linked-in-link #:locale locale #:persona persona))
       (div (@ (class "block text-center font-sans"))
            (div (@ (class "flex flex-row gap-3 flex-wrap justify-center"))
                 (small (@ (class ,small/tailwind))
-                 "this Curriculum Vitae was rendered with Lisp (Guile Scheme) code"))
+                       "this Curriculum Vitae was rendered with Lisp (Guile Scheme) code"))
            (div (@ (class
-                    "flex flex-row gap-3 flex-wrap justify-center items-center"))
+                     "flex flex-row gap-3 flex-wrap justify-center items-center"))
                 (small (@ (class ,small/tailwind))
                        "find the source code here:")
                 (a (@ (class "text-green-900 text-sm font-sans")

@@ -1,6 +1,6 @@
 ;;; Iter Vitae 
 
-;; Copyright (C) 2024 Josep Jesus Bigorra Algaba
+;; Copyright © Josep Jesus Bigorra Algaba
 
 ;; iter-vitae is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
