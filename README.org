@@ -80,7 +80,7 @@ However, this tool also uses other code, resources and libraries which vary in l
 
 - Guile Scheme (GPL v3+)
 - GNU Make (GPL v3+)
-- Monaspace fonts (OFL v1.1+)
+- Adwaita fonts (OFL v1.1+)
 - TailwindCSS (MIT)
   
 
