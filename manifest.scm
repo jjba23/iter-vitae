@@ -15,4 +15,4 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(specifications->manifest '("guile-next" "make"))
+(specifications->manifest '("guile-next" "make" "darkhttpd"))

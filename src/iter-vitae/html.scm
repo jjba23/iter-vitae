@@ -16,6 +16,7 @@
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 (define-module (iter-vitae html)
+  #:declarative? #t
   #:use-module (web server)
   #:use-module (web request)
   #:use-module (web response)

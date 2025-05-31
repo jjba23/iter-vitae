@@ -15,19 +15,12 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-;; load modules
-(load "./utils.scm")
-(load "./tailwind.scm")
-(load "./html.scm")
-
-
 (define-module (iter-vitae main)
-  #:declarative? #f
+  #:declarative? #t
   #:use-module (ice-9 getopt-long)
   #:use-module (iter-vitae utils)
   #:use-module (iter-vitae html)
   #:use-module (iter-vitae tailwind))
-
 
 (define (display-separator)
   (display "
@@ -50,22 +43,24 @@
   (load (format #f "../../populus/~a.scm" persona))
 
   (define p
-    `((display-name . ,iter-vitae-display-name)
-      (job-title . ,iter-vitae-job-title)
-      (personal-contact . ,iter-vitae-personal-contact)
-      (personal-links . ,iter-vitae-personal-links)
-      (address-lines . ,iter-vitae-address-lines)
-      (driver-licenses . ,iter-vitae-driver-licenses)
-      (interests-hobbies . ,iter-vitae-interests-hobbies)
-      (languages . ,iter-vitae-languages)
-      (education . ,iter-vitae-education)
-      (titles . ,iter-vitae-titles)
-      (short-intro . ,iter-vitae-short-intro)
-      (jobs . ,iter-vitae-jobs)
-      (font . ,iter-vitae-font)
-      (palette . ,iter-vitae-palette)))
+    `((display-name unquote iter-vitae-display-name)
+      (job-title unquote iter-vitae-job-title)
+      (personal-contact unquote iter-vitae-personal-contact)
+      (personal-links unquote iter-vitae-personal-links)
+      (address-lines unquote iter-vitae-address-lines)
+      (driver-licenses unquote iter-vitae-driver-licenses)
+      (interests-hobbies unquote iter-vitae-interests-hobbies)
+      (languages unquote iter-vitae-languages)
+      (education unquote iter-vitae-education)
+      (titles unquote iter-vitae-titles)
+      (short-intro unquote iter-vitae-short-intro)
+      (jobs unquote iter-vitae-jobs)
+      (font unquote iter-vitae-font)
+      (palette unquote iter-vitae-palette)))
 
-  (write (assq-ref (assq-ref p 'personal-links) 'blog))
+  (write (assq-ref (assq-ref p
+                             'personal-links)
+                   'blog))
 
   (display-separator)
   (display "about to process persona:")
@@ -120,5 +115,4 @@
 ;; call main with command line arguments
 ;;
 (main (command-line))
-
 
