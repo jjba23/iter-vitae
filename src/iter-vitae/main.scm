@@ -26,7 +26,7 @@
 (define-syntax-rule (get-setting setting)
   "Get a setting for iter-vitae, either from persona or from default values."
   (let* ((default (module-variable (resolve-module '(iter-vitae defaults))
-                                   setting))         
+                                   setting))
          (user-override (module-variable (resolve-module '(iter-vitae persona))
                                          setting)))
     (catch #t
@@ -36,8 +36,6 @@
                  (variable-ref user-override)))
            (lambda (key . args)
              (variable-ref default)))))
-
-
 
 (define (display-separator)
   (display "
@@ -57,20 +55,34 @@
   (load persona-file)
 
   (define p
-    `((display-name unquote (get-setting 'display-name))
-      (job-title unquote (get-setting 'job-title))
-      (personal-contact unquote (get-setting 'personal-contact))
-      (personal-links unquote (get-setting 'personal-links))
-      (address-lines unquote (get-setting 'address-lines))
-      (driver-licenses unquote (get-setting 'driver-licenses))
-      (interests-hobbies unquote (get-setting 'interests-hobbies))
-      (languages unquote (get-setting 'languages))
-      (education unquote (get-setting 'education))
-      (titles unquote (get-setting 'titles))
-      (short-intro unquote (get-setting 'short-intro))
-      (jobs unquote (get-setting 'jobs))
-      (font unquote (get-setting 'font))
-      (palette unquote (get-setting 'palette))))
+    `((display-name unquote
+                    (get-setting 'display-name))
+      (job-title unquote
+                 (get-setting 'job-title))
+      (personal-contact unquote
+                        (get-setting 'personal-contact))
+      (personal-links unquote
+                      (get-setting 'personal-links))
+      (address-lines unquote
+                     (get-setting 'address-lines))
+      (driver-licenses unquote
+                       (get-setting 'driver-licenses))
+      (interests-hobbies unquote
+                         (get-setting 'interests-hobbies))
+      (languages unquote
+                 (get-setting 'languages))
+      (education unquote
+                 (get-setting 'education))
+      (titles unquote
+              (get-setting 'titles))
+      (short-intro unquote
+                   (get-setting 'short-intro))
+      (jobs unquote
+            (get-setting 'jobs))
+      (font unquote
+            (get-setting 'font))
+      (palette unquote
+               (get-setting 'palette))))
 
   (write (assq-ref (assq-ref p
                              'personal-links)
@@ -97,8 +109,8 @@
                         (help (single-char #\h)
                               (value #f))
                         (persona-file (single-char #\p)
-                                 (value #t)
-                                 (required? #t))))
+                                      (value #t)
+                                      (required? #t))))
          
          (options (getopt-long args option-spec))
 
@@ -107,7 +119,7 @@
          (version-wanted (option-ref options
                                      'version #f))
          (persona-file (option-ref options
-                                     'persona-file ""))
+                                   'persona-file ""))
          (locale-wanted (option-ref options
                                     'locale "en")))
     

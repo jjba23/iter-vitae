@@ -202,12 +202,12 @@
                          (p (@ (class "text-lg font-light mb-4"))
                             ,(assq-ref-all-or-lang (assq-ref job
                                                              'time) locale))
-                         (ul
-                          ,(map (lambda (ip)
-                                 `(li (@ (class ,bullet/tailwind)(style "list-style: circle"))
-                                     ,(assq-ref-all-or-lang ip locale)))
-                               (assq-ref job
-                                         'experience)))))))
+                         (ul ,(map (lambda (ip)
+                                     `(li (@ (class ,bullet/tailwind)
+                                             (style "list-style: circle"))
+                                          ,(assq-ref-all-or-lang ip locale)))
+                                   (assq-ref job
+                                             'experience)))))))
        (assq-ref persona
                  'jobs)))
 
@@ -235,12 +235,12 @@
                          (p (@ (class "text-lg font-light mb-4"))
                             ,(assq-ref-all-or-lang (assq-ref education
                                                              'time) locale))
-                         (ul 
-                          ,(map (lambda (ip)
-                                 `(li (@ (class ,bullet/tailwind)(style "list-style: circle"))
-                                     ,(assq-ref-all-or-lang ip locale)))
-                               (assq-ref education
-                                         'experience)))))))
+                         (ul ,(map (lambda (ip)
+                                     `(li (@ (class ,bullet/tailwind)
+                                             (style "list-style: circle"))
+                                          ,(assq-ref-all-or-lang ip locale)))
+                                   (assq-ref education
+                                             'experience)))))))
        (assq-ref persona
                  'education)))
 

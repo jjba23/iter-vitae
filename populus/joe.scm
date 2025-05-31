@@ -17,7 +17,8 @@
 
 (define-module (iter-vitae persona)
   #:declarative? #t
-  #:export (display-name job-title personal-contact
+  #:export (display-name job-title
+                         personal-contact
                          personal-links
                          address-lines
                          driver-licenses
