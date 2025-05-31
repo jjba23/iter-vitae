@@ -18,7 +18,8 @@
 define persona
 	rm -rfv dist
 	mkdir -p dist
-	guix shell -m manifest.scm -- guile -L ./src --fresh-auto-compile src/iter-vitae/main.scm --locale $(2) --persona $(1)
+	guix shell -m manifest.scm -- guile -L ./src --fresh-auto-compile src/iter-vitae/main.scm \
+		--locale $(2) --persona-file $(1)
 	cp -rfv resources/css dist/
 	cp -rfv resources/js dist/
 	cp -rfv resources/ttf dist/
@@ -29,13 +30,10 @@ serve:
 	darkhttpd ./dist --port 50023
 
 persona-joe-nl:
-	$(call persona,"joe","nl")
+	$(call persona,"$(realpath ./populus/joe.scm)","nl")
 persona-joe-en:
-	$(call persona,"joe","en")
-persona-manon-nl:
-	$(call persona,"manon","nl")
-persona-manon-en:
-	$(call persona,"manon","en")
+	$(call persona,"$(realpath ./populus/joe.scm)","en")
+
 
 dev:
 	watchexec -i "dist/**" -r -e scm,css,js -- "make persona-joe-nl && make serve"
@@ -47,3 +45,10 @@ deploy:
 	cp -rfv dist /srv/http/jointhefreeworld.org/joe-cv
 fmt:
 	find . -maxdepth 6 -name "*.scm" -type f -exec guix style -f {} \;
+
+# Development REPL
+repl:
+	guix shell -m manifest.scm -- \
+		guile \
+		-L ./src \
+		-c '((@ (ares server) run-nrepl-server))'

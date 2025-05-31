@@ -15,13 +15,28 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
+(define-module (iter-vitae defaults)
+  #:declarative? #t
+  #:export (display-name job-title personal-contact
+                         personal-links
+                         address-lines
+                         driver-licenses
+                         interests-hobbies
+                         languages
+                         education
+                         titles
+                         short-intro
+                         jobs
+                         font
+                         palette))
+
 ;; Full name of persona
 ;;
 ;; example:
 ;;
 ;; `((all . "Josep Bigorra"))
 ;;
-(define iter-vitae-display-name
+(define display-name
   `())
 
 ;; Primary job title of persona
@@ -30,7 +45,7 @@
 ;;
 ;; `((en . "Software Engineer") (nl . "..."))
 ;;
-(define iter-vitae-job-title
+(define job-title
   `())
 
 ;; Contact details of persona
@@ -40,7 +55,7 @@
 ;; `((emails . ("someone@example.com"))
 ;;   (phone-numbers . ("+351 123 456 789")))
 ;;
-(define iter-vitae-personal-contact
+(define personal-contact
   `())
 
 ;; Personal links of persona
@@ -51,7 +66,7 @@
 ;;   (code . ("codeberg.org/jjba23"))
 ;;   (linkedin . ("linkedin.com/in/josepjba")))
 ;;
-(define iter-vitae-personal-links
+(define personal-links
   `())
 
 ;; Address lines of persona
@@ -65,7 +80,7 @@
 ;; `(((all . "1441KH Purmerend"))
 ;;   ((all . "Netherlands")))
 ;;
-(define iter-vitae-address-lines
+(define address-lines
   `())
 
 ;; Driver license details of persona
@@ -74,7 +89,7 @@
 ;;
 ;; `(((all . "B driver's license, vehicles up to 3,5t")))
 ;;
-(define iter-vitae-driver-licenses
+(define driver-licenses
   `())
 
 ;; Interests and hobbies of persona
@@ -84,7 +99,7 @@
 ;; `(((en . "I love playing classical and electric guitar.")
 ;;    (nl . "...")))
 ;;
-(define iter-vitae-interests-hobbies
+(define interests-hobbies
   `())
 
 ;; Language skills of persona
@@ -105,7 +120,7 @@
 ;;                          (speaking . 3)
 ;;                          (writing . 2))))))
 ;;
-(define iter-vitae-languages
+(define languages
   `())
 
 ;; Education and certifications of persona
@@ -124,12 +139,12 @@
 
 ;;    )))
 ;;
-(define iter-vitae-education
+(define education
   `())
 
 ;; Document titles of the curriculum vitae
 ;;
-(define iter-vitae-titles
+(define titles
   `((education (en . "Education")
                (nl . "Opleiding"))
     (driver-license (en . "Driving")
@@ -152,7 +167,7 @@
 ;; `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
 ;;    (nl . "...")))
 ;;
-(define iter-vitae-short-intro
+(define short-intro
   `())
 
 ;; Jobs and internships of persona
@@ -170,7 +185,7 @@
 ;;                  (nl . "..."))
 ;;                 ))))
 ;;
-(define iter-vitae-jobs
+(define jobs
   `())
 
 ;; Main font family for the curriculum vitae
@@ -178,7 +193,7 @@
 ;;
 ;; monaspace-neon
 ;;
-(define iter-vitae-font
+(define font
   'monaspace-neon)
 
 ;; Palette to be used for the curriculum vitae
@@ -186,5 +201,5 @@
 ;;
 ;; ef-cyprus
 ;;
-(define iter-vitae-palette
+(define palette
   'ef-cyprus)

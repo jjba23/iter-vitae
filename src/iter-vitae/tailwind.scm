@@ -33,8 +33,8 @@
                " "))
 
 (define-public bullet/tailwind
-  (string-join '("my-2" "ml-4" "font-sans" "text-lg" "text-black-700"
-                 "max-w-prose") " "))
+  (string-join '("my-2" "ml-8" "font-sans" "text-lg" "text-black-700"
+                 "max-w-prose" ) " "))
 
 (define-public small/tailwind
   (string-join '("my-2" "font-sans" "text-sm" "text-black-600") " "))

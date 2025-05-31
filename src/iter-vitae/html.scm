@@ -202,11 +202,12 @@
                          (p (@ (class "text-lg font-light mb-4"))
                             ,(assq-ref-all-or-lang (assq-ref job
                                                              'time) locale))
-                         ,(map (lambda (ip)
-                                 `(p (@ (class ,bullet/tailwind))
+                         (ul
+                          ,(map (lambda (ip)
+                                 `(li (@ (class ,bullet/tailwind)(style "list-style: circle"))
                                      ,(assq-ref-all-or-lang ip locale)))
                                (assq-ref job
-                                         'experience))))))
+                                         'experience)))))))
        (assq-ref persona
                  'jobs)))
 
@@ -234,11 +235,12 @@
                          (p (@ (class "text-lg font-light mb-4"))
                             ,(assq-ref-all-or-lang (assq-ref education
                                                              'time) locale))
-                         ,(map (lambda (ip)
-                                 `(p (@ (class ,bullet/tailwind))
+                         (ul 
+                          ,(map (lambda (ip)
+                                 `(li (@ (class ,bullet/tailwind)(style "list-style: circle"))
                                      ,(assq-ref-all-or-lang ip locale)))
                                (assq-ref education
-                                         'experience))))))
+                                         'experience)))))))
        (assq-ref persona
                  'education)))
 

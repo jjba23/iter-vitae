@@ -15,28 +15,43 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(define iter-vitae-display-name
+(define-module (iter-vitae persona)
+  #:declarative? #t
+  #:export (display-name job-title personal-contact
+                         personal-links
+                         address-lines
+                         driver-licenses
+                         interests-hobbies
+                         languages
+                         education
+                         titles
+                         short-intro
+                         jobs
+                         font
+                         palette))
+
+(define display-name
   `((all . "Josep Bigorra")))
 
-(define iter-vitae-job-title
+(define job-title
   `((all . "Software Engineer")))
 
-(define iter-vitae-personal-contact
+(define personal-contact
   `((emails . "jjbigorra@gmail.com") (phone-numbers . "+31 639825138")))
 
-(define iter-vitae-personal-links
+(define personal-links
   `((blog . "jointhefreeworld.org") (code . "codeberg.org/jjba23")
     (linked-in . "linkedin.com/in/josepjba")))
 
-(define iter-vitae-address-lines
+(define address-lines
   `(((all . "1441KH Purmerend"))
     ((en . "The Netherlands") (nl . "Nederland"))))
 
-(define iter-vitae-driver-licenses
+(define driver-licenses
   `(((en . "B driver's license, vehicles up to 3,5t")
      (nl . "Rijbewijs B, voertuigen t/m 3,5t"))))
 
-(define iter-vitae-interests-hobbies
+(define interests-hobbies
   `(((en . "I like building and tweaking computers, blogging about my tech opinions and discoveries and playing strategy games sometimes.")
      (nl . "Ik bouw en speel graag met computers, ik heb een blog waar ik mijn meningen over technologie en andere uit, en soms speel ik strategie spelletjes."))
     ((en . "I love playing classical and electric guitar.")
@@ -44,7 +59,7 @@
     ((en . "You might also find me doing CrossFit, sanding furniture down, removing weeds from the garden, or improving my house.")
      (nl . "Ik ben ook te vinden in de CrossFit gym, meubels aan het schuren, onkruid weg aan het halen of mijn huis aan het verbeteren."))))
 
-(define iter-vitae-languages
+(define languages
   `((en (name (en . "English")
               (nl . "Engels"))
         (proficiency (reading . 4)
@@ -83,7 +98,7 @@
                 ((en . "Client-side scripting with JavaScript and jQuery in combination with server-side templates.")
                  (nl . "Client-side scripting met JavaScript en jQuery in combinatie met server-side templates.")))))
 
-(define iter-vitae-education
+(define education
   `(((name (all . "Leading Self"))
      (location (en . "Maarssen, The Netherlands")
                (nl . "Maarssen, Nederland"))
@@ -106,7 +121,7 @@
 
      )))
 
-(define iter-vitae-short-intro
+(define short-intro
   `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
      (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik heb een DevOps mindset en ik ben altijd klaar om te leren, problemen op te lossen, mijn skills verbeteren en de uitdaging aan gaan."))
     ((en . "I moved to the Netherlands in 2019, and I was born in 1996 in Barcelona, Spain.")
@@ -184,12 +199,12 @@
                 ((en . "Kubernetes and Docker, ArgoCD, Helm charts")
                  (nl . "Kubernetes en Docker, ArgoCD, Helm-grafieken")))))
 
-(define iter-vitae-jobs
+(define jobs
   (list joe-job-vandebron joe-job-zorgdomein joe-job-ikea
         joe-job-pro-warehouse))
 
-(define iter-vitae-font
+(define font
   'monaspace-neon)
 
-(define iter-vitae-palette
+(define palette
   'ef-cyprus)
