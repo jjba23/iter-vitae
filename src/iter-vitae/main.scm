@@ -16,7 +16,7 @@
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 (define-module (iter-vitae main)
-  #:declarative? #t
+  #:declarative? #f
   #:use-module (ice-9 getopt-long)
   #:use-module (iter-vitae utils)
   #:use-module (iter-vitae html)
