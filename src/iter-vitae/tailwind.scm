@@ -23,7 +23,8 @@
   #:use-module (ice-9 format)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
-  #:use-module (ice-9 futures))
+  #:use-module (ice-9 futures)
+  #:use-module (iter-vitae prelude))
 
 (define-public hr/tailwind
   (string-join '("my-4" "border-t-2" "border-t-stone-200") " "))
@@ -46,15 +47,14 @@
   (string-join '("my-2" "font-sans" "text-base" "text-green-900") " "))
 
 (define-public h1/tailwind
-  (string-join '("my-3" "font-sans" "text-3xl" "text-stone-800") " "))
+  (string-join '("my-3" "font-sans" "text-3xl" "text-stone-700") " "))
 
 (define-public h2/tailwind
-  (string-join '("my-3" "font-sans" "font-bold" "text-2xl" "uppercase"
-                 "text-green-800") " "))
+  (mk-class '(my-3 font-sans font-black text-xl uppercase
+                 text-green-700)))
 
 (define-public h4/tailwind
-  (string-join '("my-2" "text-2xl" "font-bold uppercase") " "))
+  (mk-class '(my-2 text-2xl font-bold uppercase text-stone-600)))
 
 (define-public iter-vitae-display-name/tailwind
-  (string-join '("my-3" "font-sans" "text-4xl" "text-black-800" "font-bold")
-               " "))
+  (mk-class '(my-3 font-sans text-4xl text-stone-700 font-bold font-light)))

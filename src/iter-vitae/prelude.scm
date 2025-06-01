@@ -17,7 +17,13 @@
 
 (define-module (iter-vitae prelude)
   #:declarative? #t
-  #:export (get-setting display-separator assq-ref-all-or-lang))
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
+  #:use-module (ice-9 string-fun)
+  #:use-module (ice-9 format)
+  #:use-module (ice-9 match)
+  #:use-module (ice-9 regex)  
+  #:export (get-setting display-separator assq-ref-all-or-lang mk-class))
 
 (define-syntax-rule (get-setting setting)
   "Get a setting for iter-vitae, either from persona or from default values."
@@ -53,3 +59,23 @@
                   (assq k al)))
      (assq-ref al k))
     (else (symbol->string k))))
+
+
+;; mk-class: Convert a list of symbols into a CSS `class` attribute pair.
+;;
+;; This function takes a list of symbols representing CSS class names and
+;; returns an S-expression `(class "class-names")`. The class names are
+;; space-separated in a string. If the input is an empty list or `#f`,
+;; it returns `(class "")`, ensuring that an empty class attribute is still valid.
+;;
+;; Examples:
+;; (mk-class '())                       ⇒ ""
+;; (mk-class '(p-2 bg-stone-900/75))    ⇒ "bg-stone-900/75 p-2 "
+;; (mk-class #f)                        ⇒ ""
+;;
+(define* (mk-class xs)
+  (cond
+    ((nil? xs)
+     "")
+    (else (string-join (sort (map symbol->string
+                                  (delete-duplicates xs)) string<?) " "))))
