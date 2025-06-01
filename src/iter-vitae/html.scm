@@ -26,7 +26,7 @@
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 time)
   #:use-module (iter-vitae tailwind)
-  #:use-module (iter-vitae utils)
+  #:use-module (iter-vitae prelude)
   #:use-module (ice-9 format)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)

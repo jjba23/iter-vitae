@@ -15,8 +15,28 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(define-module (iter-vitae utils)
-  #:declarative? #t)
+(define-module (iter-vitae prelude)
+  #:declarative? #t
+  #:export (get-setting display-separator assq-ref-all-or-lang))
+
+(define-syntax-rule (get-setting setting)
+  "Get a setting for iter-vitae, either from persona or from default values."
+  (let* ((default (module-variable (resolve-module '(iter-vitae defaults))
+                                   setting))
+         (user-override (module-variable (resolve-module '(iter-vitae persona))
+                                         setting)))
+    (catch #t
+           (lambda ()
+             (if (equal? #f user-override)
+                 (variable-ref default)
+                 (variable-ref user-override)))
+           (lambda (key . args)
+             (variable-ref default)))))
+
+(define (display-separator)
+  (display "
+====================================================
+"))
 
 ;; for translatable fields, behave like assq-ref
 ;; but by ensuring if 'all is specified, it is
@@ -33,4 +53,3 @@
                   (assq k al)))
      (assq-ref al k))
     (else (symbol->string k))))
-
