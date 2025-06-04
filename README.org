@@ -42,10 +42,6 @@ You can see an example of the most up-to-date version of my CV generated with It
 
 [[https://jointhefreeworld.org/cv/][https://jointhefreeworld.org/joe-cv/]]
 
-Alternatively, download a sample PDF of my generated /Curriculum Vitae/, whcih could potentially be a bit more outdated:
-
-[[file:resources/pdf/Iter Vitae.pdf][Iter Vitae.pdf]]
-
 This sample demonstrates the capabilities of the tool in generating clean, readable, and professional-looking resumes.
 
 ---------------
