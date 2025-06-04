@@ -18,8 +18,8 @@
 (define-module (iter-vitae renderer)
   #:declarative? #f
   #:use-module (iter-vitae defaults)
-  #:use-module (iter-vitae html) 
-  #:use-module (iter-vitae prelude) 
+  #:use-module (iter-vitae html)
+  #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae tailwind)
   #:export (render-curriculum))
 

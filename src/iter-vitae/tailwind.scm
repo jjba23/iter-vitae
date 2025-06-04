@@ -24,37 +24,59 @@
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
   #:use-module (ice-9 futures)
-  #:use-module (iter-vitae prelude))
+  #:use-module (iter-vitae prelude)
+  #:export (hr-face p-face
+                    bullet-face
+                    small-face
+                    address-face
+                    small-a-face
+                    h1-face
+                    h2-face
+                    h2-special-face
+                    h4-face
+                    h5-face
+                    h5-strong-face
+                    h5-em-face
+                    display-name-face))
 
-(define-public hr/tailwind
-  (string-join '("my-4" "border-t-2" "border-t-stone-200") " "))
+(define hr-face
+  (mk-class '(my-4 border-t-2 border-t-stone-200)))
 
-(define-public p/tailwind
-  (string-join '("my-4" "font-sans" "text-lg" "text-black-800" "max-w-prose")
-               " "))
+(define p-face
+  (mk-class '(my-4 font-sans text-lg text-black-800 max-w-prose)))
 
-(define-public bullet/tailwind
-  (string-join '("my-2" "ml-8" "font-sans" "text-lg" "text-black-700"
-                 "max-w-prose") " "))
+(define bullet-face
+  (mk-class '(my-2 ml-8 font-sans text-lg text-stone-700)))
 
-(define-public small/tailwind
-  (string-join '("my-2" "font-sans" "text-sm" "text-black-600") " "))
+(define small-face
+  (mk-class '(my-2 font-sans text-sm text-stone-600)))
 
-(define-public address/tailwind
-  (string-join '("font-sans" "text-lg" "text-black-800") " "))
+(define address-face
+  (mk-class '(font-sans text-sm text-stone-700)))
 
-(define-public small-a/tailwind
-  (string-join '("my-2" "font-sans" "text-base" "text-green-900") " "))
+(define small-a-face
+  (mk-class '(my-2 font-sans text-base text-green-900)))
 
-(define-public h1/tailwind
-  (string-join '("my-3" "font-sans" "text-3xl" "text-stone-700") " "))
+(define h1-face
+  (mk-class '(my-3 font-sans text-3xl text-stone-700)))
 
-(define-public h2/tailwind
-  (mk-class '(my-3 font-sans font-black text-xl uppercase
-                 text-green-700)))
+(define h2-face
+  (mk-class '(my-3 font-sans text-2xl text-stone-700)))
 
-(define-public h4/tailwind
-  (mk-class '(my-2 text-2xl font-bold uppercase text-stone-600)))
+(define h2-special-face
+  (mk-class '(my-3 font-sans font-medium text-xl uppercase text-green-700/80)))
 
-(define-public iter-vitae-display-name/tailwind
-  (mk-class '(my-3 font-sans text-4xl text-stone-700 font-bold font-light)))
+(define h4-face
+  (mk-class '(my-2 text-2xl font-light uppercase text-stone-600)))
+
+(define h5-face
+  (mk-class '(text-xl font-light text-stone-800)))
+
+(define h5-strong-face
+  (mk-class '(text-xl font-medium text-stone-800)))
+
+(define h5-em-face
+  (mk-class '(text-md font-light text-stone-700)))
+
+(define display-name-face
+  (mk-class '(my-3 font-sans text-4xl text-stone-800/90 font-light)))

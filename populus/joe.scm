@@ -123,12 +123,12 @@
      )))
 
 (define short-intro
-  `(((en . "I am a Software Engineer and love what I do. I have a DevOps mindset and I'm always eager to learn, solve problems, perfect my skills and take on challenges.")
-     (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik heb een DevOps mindset en ik ben altijd klaar om te leren, problemen op te lossen, mijn skills verbeteren en de uitdaging aan gaan."))
+  `(((en . "I am a Software Engineer and love what I do. I'm always ready to learn new things and solve problems, I have a DevOps mindset and I love perfecting my skills and taking on challenges.")
+     (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik ben altijd bereid om nieuwe dingen te leren en problemen oplossen, ik heb een DevOps mindset en ik verbeteren mijn skills graag, en ben niet bang de uitdaging aan te gaan."))
     ((en . "I moved to the Netherlands in 2019, and I was born in 1996 in Barcelona, Spain.")
      (nl . "Ik ben in 2019 naar Nederland verhuisd, en ik was in 1996 geboren in Barcelona, Spanje."))
-    ((en . "You could also describe me as a Free Software Advocate, an Emacs user, Guix and Nix enthusiast, Haskell, Lisp, Scala enjoyer, functional programmer, and perfectionist.")
-     (nl . "Je zou mij ook kunnen omschrijven met: Free Software Advocate, GNU Emacs gebruiker, Guix en Nix enthusiast, Haskell, Lisp, Scala genieter, functioneel programmeur, en perfectionistisch."))))
+    ((en . "You could also describe me as a Free Software Advocate, an Emacs user, Guix and Nix enthusiast, Scheme, Lisp, Haskell, Rust, Scala enjoyer, functional programmer, and perfectionist.")
+     (nl . "Je zou mij ook kunnen omschrijven met: Free Software Advocate, GNU Emacs gebruiker, Guix en Nix enthusiast, Scheme, Lisp, Haskell, Rust, Scala genieter, functioneel programmeur, en perfectionistisch."))))
 
 (define joe-job-pro-warehouse
   `((name (all . "Pro Warehouse B.V."))

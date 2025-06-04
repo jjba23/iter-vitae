@@ -19,10 +19,9 @@
   #:declarative? #t
   #:use-module (ice-9 getopt-long)
   #:use-module (iter-vitae defaults)
-  #:use-module (iter-vitae prelude) 
+  #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae renderer)
   #:use-module (iter-vitae tailwind))
-
 
 (define (main args)
   (display args)
@@ -61,7 +60,7 @@
 ")))
         (begin
           (render-curriculum #:locale (string->symbol locale-wanted)
-                            #:persona-file persona-file)))))
+                             #:persona-file persona-file)))))
 
 ;; call main with command line arguments
 ;;

@@ -189,14 +189,6 @@
 (define jobs
   `())
 
-;; Main font family for the curriculum vitae
-;; choose between:
-;;
-;; monaspace-neon
-;;
-(define font
-  'monaspace-neon)
-
 ;; Palette to be used for the curriculum vitae
 ;; choose between:
 ;;

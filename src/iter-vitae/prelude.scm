@@ -22,7 +22,7 @@
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 format)
   #:use-module (ice-9 match)
-  #:use-module (ice-9 regex)  
+  #:use-module (ice-9 regex)
   #:export (get-setting display-separator assq-ref-all-or-lang mk-class))
 
 (define-syntax-rule (get-setting setting)
@@ -59,7 +59,6 @@
                   (assq k al)))
      (assq-ref al k))
     (else (symbol->string k))))
-
 
 ;; mk-class: Convert a list of symbols into a CSS `class` attribute pair.
 ;;

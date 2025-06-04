@@ -34,7 +34,6 @@
   #:use-module (ice-9 time)
   #:use-module (iter-vitae tailwind)
   #:use-module (iter-vitae prelude)
-
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
   #:use-module (ice-9 threads))
@@ -264,34 +263,33 @@ formatting."
 (begin
   (define* (iter-vitae-html-template #:key title body locale persona)
     `(html (head (title ,title)
-                 (link (@ (rel "preconnect")
+                 (link (@ (rel preconnect)
                           (href "https://fonts.googleapis.com")))
-                 (link (@ (rel "preconnect")
+                 (link (@ (rel preconnect)
                           (href "https://fonts.gstatic.com")
                           (crossorigin "")))
-                 (link (@ (rel "stylesheet")
+                 (link (@ (rel stylesheet)
                           (href
-                           "https://fonts.cdnfonts.com/css/liberation-sans")))
-                 (link (@ (rel "stylesheet")
-                          (href "css/fonts.css")))
-                 (link (@ (rel "stylesheet")
-                          (href
-                           "https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css")))
+                           "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
                  (style (@ (type "text/tailwindcss"))
                   "
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
-  --font-sans: \"Adwaita Sans\", sans-serif;
-  --font-mono: \"Adwaita Mono\", monospace;
+  --font-sans: \"IBM Plex Sans\", sans-serif;
+  --font-mono: \"IBM Plex Mono\", monospace;
 }
 ")
+                 (link (@ (rel "stylesheet")
+                          (href
+                           "https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css")))
                  (meta (@ (name "viewport")
                           (content "width=device-width, initial-scale=1.0")))
                  (meta (@ (charset "UTF-8")))
                  (script (@ (src "js/tailwind.js")) ()))
            (body (@ (class "break-words"))
-                 (div (@ (class "container mx-auto py-4 sm:py-6 px-2 sm:px-3"))
+                 (div (@ (class ,(mk-class '(container mx-auto py-4 sm:py-6
+                                                       px-3 sm:px-6))))
                       ,@body
                       ,(iter-vitae-page-footer #:persona persona
                                                #:locale locale)))))
@@ -299,57 +297,58 @@ formatting."
 
 (begin
   (define* (iter-vitae-page-footer #:key locale persona)
-    `((hr (@ (class ,hr/tailwind)))
-      (div (@ (class "flex flex-row flex-wrap gap-2 justify-evenly"))
+    `((hr (@ (class ,hr-face)))
+      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-2 justify-evenly))))
            ,(render-iter-vitae-blog-link #:locale locale
                                          #:persona persona)
            ,(render-iter-vitae-code-link #:locale locale
                                          #:persona persona)
            ,(render-iter-vitae-linked-in-link #:locale locale
                                               #:persona persona))
-      (div (@ (class "block text-center font-sans"))
-           (div (@ (class "flex flex-row gap-3 flex-wrap justify-center"))
-                (small (@ (class ,small/tailwind))
+      (div (@ (class ,(mk-class '(block text-center font-sans))))
+           (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
+                                            justify-center))))
+                (small (@ (class ,small-face))
                  "this Curriculum Vitae was rendered with Lisp (Guile Scheme) code"))
-           (div (@ (class
-                    "flex flex-row gap-3 flex-wrap justify-center items-center"))
-                (small (@ (class ,small/tailwind))
-                       "find the source code here:")
-                (a (@ (class "text-green-900 text-sm font-sans")
+           (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
+                                            justify-center items-center))))
+                (small (@ (class ,small-face)) "find the source code here:")
+                (a (@ (class ,(mk-class '(text-green-900 text-sm font-sans)))
                       (href "https://codeberg.org/jjba23/iter-vitae"))
                    "codeberg.org/jjba23/iter-vitae")))))
   (export iter-vitae-page-footer))
 
 (define* (render-iter-vitae-display-name #:key locale persona)
-  `(h1 (@ (class ,iter-vitae-display-name/tailwind))
+  `(h1 (@ (class ,display-name-face))
        ,(assq-ref-all-or-lang (assq-ref persona
                                         'display-name) locale)))
 
 (define* (render-iter-vitae-job-title #:key locale persona)
-  `(p (@ (class ,h2/tailwind))
+  `(p (@ (class ,h2-special-face))
       ,(assq-ref-all-or-lang (assq-ref persona
                                        'job-title) locale)))
 
 (define* (render-iter-vitae-email #:key locale persona)
-  `((div (@ (class "flex gap-1 items-center"))
-         (i (@ (class "bx bxs-envelope text-stone-600 text-xl")) "")
-         (p (@ (class ,p/tailwind))
-            ,(assq-ref (assq-ref persona
-                                 'personal-contact)
-                       'emails)))))
+  `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
+         (i (@ (class ,(mk-class '(bx bxs-envelope text-stone-600 text-xl))))
+            "")
+         (small (@ (class ,small-face))
+                ,(assq-ref (assq-ref persona
+                                     'personal-contact)
+                           'emails)))))
 
 (define* (render-iter-vitae-phone-number #:key locale persona)
-  `((div (@ (class "flex gap-1 items-center"))
-         (i (@ (class "bx bxs-phone text-stone-600 text-xl")) "")
-         (p (@ (class ,p/tailwind))
-            ,(assq-ref (assq-ref persona
-                                 'personal-contact)
-                       'phone-numbers)))))
+  `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
+         (i (@ (class ,(mk-class '(bx bxs-phone text-stone-600 text-xl)))) "")
+         (small (@ (class ,small-face))
+                ,(assq-ref (assq-ref persona
+                                     'personal-contact)
+                           'phone-numbers)))))
 
 (define* (render-iter-vitae-blog-link #:key locale persona)
-  `((div (@ (class "flex flex-row gap-1 items-center"))
-         (i (@ (class "bx bx-rss text-stone-600 xl")) "")
-         (a (@ (class ,small-a/tailwind)
+  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
+         (i (@ (class ,(mk-class '(bx bx-rss text-stone-600 xl)))) "")
+         (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
                               (assq-ref (assq-ref persona
@@ -360,9 +359,10 @@ formatting."
                        'blog)))))
 
 (define* (render-iter-vitae-code-link #:key locale persona)
-  `((div (@ (class "flex flex-row gap-1 items-center"))
-         (i (@ (class "bx bx-code-alt text-stone-600 text-xl")) "")
-         (a (@ (class ,small-a/tailwind)
+  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
+         (i (@ (class ,(mk-class '(bx bx-code-alt text-stone-600 text-xl))))
+            "")
+         (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
                               (assq-ref (assq-ref persona
@@ -373,9 +373,9 @@ formatting."
                        'code)))))
 
 (define* (render-iter-vitae-linked-in-link #:key locale persona)
-  `((div (@ (class "flex flex-row gap-1 items-center"))
-         (i (@ (class "bx bx-link text-stone-600 text-xl")) "")
-         (a (@ (class ,small-a/tailwind)
+  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
+         (i (@ (class ,(mk-class '(bx bx-link text-stone-600 text-xl)))) "")
+         (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
                               (assq-ref (assq-ref persona
@@ -386,61 +386,60 @@ formatting."
                        'linked-in)))))
 
 (define* (render-iter-vitae-address-lines #:key locale persona)
-  `(small (@ (class " flex flex-col gap-1"))
+  `(small (@ (class ,(mk-class '(flex flex-col gap-1))))
           ,(map (lambda (address-line)
-                  `(span (@ (class ,address/tailwind))
+                  `(span (@ (class ,address-face))
                          ,(assq-ref-all-or-lang address-line locale)))
                 (assq-ref persona
                           'address-lines))))
 
 (define* (render-iter-vitae-driver-licenses #:key locale persona)
-  `(p (@ (class ,p/tailwind))
+  `(p (@ (class ,p-face))
       ,(map (lambda (driver-license)
-              `(span (@ (class "mr-4"))
+              `(span (@ (class ,(mk-class '(mr-4))))
                      ,(assq-ref-all-or-lang driver-license locale)))
             (assq-ref persona
                       'driver-licenses))))
 
 (define* (render-iter-vitae-short-intro #:key locale persona)
   (map (lambda (intro-line)
-         `(p (@ (class ,p/tailwind))
+         `(p (@ (class ,p-face))
              ,(assq-ref-all-or-lang intro-line locale)))
        (assq-ref persona
                  'short-intro)))
 
 (define* (render-iter-vitae-interests-hobbies #:key locale persona)
   (map (lambda (interest-hobby)
-         `(p (@ (class ,p/tailwind))
+         `(p (@ (class ,p-face))
              ,(assq-ref-all-or-lang interest-hobby locale)))
        (assq-ref persona
                  'interests-hobbies)))
 
 (define* (render-iter-vitae-jobs #:key locale persona)
   (map (lambda (job)
-         `(div (@ (class "p-3"))
-               (div (@ (class "flex flex-row gap-3"))
+         `(div (@ (class ,(mk-class '(p-3))))
+               (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (div (@ (class
-                                  "flex flex-row flex-wrap gap-3 items-center"))
-                              (h5 (@ (class
-                                      "text-xl text-stone-700 font-medium"))
+                    (div (div (@ (class ,(mk-class '(flex flex-row flex-wrap
+                                                          gap-3 items-center))))
+                              (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'name)
                                                          locale))
                               (span "-")
-                              (h5 (@ (class "text-xl text-stone-900 font-bold"))
+                              (h5 (@ (class ,h5-strong-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'position)
                                                          locale)))
-                         (h5 (@ (class "text-lg font-bold text-stone-600"))
+                         (em (@ (class ,h5-em-face))
                              ,(assq-ref-all-or-lang (assq-ref job
                                                               'location)
                                                     locale))
-                         (p (@ (class "text-lg font-light mb-4"))
+                         (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
                             ,(assq-ref-all-or-lang (assq-ref job
                                                              'time) locale))
                          (ul ,(map (lambda (ip)
-                                     `(li (@ (class ,bullet/tailwind)
+                                     `(li (@ (class ,bullet-face)
                                              (style "list-style: circle"))
                                           ,(assq-ref-all-or-lang ip locale)))
                                    (assq-ref job
@@ -450,30 +449,29 @@ formatting."
 
 (define* (render-iter-vitae-education #:key locale persona)
   (map (lambda (education)
-         `(div (@ (class "p-3"))
-               (div (@ (class "flex flex-row gap-3"))
+         `(div (@ (class ,(mk-class '(p-3))))
+               (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (div (@ (class
-                                  "flex flex-row flex-wrap gap-3 items-center"))
-                              (h5 (@ (class
-                                      "text-xl text-stone-700 font-medium"))
+                    (div (div (@ (class ,(mk-class '(flex flex-row flex-wrap
+                                                          gap-3 items-center))))
+                              (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'name)
                                                          locale))
                               (span "-")
-                              (h5 (@ (class "text-xl text-stone-900 font-bold"))
+                              (h5 (@ (class ,h5-strong-face))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'position)
                                                          locale)))
-                         (h5 (@ (class "text-lg font-bold text-stone-600"))
+                         (em (@ (class ,h5-em-face))
                              ,(assq-ref-all-or-lang (assq-ref education
                                                               'location)
                                                     locale))
-                         (p (@ (class "text-lg font-light mb-4"))
+                         (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
                             ,(assq-ref-all-or-lang (assq-ref education
                                                              'time) locale))
                          (ul ,(map (lambda (ip)
-                                     `(li (@ (class ,bullet/tailwind)
+                                     `(li (@ (class ,bullet-face)
                                              (style "list-style: circle"))
                                           ,(assq-ref-all-or-lang ip locale)))
                                    (assq-ref education
@@ -483,12 +481,14 @@ formatting."
 
 (begin
   (define* (iter-vitae-main-body #:key locale persona)
-    `((div (@ (class "flex flex-row flex-wrap gap-6 justify-between"))
+    `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6
+                                       justify-between))))
            (div ,(render-iter-vitae-display-name #:locale locale
                                                  #:persona persona)
                 ,(render-iter-vitae-job-title #:locale locale
                                               #:persona persona))
-           (div (@ (class "flex flex-col flex-wrap gap-1 justify-evenly"))
+           (div (@ (class ,(mk-class '(my-3 sm:my-1 flex flex-col
+                                            justify-start))))
                 ,(render-iter-vitae-email #:locale locale
                                           #:persona persona)
                 ,(render-iter-vitae-phone-number #:locale locale
@@ -496,33 +496,37 @@ formatting."
                 ,(render-iter-vitae-address-lines #:locale locale
                                                   #:persona persona)))
       
-      (h4 (@ (class ,h4/tailwind))
+      (h4 (@ (class ,h4-face))
           ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                      'titles)
                                            'short-intro) locale))
       ,(render-iter-vitae-short-intro #:locale locale
                                       #:persona persona)
 
-      (div (@ (class "flex flex-row flex-wrap gap-3 items-center"))
-           (i (@ (class "bx bxs-briefcase text-stone-600 text-xl")) "")
-           (h4 (@ (class ,h4/tailwind))
+      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
+           (i (@ (class ,(mk-class '(bx bxs-briefcase text-stone-600 text-xl))))
+              "")
+           (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                           'titles)
                                                 'work-experience) locale)))
       ,(render-iter-vitae-jobs #:locale locale
                                #:persona persona)
 
-      (div (@ (class "flex flex-row flex-wrap gap-3 items-center"))
-           (i (@ (class "bx bxs-book-open text-stone-600 text-xl")) "")
-           (h4 (@ (class ,h4/tailwind))
+      (hr (@ (class ,hr-face)))
+      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
+           (i (@ (class ,(mk-class '(bx bxs-book-open text-stone-600 text-xl))))
+              "")
+           (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                           'titles)
                                                 'education) locale)))
       ,(render-iter-vitae-education #:locale locale
                                     #:persona persona)
 
-      (div (@ (class "flex flex-row flex-wrap gap-4 items-center"))
-           (h4 (@ (class ,h4/tailwind))
+      (hr (@ (class ,hr-face)))
+      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
+           (h4 (@ (class ,h4-face))
                ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
@@ -531,9 +535,11 @@ formatting."
            ,(render-iter-vitae-driver-licenses #:locale locale
                                                #:persona persona))
 
-      (div (@ (class "flex flex-row flex-wrap gap-3 items-center"))
-           (i (@ (class "bx bxs-music text-stone-600 text-xl")) "")
-           (h4 (@ (class ,h4/tailwind))
+      (hr (@ (class ,hr-face)))
+      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
+           (i (@ (class ,(mk-class '(bx bxs-music text-stone-600 text-xl))))
+              "")
+           (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                           'titles)
                                                 'interests-hobbies) locale)))
@@ -554,3 +560,4 @@ formatting."
                                          #:locale locale)))))
 
   (export iter-vitae-curriculum-page))
+
