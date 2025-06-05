@@ -13,15 +13,21 @@
 
 (package
   (name "iter-vitae")
-  (version "0.0.1")
+  (version "0.0.4")
   (source (local-file %source-dir
                       #:recursive? #t
                       #:select? (git-predicate %source-dir)))
   (arguments
-    `(#:phases
+    `(#:source-directory "src"
+      #:phases
       (modify-phases %standard-phases
         (add-before 'build 'remove-guix.scm
-                    (lambda _ (delete-file "guix.scm"))))))
+                    (lambda _ (delete-file "guix.scm")))
+         (add-before 'build 'install-shell-wrapper
+                    (lambda* (#:key outputs #:allow-other-keys)
+                      (let ((bin (string-append (assoc-ref outputs "out")
+                                "/bin")))
+                        (install-file "shell-wrapper.sh" bin)))))))
   (build-system guile-build-system)
   (native-inputs (list guile-3.0))
   (inputs (list guile-3.0))
