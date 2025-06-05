@@ -8,12 +8,9 @@
 
 set -euo pipefail
 
-# --- Configuration ---
-# GUILE_CODE_FILE="iter-vitae.scm" # Name of your Guile Scheme source file
+GUILE_CODE_LOCATION="$(dirname "$0")/../share/guile/site/3.0"
+GUILE_CODE_FILE="$GUILE_CODE_LOCATION/iter-vitae/main.scm"
 
-# --- Helper Functions ---
-
-# Function to display the help message
 show_help() {
   echo "Generate a curriculum vitae from a persona file."
   echo ""
@@ -26,29 +23,25 @@ show_help() {
   echo "  $(basename "$0") --locale es --persona-file ~/Documents/my_cv_data.scm"
 }
 
-# --- Main Logic ---
-
-# Check if Guile is installed
 if ! command -v guile &> /dev/null; then
   echo "Error: Guile is not installed or not found in your PATH." >&2
   echo "Please install Guile to run this script." >&2
   exit 1
 fi
 
-# Check if the Guile source file exists
 if [[ ! -f "$GUILE_CODE_FILE" ]]; then
   echo "Error: Guile source file '$GUILE_CODE_FILE' not found in the current directory." >&2
   echo "Please ensure '$GUILE_CODE_FILE' is in the same directory as this script." >&2
   exit 1
 fi
 
-# Initialize variables
+
 LOCALE_ARG=""
 PERSONA_FILE_ARG=""
 HELP_FLAG=0
 
 
-# Parse command-line arguments
+
 while (( "$#" )); do
   case "$1" in
     -l|--locale)
@@ -93,23 +86,19 @@ if [[ "$HELP_FLAG" -eq 1 ]]; then
   exit 0
 fi
 
-# Check for required persona file
 if [[ -z "$PERSONA_FILE_ARG" ]]; then
   echo "Error: The persona file is required. Use -p or --persona-file." >&2
   show_help
   exit 1
 fi
 
-# Construct the Guile command
-GUILE_COMMAND="guile -s \"$GUILE_CODE_FILE\""
+GUILE_COMMAND="guile -L \"$GUILE_CODE_LOCATION\" -c '((@(iter-vitae main) main))'"
 
-# Add locale argument if provided
 if [[ -n "$LOCALE_ARG" ]]; then
   GUILE_COMMAND+=" $LOCALE_ARG"
 fi
 
-# Add persona file argument (always required)
 GUILE_COMMAND+=" $PERSONA_FILE_ARG"
 
-# Execute the Guile program
+echo "$GUILE_COMMAND"
 eval "$GUILE_COMMAND"
