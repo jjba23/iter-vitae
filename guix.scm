@@ -13,7 +13,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.0.4")
+  (version "0.0.8")
   (source (local-file %source-dir
                       #:recursive? #t
                       #:select? (git-predicate %source-dir)))
@@ -27,7 +27,8 @@
                     (lambda* (#:key outputs #:allow-other-keys)
                       (let ((bin (string-append (assoc-ref outputs "out")
                                 "/bin")))
-                        (install-file "shell-wrapper.sh" bin)))))))
+                        (install-file "iter-vitae" bin)
+                        (chmod (string-append bin "/iter-vitae") #o755)))))))
   (build-system guile-build-system)
   (native-inputs (list guile-3.0))
   (inputs (list guile-3.0))
@@ -35,4 +36,5 @@
   (description "Generate an attractive, modern and customizable Curriculum Vitae (CV) / Resume by defining your life and career in S-expressions.")
   (home-page "https://codeberg.org/jjba23/iter-vitae")
   (license license:lgpl3+))
+
 
