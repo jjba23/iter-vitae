@@ -21,9 +21,10 @@
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae renderer)
-  #:use-module (iter-vitae tailwind))
+  #:use-module (iter-vitae tailwind)
+  #:export (main))
 
-(define (main args)
+(define* (main #:key (args (command-line)))
   (display args)
   (newline)
   (let* ((option-spec '((locale (single-char #\l)
@@ -61,8 +62,3 @@
         (begin
           (render-curriculum #:locale (string->symbol locale-wanted)
                              #:persona-file persona-file)))))
-
-;; call main with command line arguments
-;;
-(main (command-line))
-

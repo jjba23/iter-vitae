@@ -18,7 +18,8 @@
 define persona
 	rm -rfv dist
 	mkdir -p dist
-	guix shell -m manifest.scm -- guile -L ./src --fresh-auto-compile src/iter-vitae/main.scm \
+	guix shell -m manifest.scm -- \
+		guile -L ./src --fresh-auto-compile -c '((@(iter-vitae main) main))' \
 		--locale $(2) --persona-file $(1)
 	cp -rfv resources/js dist/
 	@printf "\n\nall tasks completed\n\n"
@@ -50,3 +51,4 @@ repl:
 		guile \
 		-L ./src \
 		-c '((@ (ares server) run-nrepl-server))'
+
