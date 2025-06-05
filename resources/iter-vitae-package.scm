@@ -26,7 +26,7 @@
                 (add-after 'unpack 'install-entrypoint
                   (lambda* (#:key inputs #:allow-other-keys)
                     (let* ((bin (assoc-ref outputs "out") "/bin"))
-                      (install-file "iter-vitae-entry" bin)))))))
+                      (install-file "resources/iter-vitae-entry.sh" bin)))))))
   (native-inputs (list guile-3.0))
   (home-page "https://codeberg.org/jjba23/iter-vitae")
   (synopsis "Resume / Curriculum Vitae (CV) generator written in Guile Scheme")
