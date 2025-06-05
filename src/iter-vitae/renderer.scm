@@ -72,13 +72,18 @@
                    'blog))
 
   (display-separator)
-  (display "about to process persona:")
-  (newline)
-  (write p)
-  (newline)
+  ;; (display "about to process persona:")
+  ;; (newline)
+  ;; (write p)
+  ;; (newline)
+  
+  (define mkdir-call (format #f "mkdir -p ~a/js" output-dir))
+  (display mkdir-call)(newline)
+  (syscall mkdir-call)
 
-  (syscall (format #f "mkdir -p ~a/js" output-dir))
-  (syscall (format #f "cp -rfv ~a/js/tailwind.js ~a/js/tailwind.js" resources-dir output-dir))
+  (define copy-call (format #f "cp -rfv ~a/js/tailwind.js ~a/js/tailwind.js" resources-dir output-dir))
+  (display copy-call)(newline)
+  (syscall copy-call)
   
   (with-output-to-file (format #f "~a/index.html" output-dir)
     (lambda ()

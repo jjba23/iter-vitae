@@ -33,6 +33,8 @@
                                 (value #t))
                         (version (single-char #\v)
                                  (value #f))
+                        (resources-dir (single-char #\r)
+                                       (value #t))
                         (help (single-char #\h)
                               (value #f))
                         (persona-file (single-char #\p)

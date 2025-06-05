@@ -51,3 +51,6 @@ repl:
 		-L ./src \
 		-c '((@ (ares server) run-nrepl-server))'
 
+
+packaged-run:
+	guix shell -f guix.scm -- iter-vitae -l en -p ~/hacking/iter-vitae/populus/joe.scm -o ./dist

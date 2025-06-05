@@ -50,7 +50,7 @@ This sample demonstrates the capabilities of the tool in generating clean, reada
 
 Iter vitae is quite minimalistic, and has very few dependencies.
 
-All you really need is something that can run Guile Scheme (3.0+). Check the ~manifest.scm~ for more details.
+All you really need is something that can run Guile Scheme (3.0+). Check the ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
 A (WIP 🚧) Guix channel is also offered, to use as library, and to allow installing to Guix systems:
 
