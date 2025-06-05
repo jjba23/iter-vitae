@@ -20,8 +20,7 @@ define persona
 	mkdir -p dist
 	guix shell -m manifest.scm -- \
 		guile -L ./src --fresh-auto-compile -c '((@(iter-vitae main) main))' \
-		--locale $(2) --persona-file $(1)
-	cp -rfv resources/js dist/
+		--locale $(2) --persona-file $(1) --output-dir ./dist
 	@printf "\n\nall tasks completed\n\n"
 endef
 

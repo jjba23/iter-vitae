@@ -22,8 +22,12 @@
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 format)
   #:use-module (ice-9 match)
+  #:use-module (ice-9 iconv)
+  #:use-module (ice-9 popen)
+  #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 regex)
-  #:export (get-setting display-separator assq-ref-all-or-lang mk-class))
+  #:export (get-setting display-separator assq-ref-all-or-lang mk-class
+                        syscall))
 
 (define-syntax-rule (get-setting setting)
   "Get a setting for iter-vitae, either from persona or from default values."
@@ -78,3 +82,8 @@
      "")
     (else (string-join (sort (map symbol->string
                                   (delete-duplicates xs)) string<?) " "))))
+
+(define (syscall cmd)
+  (let* ((process (open-input-pipe cmd))
+         (process-output (get-string-all process)))
+    (close-pipe process) process-output))

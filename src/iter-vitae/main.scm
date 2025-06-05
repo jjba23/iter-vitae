@@ -29,6 +29,8 @@
   (newline)
   (let* ((option-spec '((locale (single-char #\l)
                                 (value #t))
+                        (output-dir (single-char #\o)
+                                (value #t))
                         (version (single-char #\v)
                                  (value #f))
                         (help (single-char #\h)
@@ -45,6 +47,7 @@
                                      'version #f))
          (persona-file (option-ref options
                                    'persona-file ""))
+         (output-wanted (option-ref options 'output-dir #f))
          (locale-wanted (option-ref options
                                     'locale "en")))
     
@@ -55,10 +58,12 @@
           (if help-wanted
               (display "iter-vitae [options]
   -l, --locale         Locale
+  -o, --output-dir     Output dir
   -p, --persona-file   Persona file
   -v, --version        Version
   -h, --help           Help
 ")))
         (begin
           (render-curriculum #:locale (string->symbol locale-wanted)
+                             #:output-dir output-wanted
                              #:persona-file persona-file)))))

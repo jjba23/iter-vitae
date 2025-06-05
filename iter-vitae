@@ -15,12 +15,13 @@ show_help() {
   echo "Generate a curriculum vitae from a persona file."
   echo ""
   echo "Options:"
-  echo "  -l, --locale LOCALE      Specify the locale (e.g., 'en', 'es'). Defaults to 'en'."
-  echo "  -p, --persona-file FILE  Specify the persona file (required)."
-  echo "  -h, --help               Display this help message and exit."
+  echo "  -l, --locale LOCALE       Specify the locale (e.g., 'en', 'es'). Defaults to 'en'."
+  echo "  -o, --output-dir DIRECTORY Specify the output directory for the generated CV."
+  echo "  -p, --persona-file FILE   Specify the persona file (required)."
+  echo "  -h, --help                Display this help message and exit."
   echo ""
   echo "Examples:"
-  echo "  $(basename "$0") --locale es --persona-file ~/Documents/my_cv_data.scm"
+  echo "  $(basename "$0") --locale es --persona-file ~/Documents/my_cv_data.scm --output-dir ~/Documents/generated_cvs"
 }
 
 if ! command -v guile &> /dev/null; then
@@ -30,23 +31,32 @@ if ! command -v guile &> /dev/null; then
 fi
 
 if [[ ! -f "$GUILE_CODE_FILE" ]]; then
-  echo "Error: Guile source file '$GUILE_CODE_FILE' not found in the current directory." >&2
-  echo "Please ensure '$GUILE_CODE_FILE' is in the same directory as this script." >&2
+  echo "Error: Guile source file '$GUILE_CODE_FILE' not found." >&2
+  echo "Please ensure '$GUILE_CODE_FILE' is accessible at that path." >&2
   exit 1
 fi
 
 
 LOCALE_ARG=""
 PERSONA_FILE_ARG=""
+OUTPUT_DIR_ARG=""
 HELP_FLAG=0
-
-
 
 while (( "$#" )); do
   case "$1" in
     -l|--locale)
       if [[ -n "$2" && "$2" != -* ]]; then
-        LOCALE_ARG="-l $2"
+        LOCALE_ARG="--locale $2"
+        shift 2
+      else
+        echo "Error: Argument for $1 is missing." >&2
+        show_help
+        exit 1
+      fi
+      ;;
+    -o|--output-dir) 
+      if [[ -n "$2" && "$2" != -* ]]; then
+        OUTPUT_DIR_ARG="--output-dir $2"
         shift 2
       else
         echo "Error: Argument for $1 is missing." >&2
@@ -56,7 +66,7 @@ while (( "$#" )); do
       ;;
     -p|--persona-file)
       if [[ -n "$2" && "$2" != -* ]]; then
-        PERSONA_FILE_ARG="-p $2"
+        PERSONA_FILE_ARG="--persona-file $2"
         shift 2
       else
         echo "Error: Argument for $1 is missing." >&2
@@ -92,10 +102,15 @@ if [[ -z "$PERSONA_FILE_ARG" ]]; then
   exit 1
 fi
 
+# Construct the Guile command
 GUILE_COMMAND="guile -L \"$GUILE_CODE_LOCATION\" -c '((@(iter-vitae main) main))'"
 
 if [[ -n "$LOCALE_ARG" ]]; then
   GUILE_COMMAND+=" $LOCALE_ARG"
+fi
+
+if [[ -n "$OUTPUT_DIR_ARG" ]]; then # Add output directory to the command
+  GUILE_COMMAND+=" $OUTPUT_DIR_ARG"
 fi
 
 GUILE_COMMAND+=" $PERSONA_FILE_ARG"

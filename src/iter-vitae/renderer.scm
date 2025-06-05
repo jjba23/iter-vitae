@@ -23,10 +23,11 @@
   #:use-module (iter-vitae tailwind)
   #:export (render-curriculum))
 
-(define* (render-curriculum #:key locale persona-file)
+(define* (render-curriculum #:key locale output-dir persona-file)
   (display-separator)
   (display "\n\tstarting iter-vitae\n")
   (display (format #f "\n\tconfigured with locale: ~a" locale))
+  (display (format #f "\n\tconfigured with output-dir: ~a" output-dir))
   (display (format #f "\n\tconfigured with persona-file: ~a" persona-file))
   (newline)
   (display-separator)
@@ -75,7 +76,10 @@
   (write p)
   (newline)
 
-  (with-output-to-file "dist/index.html"
+  (syscall (format #f "mkdir -p ~a/js" output-dir))
+  (syscall (format #f "cp -rfv ./resources/js/tailwind.js ~a/js/tailwind.js" output-dir))
+  
+  (with-output-to-file (format #f "~a/index.html" output-dir)
     (lambda ()
       (display (iter-vitae-curriculum-page #:locale locale
                                            #:persona p)))))
