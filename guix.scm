@@ -13,7 +13,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.0.17")
+  (version "0.0.19")
   (source (local-file %source-dir
                       #:recursive? #t
                       #:select? (git-predicate %source-dir)))
@@ -23,11 +23,15 @@
       (modify-phases %standard-phases
         (add-before 'build 'remove-guix.scm
                     (lambda _ (delete-file "guix.scm")))
-         (add-before 'build 'install-shell-wrapper
+         (add-before 'build 'install-program-files
                     (lambda* (#:key outputs #:allow-other-keys)
                       (let ((bin (string-append (assoc-ref outputs "out")
-                                "/bin")))
+                                "/bin"))
+                            (share (string-append (assoc-ref outputs "out")
+                                "/share")))
                         (install-file "iter-vitae" bin)
+                        (mkdir-p (string-append share "/resources/js"))
+                        (install-file "resources/js/tailwind.js" (string-append share "/resources/js/tailwind.js"))
                         (chmod (string-append bin "/iter-vitae") #o755)))))))
   (build-system guile-build-system)
   (native-inputs (list guile-3.0))

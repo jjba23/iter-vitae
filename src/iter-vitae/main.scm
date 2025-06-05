@@ -48,6 +48,7 @@
          (persona-file (option-ref options
                                    'persona-file ""))
          (output-wanted (option-ref options 'output-dir #f))
+         (resources-wanted (option-ref options 'resources-dir #f))
          (locale-wanted (option-ref options
                                     'locale "en")))
     
@@ -59,6 +60,7 @@
               (display "iter-vitae [options]
   -l, --locale         Locale
   -o, --output-dir     Output dir
+  -r, --resources-dir  Resources dir
   -p, --persona-file   Persona file
   -v, --version        Version
   -h, --help           Help
@@ -66,4 +68,5 @@
         (begin
           (render-curriculum #:locale (string->symbol locale-wanted)
                              #:output-dir output-wanted
+                             #:resources-dir resources-wanted
                              #:persona-file persona-file)))))

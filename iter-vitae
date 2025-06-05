@@ -10,6 +10,7 @@ set -euo pipefail
 
 GUILE_CODE_LOCATION="$(dirname "$0")/../share/guile/site/3.0"
 GUILE_CODE_FILE="$GUILE_CODE_LOCATION/iter-vitae/main.scm"
+RESOURCES_LOCATION="$(dirname "$0")/../share/resources"
 
 show_help() {
   echo "Generate a curriculum vitae from a persona file."
@@ -114,6 +115,7 @@ if [[ -n "$OUTPUT_DIR_ARG" ]]; then # Add output directory to the command
 fi
 
 GUILE_COMMAND+=" $PERSONA_FILE_ARG"
+GUILE_COMMAND+=" --resources-dir \"$RESOURCES_LOCATION\""
 
 echo "$GUILE_COMMAND"
 eval "$GUILE_COMMAND"
