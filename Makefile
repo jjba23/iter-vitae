@@ -15,13 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
+# dev version runs from source code
+#
+# resources need to be manually taken
 define persona
-	rm -rfv dist
-	mkdir -p dist
 	guix shell -m manifest.scm -- \
 		guile -L ./src --fresh-auto-compile -c '((@(iter-vitae main) main))' \
 		--locale $(2) --persona-file $(1) --output-dir ./dist --resources-dir ./resources
-	@printf "\n\nall tasks completed\n\n"
+endef
+
+# packaged version runs via Guix, in the Guix store
+#
+# resources will automatically be handled for you
+#
+# if you installed iter-vitae via Guix you can simply do, e.g.:
+#     iter-vitae --locale en --persona-file ./my-cv.scm --output-dir ./dist
+define packaged-persona
+	guix shell -f guix.scm -- \
+		iter-vitae --locale $(2) --persona-file $(1) --output-dir ./dist
 endef
 
 serve:
@@ -31,7 +42,10 @@ persona-joe-nl:
 	$(call persona,"$(realpath ./populus/joe.scm)","nl")
 persona-joe-en:
 	$(call persona,"$(realpath ./populus/joe.scm)","en")
-
+packaged-persona-joe-nl:
+	$(call packaged-persona,"$(realpath ./populus/joe.scm)","nl")
+packaged-persona-joe-en:
+	$(call packaged-persona,"$(realpath ./populus/joe.scm)","en")
 
 dev:
 	watchexec -i "dist/**" -r -e scm,css,js -- "make persona-joe-nl && make serve"
@@ -50,7 +64,3 @@ repl:
 		guile \
 		-L ./src \
 		-c '((@ (ares server) run-nrepl-server))'
-
-
-packaged-run:
-	guix shell -f guix.scm -- iter-vitae -l en -p ~/hacking/iter-vitae/populus/joe.scm -o ./dist

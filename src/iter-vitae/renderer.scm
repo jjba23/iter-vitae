@@ -76,6 +76,10 @@
   ;; (newline)
   ;; (write p)
   ;; (newline)
+
+  (define clean-call (format #f "rm -rfv ~a/js/tailwind.js ~a/index.html" output-dir output-dir))
+  (display clean-call)(newline)
+  (syscall clean-call)
   
   (define mkdir-call (format #f "mkdir -p ~a/js" output-dir))
   (display mkdir-call)(newline)
