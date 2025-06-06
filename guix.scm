@@ -38,7 +38,8 @@
   (native-inputs (list guile-3.0))
   (inputs (list guile-3.0))
   (synopsis "Resume / Curriculum Vitae (CV) generator powered by Guile Scheme")
-  (description "Generate an attractive, modern and customizable Curriculum Vitae (CV) / Resume by defining your life and career in S-expressions.")
+  (description "Generate an attractive, modern and customizable Curriculum Vitae (CV) / Resume
+    by defining your life and career in S-expressions.")
   (home-page "https://codeberg.org/jjba23/iter-vitae")
   (license license:lgpl3+))
 

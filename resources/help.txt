@@ -6,8 +6,9 @@ Iter Vitae: Generate an attractive, modern and customizable Curriculum Vitae / R
 Usage: iter-vitae [OPTIONS]
 
 Options:
-    -l, --locale LOCALE          Specify the locale (e.g., 'en', 'es'). Defaults to 'en'
-    -p, --persona-file FILE      Specify the persona file (required).    
+    -p, --persona-file FILE      Specify the Scheme config - persona file (required).    
+    -l, --locale LOCALE          Specify the locale (e.g., 'en', 'nl').
+                                     Defaults to 'en'
     -o, --output-dir DIRECTORY   Specify the output directory for the generated CV.
                                      Defaults to "./dist"
     -h, --help                   Display this help message and exit.
