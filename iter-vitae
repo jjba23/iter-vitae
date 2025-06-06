@@ -1,31 +1,41 @@
 #!/usr/bin/env bash
 
-# iter-vitae - Wrapper script for the Guile Scheme iter-vitae program
+# Iter Vitae 
+
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
+
+# iter-vitae is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# iter-vitae is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+
+# Commentary:
 #
-# This script provides a user-friendly interface to the iter-vitae Guile Scheme
-# application, allowing it to be called from the command line like a standard
-# executable.
+# This script provides a convenient and user-friendly wrapper
+# around the command-line usage of `iter-vitae`, allowing the
+# Guile Scheme application to behave and feel like any other
+# executable or binary that users may install to their systems.
+#
+# This also helps installing `iter-vitae` in a convenient fashion
+# to the Guix store and it allows us to decouple the user-facing
+# command-line interface from the internal Guile Scheme arguments
+# to the main program and library.
 
 set -euo pipefail
 
-GUILE_CODE_LOCATION="$(dirname "$0")/../share/guile/site/3.0"
-GUILE_CODE_FILE="$GUILE_CODE_LOCATION/iter-vitae/main.scm"
-RESOURCES_LOCATION="$(dirname "$0")/../share/resources"
+SCHEME_SOURCES_DIR="$(dirname "$0")/../share/guile/site/3.0"
+RESOURCES_DIR="$(dirname "$0")/../share/resources"
 
-
-show_help() {
-  echo "Generate a curriculum vitae from a persona file."
-  echo ""
-  echo "Usage: $(basename "$0") [OPTIONS]"
-  echo ""
-  echo "Options:"
-  echo "  -l, --locale LOCALE      Specify the locale (e.g., 'en', 'es'). Defaults to 'en'."
-  echo "  -o, --output-dir DIRECTORY Specify the output directory for the generated CV."
-  echo "  -p, --persona-file FILE    Specify the persona file (required)."
-  echo "  -h, --help               Display this help message and exit."
-  echo ""
-  echo "Examples:"
-  echo "  $(basename "$0") --locale es --persona-file ~/Documents/my_cv_data.scm --output-dir ~/Documents/generated_cvs"
+show-help() {
+    cat "$RESOURCES_DIR/help.txt"
 }
 
 LOCALE=""
@@ -52,8 +62,8 @@ while true; do
       shift 2
       ;;
     -h|--help)
-      HELP_REQUESTED=1
-      shift
+      show-help
+      exit 0
       ;;
     --) 
       shift
@@ -66,19 +76,14 @@ while true; do
   esac
 done
 
-if [[ "$HELP_REQUESTED" -eq 1 ]]; then
-  show_help
-  exit 0
-fi
-
 if [[ -z "$PERSONA_FILE" ]]; then
   echo "Error: The persona file is required. Use -p or --persona-file." >&2
-  show_help
+  show-help
   exit 1
 fi
 
 GUILE_CMD_ARGS=(
-  "-L" "$GUILE_CODE_LOCATION"
+  "-L" "$SCHEME_SOURCES_DIR"
   "-c" "((@(iter-vitae main) main))"
 )
 
@@ -86,7 +91,7 @@ GUILE_CMD_ARGS=(
 [[ -n "$OUTPUT_DIR" ]] && GUILE_CMD_ARGS+=("--output-dir" "$OUTPUT_DIR")
 
 GUILE_CMD_ARGS+=("--persona-file" "$PERSONA_FILE")
-GUILE_CMD_ARGS+=("--resources-dir" "$RESOURCES_LOCATION")
+GUILE_CMD_ARGS+=("--resources-dir" "$RESOURCES_DIR")
 
 echo "Running Guile command: guile ${GUILE_CMD_ARGS[*]}"
 exec guile "${GUILE_CMD_ARGS[@]}"
