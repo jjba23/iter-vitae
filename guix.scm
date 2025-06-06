@@ -13,7 +13,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.0.22")
+  (version "0.0.23")
   (source (local-file %source-dir
                       #:recursive? #t
                       #:select? (git-predicate %source-dir)))
@@ -29,7 +29,7 @@
                                 "/bin"))
                             (share (string-append (assoc-ref outputs "out")
                                 "/share")))
-                        (install-file "iter-vitae" bin)
+                        (install-file "resources/iter-vitae" bin)
                         (mkdir-p (string-append share "/resources/js"))
                         (install-file "resources/help.txt" (string-append share "/resources/"))
                         (install-file "resources/log.sh" (string-append share "/resources/"))                        
