@@ -84,7 +84,7 @@ while (( "$#" )); do
       show_help
       exit 1
       ;;
-    *) # Positional arguments (not expected by this script, but good practice)
+    *) 
       echo "Error: Unexpected argument '$1'" >&2
       show_help
       exit 1
@@ -103,14 +103,13 @@ if [[ -z "$PERSONA_FILE_ARG" ]]; then
   exit 1
 fi
 
-# Construct the Guile command
 GUILE_COMMAND="guile -L \"$GUILE_CODE_LOCATION\" -c '((@(iter-vitae main) main))'"
 
 if [[ -n "$LOCALE_ARG" ]]; then
   GUILE_COMMAND+=" $LOCALE_ARG"
 fi
 
-if [[ -n "$OUTPUT_DIR_ARG" ]]; then # Add output directory to the command
+if [[ -n "$OUTPUT_DIR_ARG" ]]; then 
   GUILE_COMMAND+=" $OUTPUT_DIR_ARG"
 fi
 
