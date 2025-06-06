@@ -15,7 +15,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.3.0")
+  (version "0.3.1")
   (source
    (local-file %source-dir
                #:recursive? #t
@@ -31,12 +31,13 @@
                     (let ((bin (string-append (assoc-ref outputs "out") "/bin"))
                           (share (string-append (assoc-ref outputs "out")
                                                 "/share")))
-                      (install-file "resources/iter-vitae" bin)
+                      (mkdir-p (string-append share "/scripts"))                      
                       (mkdir-p (string-append share "/resources/js"))
+                      (install-file "scripts/iter-vitae" bin)
                       (install-file "resources/help.txt"
                                     (string-append share "/resources/"))
-                      (install-file "resources/log.sh"
-                                    (string-append share "/resources/"))
+                      (install-file "scripts/log.sh"
+                                    (string-append share "/scripts/"))
                       (install-file "resources/js/tailwind.js"
                                     (string-append share "/resources/js/"))
                       (chmod (string-append bin "/iter-vitae") #o755)))))))

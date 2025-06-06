@@ -37,8 +37,9 @@ SCRIPT_DIR=$(dirname "$0")
 STORE_DIR=$(readlink -f "$SCRIPT_DIR/..")
 SCHEME_SOURCES_DIR="$STORE_DIR/share/guile/site/3.0"
 RESOURCES_DIR="$STORE_DIR/share/resources"
+SCRIPTS_DIR="$STORE_DIR/share/scripts"
 
-source "$RESOURCES_DIR/log.sh"
+source "$SCRIPTS_DIR/log.sh"
 
 show-help() {
     cat "$RESOURCES_DIR/help.txt"
