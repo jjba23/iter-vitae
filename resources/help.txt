@@ -1,7 +1,8 @@
 
 Iter Vitae:
     Generate an attractive, modern and customizable Curriculum Vitae / Resume.
-
+    See more at: https://codeberg.org/jjba23/iter-vitae
+    
 Usage: iter-vitae [OPTIONS]
 
 Options:

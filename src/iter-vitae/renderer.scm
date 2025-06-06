@@ -76,7 +76,7 @@
 
     (log-info "executing: ~a" cp-to-dist-cmd)
     (syscall cp-to-dist-cmd)
-    
+
     (with-output-to-file (format #f "~a/index.html" output-dir)
       (lambda ()
         (display (iter-vitae-curriculum-page #:locale locale
