@@ -12,14 +12,17 @@ GUILE_CODE_LOCATION="$(dirname "$0")/../share/guile/site/3.0"
 GUILE_CODE_FILE="$GUILE_CODE_LOCATION/iter-vitae/main.scm"
 RESOURCES_LOCATION="$(dirname "$0")/../share/resources"
 
+
 show_help() {
   echo "Generate a curriculum vitae from a persona file."
   echo ""
+  echo "Usage: $(basename "$0") [OPTIONS]"
+  echo ""
   echo "Options:"
-  echo "  -l, --locale LOCALE       Specify the locale (e.g., 'en', 'es'). Defaults to 'en'."
+  echo "  -l, --locale LOCALE      Specify the locale (e.g., 'en', 'es'). Defaults to 'en'."
   echo "  -o, --output-dir DIRECTORY Specify the output directory for the generated CV."
-  echo "  -p, --persona-file FILE   Specify the persona file (required)."
-  echo "  -h, --help                Display this help message and exit."
+  echo "  -p, --persona-file FILE    Specify the persona file (required)."
+  echo "  -h, --help               Display this help message and exit."
   echo ""
   echo "Examples:"
   echo "  $(basename "$0") --locale es --persona-file ~/Documents/my_cv_data.scm --output-dir ~/Documents/generated_cvs"
@@ -37,84 +40,70 @@ if [[ ! -f "$GUILE_CODE_FILE" ]]; then
   exit 1
 fi
 
+LOCALE=""
+OUTPUT_DIR=""
+PERSONA_FILE=""
+HELP_REQUESTED=0
 
-LOCALE_ARG=""
-PERSONA_FILE_ARG=""
-OUTPUT_DIR_ARG=""
-HELP_FLAG=0
+PARSED_OPTIONS=$(getopt -n "iter-vitae" -o l:o:p:h --long locale:,output-dir:,persona-file:,help -- "$@")
 
-while (( "$#" )); do
+if [[ $? -ne 0 ]]; then
+  show_help
+  exit 1
+fi
+
+eval set -- "$PARSED_OPTIONS"
+
+while true; do
   case "$1" in
     -l|--locale)
-      if [[ -n "$2" && "$2" != -* ]]; then
-        LOCALE_ARG="--locale $2"
-        shift 2
-      else
-        echo "Error: Argument for $1 is missing." >&2
-        show_help
-        exit 1
-      fi
+      LOCALE="$2"
+      shift 2
       ;;
-    -o|--output-dir) 
-      if [[ -n "$2" && "$2" != -* ]]; then
-        OUTPUT_DIR_ARG="--output-dir $2"
-        shift 2
-      else
-        echo "Error: Argument for $1 is missing." >&2
-        show_help
-        exit 1
-      fi
+    -o|--output-dir)
+      OUTPUT_DIR="$2"
+      shift 2
       ;;
     -p|--persona-file)
-      if [[ -n "$2" && "$2" != -* ]]; then
-        PERSONA_FILE_ARG="--persona-file $2"
-        shift 2
-      else
-        echo "Error: Argument for $1 is missing." >&2
-        show_help
-        exit 1
-      fi
+      PERSONA_FILE="$2"
+      shift 2
       ;;
     -h|--help)
-      HELP_FLAG=1
+      HELP_REQUESTED=1
       shift
       ;;
-    -*)
-      echo "Error: Unknown option '$1'" >&2
-      show_help
-      exit 1
+    --) 
+      shift
+      break
       ;;
-    *) 
-      echo "Error: Unexpected argument '$1'" >&2
-      show_help
+    *)
+      echo "Internal error: unrecognized option '$1'" >&2
       exit 1
       ;;
   esac
 done
 
-if [[ "$HELP_FLAG" -eq 1 ]]; then
+if [[ "$HELP_REQUESTED" -eq 1 ]]; then
   show_help
   exit 0
 fi
 
-if [[ -z "$PERSONA_FILE_ARG" ]]; then
+if [[ -z "$PERSONA_FILE" ]]; then
   echo "Error: The persona file is required. Use -p or --persona-file." >&2
   show_help
   exit 1
 fi
 
-GUILE_COMMAND="guile -L \"$GUILE_CODE_LOCATION\" -c '((@(iter-vitae main) main))'"
+GUILE_CMD_ARGS=(
+  "-L" "$GUILE_CODE_LOCATION"
+  "-c" "((@(iter-vitae main) main))"
+)
 
-if [[ -n "$LOCALE_ARG" ]]; then
-  GUILE_COMMAND+=" $LOCALE_ARG"
-fi
+[[ -n "$LOCALE" ]] && GUILE_CMD_ARGS+=("--locale" "$LOCALE")
+[[ -n "$OUTPUT_DIR" ]] && GUILE_CMD_ARGS+=("--output-dir" "$OUTPUT_DIR")
 
-if [[ -n "$OUTPUT_DIR_ARG" ]]; then 
-  GUILE_COMMAND+=" $OUTPUT_DIR_ARG"
-fi
+GUILE_CMD_ARGS+=("--persona-file" "$PERSONA_FILE")
+GUILE_CMD_ARGS+=("--resources-dir" "$RESOURCES_LOCATION")
 
-GUILE_COMMAND+=" $PERSONA_FILE_ARG"
-GUILE_COMMAND+=" --resources-dir \"$RESOURCES_LOCATION\""
-
-echo "$GUILE_COMMAND"
-eval "$GUILE_COMMAND"
+echo "Running Guile command: guile ${GUILE_CMD_ARGS[*]}"
+exec guile "${GUILE_CMD_ARGS[@]}"
