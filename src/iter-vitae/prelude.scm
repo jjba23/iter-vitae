@@ -26,8 +26,13 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 regex)
-  #:export (get-setting display-separator assq-ref-all-or-lang mk-class
-                        syscall))
+  #:export (get-setting assq-ref-all-or-lang
+                        mk-class
+                        syscall
+                        log-message
+                        log
+                        log-info
+                        log-error))
 
 (define-syntax-rule (get-setting setting)
   "Get a setting for iter-vitae, either from persona or from default values."
@@ -42,11 +47,6 @@
                  (variable-ref user-override)))
            (lambda (key . args)
              (variable-ref default)))))
-
-(define (display-separator)
-  (display "
-====================================================
-"))
 
 ;; for translatable fields, behave like assq-ref
 ;; but by ensuring if 'all is specified, it is
@@ -87,3 +87,27 @@
   (let* ((process (open-input-pipe cmd))
          (process-output (get-string-all process)))
     (close-pipe process) process-output))
+
+(define preferred-strftime-format
+  (make-parameter "%Y-%m-%d %H:%M:%S%z"))
+
+(define (log-message msg)
+  (display (format #f "\n\x1b[1m~a\x1b[0m" msg)))
+
+(define (log msg . args)
+  (log-message (apply format
+                      (append (list #f msg) args))))
+
+(define (log-info msg . args)
+  (log-message (format #f "[INFO][~a] ~a"
+                       (strftime (preferred-strftime-format)
+                                 (localtime (current-time)))
+                       (apply format
+                              (append (list #f msg) args)))))
+
+(define (log-error msg . args)
+  (log-message (format #f "[ERROR][~a] ~a"
+                       (strftime (preferred-strftime-format)
+                                 (localtime (current-time)))
+                       (apply format
+                              (append (list #f msg) args)))))
