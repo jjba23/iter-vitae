@@ -32,7 +32,7 @@ set -euo pipefail
 SCHEME_SOURCES_DIR="$(dirname "$0")/../share/guile/site/3.0"
 RESOURCES_DIR="$(dirname "$0")/../share/resources"
 
-. "$RESOURCES_DIR/log.sh"
+source "$RESOURCES_DIR/log.sh"
 
 show-help() {
     cat "$RESOURCES_DIR/help.txt"
@@ -69,14 +69,14 @@ while true; do
       break
       ;;
     *)
-      log error "Internal error: unrecognized option '$1'"
+      log-error "Internal error: unrecognized option '$1'"
       exit 1
       ;;
   esac
 done
 
 if [[ -z "$PERSONA_FILE" ]]; then
-  log error "Error: The persona file is required. Use -p or --persona-file." >&2
+  log-error "Error: The persona file is required. Use -p or --persona-file." >&2
   show-help
   exit 1
 fi
@@ -92,5 +92,5 @@ GUILE_CMD_ARGS=(
 GUILE_CMD_ARGS+=("--persona-file" "$PERSONA_FILE")
 GUILE_CMD_ARGS+=("--resources-dir" "$RESOURCES_DIR")
 
-log info "Running Guile command: guile ${GUILE_CMD_ARGS[*]}"
+log-info "Running Guile command: guile ${GUILE_CMD_ARGS[*]}"
 exec guile "${GUILE_CMD_ARGS[@]}"

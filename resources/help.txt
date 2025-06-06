@@ -1,7 +1,6 @@
 
-========================================================================================
-
-Iter Vitae: Generate an attractive, modern and customizable Curriculum Vitae / Resume.
+Iter Vitae:
+    Generate an attractive, modern and customizable Curriculum Vitae / Resume.
 
 Usage: iter-vitae [OPTIONS]
 
@@ -20,5 +19,3 @@ Examples:
         --persona-file ~/Documents/my-cv.scm \
         --output-dir ~/Documents
         
-========================================================================================
-
