@@ -31,6 +31,7 @@
                                 "/share")))
                         (install-file "iter-vitae" bin)
                         (mkdir-p (string-append share "/resources/js"))
+                        (install-file "resources/help.txt" (string-append share "/resources/"))                        
                         (install-file "resources/js/tailwind.js" (string-append share "/resources/js/"))
                         (chmod (string-append bin "/iter-vitae") #o755)))))))
   (build-system guile-build-system)

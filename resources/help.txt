@@ -1,3 +1,4 @@
+
 Generate a curriculum vitae from a persona file.
 
 Usage: iter-vitae [OPTIONS]
@@ -10,3 +11,5 @@ Options:
 
 Examples:
     iter-vitae --locale en --persona-file ~/Documents/my-cv.scm --output-dir ~/Documents
+
+

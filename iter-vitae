@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Iter Vitae 
-
 # Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 # iter-vitae is free software: you can redistribute it and/or modify
@@ -19,7 +17,7 @@
 
 # Commentary:
 #
-# This script provides a convenient and user-friendly wrapper
+# This bash script provides a convenient and user-friendly wrapper
 # around the command-line usage of `iter-vitae`, allowing the
 # Guile Scheme application to behave and feel like any other
 # executable or binary that users may install to their systems.
@@ -41,7 +39,6 @@ show-help() {
 LOCALE=""
 OUTPUT_DIR=""
 PERSONA_FILE=""
-HELP_REQUESTED=0
 
 PARSED_OPTIONS=$(getopt -n "iter-vitae" -o l:o:p:h --long locale:,output-dir:,persona-file:,help -- "$@")
 
