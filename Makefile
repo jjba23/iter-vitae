@@ -18,7 +18,7 @@
 # dev version runs from source code
 #
 # resources need to be manually taken
-define persona
+define dev-persona
 	guix shell -m manifest.scm -- \
 		guile -L ./src -c '((@(iter-vitae main) main))' \
 		--locale $(2) --persona-file $(1) --output-dir ./dist --resources-dir ./resources
@@ -30,7 +30,7 @@ endef
 #
 # if you installed iter-vitae via Guix you can simply do, e.g.:
 #     iter-vitae --locale en --persona-file ./my-cv.scm --output-dir ./dist
-define packaged-persona
+define persona
 	guix shell -f guix.scm -- \
 		iter-vitae --locale $(2) --persona-file $(1) --output-dir ./dist
 endef
@@ -42,13 +42,13 @@ persona-joe-nl:
 	$(call persona,"$(realpath ./populus/joe.scm)","nl")
 persona-joe-en:
 	$(call persona,"$(realpath ./populus/joe.scm)","en")
-packaged-persona-joe-nl:
-	$(call packaged-persona,"$(realpath ./populus/joe.scm)","nl")
-packaged-persona-joe-en:
-	$(call packaged-persona,"$(realpath ./populus/joe.scm)","en")
+dev-persona-joe-nl:
+	$(call dev-persona,"$(realpath ./populus/joe.scm)","nl")
+dev-persona-joe-en:
+	$(call dev-persona,"$(realpath ./populus/joe.scm)","en")
 
 dev:
-	watchexec -i "dist/**" -r -e scm,css,js -- "make persona-joe-nl && make serve"
+	watchexec -i "dist/**" -r -e scm,css,js -- "make dev-persona-joe-nl && make serve"
 
 
 deploy:

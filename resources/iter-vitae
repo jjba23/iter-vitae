@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
-
+#
 # Copyright © Josep Bigorra <jjbigorra@gmail.com>
-
+#
 # iter-vitae is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-
+#
 # iter-vitae is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-
+#
 # You should have received a copy of the GNU General Public License
 # along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 # Commentary:
-#
 # This bash script provides a convenient and user-friendly wrapper
 # around the command-line usage of `iter-vitae`, allowing the
 # Guile Scheme application to behave and feel like any other
@@ -26,11 +25,18 @@
 # to the Guix store and it allows us to decouple the user-facing
 # command-line interface from the internal Guile Scheme arguments
 # to the main program and library.
+#
+# Some of the rationale behind the `SCRIPT_DIR` and `STORE_DIR`
+# can be explained due to the need of reliably and reproducibly
+# deploying source code and other resources to the store
+# and have access to those at runtime.
 
 set -euo pipefail
 
-SCHEME_SOURCES_DIR="$(dirname "$0")/../share/guile/site/3.0"
-RESOURCES_DIR="$(dirname "$0")/../share/resources"
+SCRIPT_DIR=$(dirname "$0")
+STORE_DIR=$(readlink -f "$SCRIPT_DIR/..")
+SCHEME_SOURCES_DIR="$STORE_DIR/share/guile/site/3.0"
+RESOURCES_DIR="$STORE_DIR/share/resources"
 
 source "$RESOURCES_DIR/log.sh"
 
@@ -38,13 +44,12 @@ show-help() {
     cat "$RESOURCES_DIR/help.txt"
 }
 
+PARSED_OPTIONS=$(getopt -n "iter-vitae" -o l:o:p:h --long locale:,output-dir:,persona-file:,help -- "$@")
+eval set -- "$PARSED_OPTIONS"
+
 LOCALE=""
 OUTPUT_DIR=""
 PERSONA_FILE=""
-
-PARSED_OPTIONS=$(getopt -n "iter-vitae" -o l:o:p:h --long locale:,output-dir:,persona-file:,help -- "$@")
-
-eval set -- "$PARSED_OPTIONS"
 
 while true; do
   case "$1" in
@@ -70,6 +75,7 @@ while true; do
       ;;
     *)
       log-error "Internal error: unrecognized option '$1'"
+      show-help
       exit 1
       ;;
   esac

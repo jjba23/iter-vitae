@@ -25,50 +25,24 @@
   #:export (main))
 
 (define* (main #:key (args (command-line)))
-  (display args)
-  (newline)
   (let* ((option-spec '((locale (single-char #\l)
                                 (value #t))
                         (output-dir (single-char #\o)
                                 (value #t))
-                        (version (single-char #\v)
-                                 (value #f))
                         (resources-dir (single-char #\r)
                                        (value #t))
-                        (help (single-char #\h)
-                              (value #f))
                         (persona-file (single-char #\p)
                                       (value #t)
                                       (required? #t))))
          
          (options (getopt-long args option-spec))
-
-         (help-wanted (option-ref options
-                                  'help #f))
-         (version-wanted (option-ref options
-                                     'version #f))
          (persona-file (option-ref options
                                    'persona-file #f))
-         (output-wanted (option-ref options 'output-dir "./dist"))
-         (resources-wanted (option-ref options 'resources-dir #f))
-         (locale-wanted (option-ref options
-                                    'locale "en")))
+         (output-dir (option-ref options 'output-dir "./dist"))
+         (resources-dir (option-ref options 'resources-dir #f))
+         (locale (option-ref options 'locale "en")))
     
-    (if (or version-wanted help-wanted)
-        (begin
-          (if version-wanted
-              (display "iter-vitae dev version\n"))
-          (if help-wanted
-              (display "iter-vitae [options]
-  -l, --locale         Locale
-  -o, --output-dir     Output dir
-  -r, --resources-dir  Resources dir
-  -p, --persona-file   Persona file
-  -v, --version        Version
-  -h, --help           Help
-")))
-        (begin
-          (render-curriculum #:locale (string->symbol locale-wanted)
-                             #:output-dir output-wanted
-                             #:resources-dir resources-wanted
-                             #:persona-file persona-file)))))
+    (render-curriculum #:locale (string->symbol locale)
+                             #:output-dir output-dir
+                             #:resources-dir resources-dir
+                             #:persona-file persona-file)))
