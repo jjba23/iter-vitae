@@ -28,29 +28,12 @@ show_help() {
   echo "  $(basename "$0") --locale es --persona-file ~/Documents/my_cv_data.scm --output-dir ~/Documents/generated_cvs"
 }
 
-if ! command -v guile &> /dev/null; then
-  echo "Error: Guile is not installed or not found in your PATH." >&2
-  echo "Please install Guile to run this script." >&2
-  exit 1
-fi
-
-if [[ ! -f "$GUILE_CODE_FILE" ]]; then
-  echo "Error: Guile source file '$GUILE_CODE_FILE' not found." >&2
-  echo "Please ensure '$GUILE_CODE_FILE' is accessible at that path." >&2
-  exit 1
-fi
-
 LOCALE=""
 OUTPUT_DIR=""
 PERSONA_FILE=""
 HELP_REQUESTED=0
 
 PARSED_OPTIONS=$(getopt -n "iter-vitae" -o l:o:p:h --long locale:,output-dir:,persona-file:,help -- "$@")
-
-if [[ $? -ne 0 ]]; then
-  show_help
-  exit 1
-fi
 
 eval set -- "$PARSED_OPTIONS"
 
