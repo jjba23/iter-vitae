@@ -13,7 +13,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.0.19")
+  (version "0.0.21")
   (source (local-file %source-dir
                       #:recursive? #t
                       #:select? (git-predicate %source-dir)))

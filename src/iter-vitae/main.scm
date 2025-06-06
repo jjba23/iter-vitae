@@ -49,7 +49,7 @@
                                      'version #f))
          (persona-file (option-ref options
                                    'persona-file ""))
-         (output-wanted (option-ref options 'output-dir #f))
+         (output-wanted (option-ref options 'output-dir "./dist"))
          (resources-wanted (option-ref options 'resources-dir #f))
          (locale-wanted (option-ref options
                                     'locale "en")))
