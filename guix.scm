@@ -15,7 +15,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.3.11")
+  (version "0.3.12")
   (source
    (local-file %source-dir
                #:recursive? #t
@@ -32,9 +32,11 @@
                           (share (string-append (assoc-ref outputs "out")
                                                 "/share")))
                       (mkdir-p (string-append share "/scripts"))
-                      (mkdir-p (string-append share "/resources"))                      
-                      (install-file "resources/help.txt" (string-append share "/resources/help.txt"))
-                      (copy-recursively "resources/js" (string-append share "/resources/js"))
+                      (mkdir-p (string-append share "/resources"))
+                      (install-file "resources/help.txt"
+                                    (string-append share "/resources/help.txt"))
+                      (copy-recursively "resources/js"
+                                        (string-append share "/resources/js"))
                       (install-file "scripts/iter-vitae" bin)
                       (install-file "scripts/log.sh"
                                     (string-append share "/scripts/"))

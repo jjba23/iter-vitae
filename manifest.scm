@@ -15,4 +15,25 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(specifications->manifest '("guile-next" "make" "darkhttpd" "guile-ares-rs"))
+(use-modules (guix packages)
+             (gnu)
+             (guix utils)
+             (guix git-download)
+             (guix download)
+             (gnu packages guile)
+             (gnu packages nss)
+             (gnu packages web)
+             (gnu packages gnupg)
+             (gnu packages guile-xyz)
+             (gnu packages pkg-config)
+             (guix build-system guile)
+             (gnu packages linux)
+             (gnu packages compression)
+             (gnu packages texinfo)
+             (gnu packages autotools)
+             ((guix licenses)
+              #:prefix license:))
+
+(packages->manifest (list (specification->package "make") guile-next
+                          darkhttpd guile-ares-rs))
+
