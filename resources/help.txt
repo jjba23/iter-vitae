@@ -14,7 +14,7 @@ Options:
     -h, --help                   Display this help message and exit.
 
 Examples:
-    iter-vitae -l nl -p ~/Documents/my-cv.scm -o ~/Documents/dist
+    iter-vitae -l nl -p ~/documents/my-cv.scm -o ~/documents/dist
     
     iter-vitae --locale en \
         --persona-file ~/Documents/my-cv.scm \
