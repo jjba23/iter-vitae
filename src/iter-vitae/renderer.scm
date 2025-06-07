@@ -33,8 +33,7 @@
   ;; choose person to generate curriculum vitae for
   (load persona-file)
 
-  (let* ((clean-dist-cmd (format #f "rm -rfv ~a/js/tailwind.js ~a/index.html"
-                                 output-dir output-dir))
+  (let* ((clean-dist-cmd (format #f "rm -rfv ~a" output-dir ))
          (mkdir-dist-cmd (format #f "mkdir -p ~a/js" output-dir))
          (cp-to-dist-cmd (format #f
                           "cp -rfv ~a/js/tailwind.js ~a/js/tailwind.js"
