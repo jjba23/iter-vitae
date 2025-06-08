@@ -15,7 +15,7 @@
 
 (package
   (name "iter-vitae")
-  (version "0.3.12")
+  (version "0.3.15")
   (source
    (local-file %source-dir
                #:recursive? #t

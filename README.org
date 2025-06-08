@@ -46,37 +46,23 @@ This sample demonstrates the capabilities of the tool in generating clean, reada
 
 ---------------
 
-* Installing
+* Getting started
 
-Iter vitae is quite minimalistic, and has very few dependencies.
+Iter vitae is quite minimalistic, and has very few dependencies. To use Iter-Vitae you'll need:
 
-All you really need is something that can run Guile Scheme (3.0+). Check the ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
+- *Guix*: The Guix package manager will ensure a reproducible working software, and will manage all needed dependencies for you.
+-  *Guile Scheme:*  This entire program is written using the official GNU extension language, Guile Scheme.
+- Any web browser of your choice (ideally which can also print to PDF)    
 
-A (WIP 🚧) Guix channel is also offered, to use as library, and to allow installing to Guix systems:
-
-#+begin_src scheme
-(channel
-   (name 'iter-vitae)
-   (url "https://codeberg.org/jjba23/iter-vitae.git")
-   (branch "trunk")
-   (introduction
-    (make-channel-introduction "738a940f72e9a0053272c75e550cb06b6726a5e0"
-                               (openpgp-fingerprint
-                                "83BC 6E1C 8726 B8C2 97F8 D16E 24F4 6738 CE11 4AF6"))))
-#+end_src
-
-
-----------------
-
-* Running
-
-For detailed instructions on building and running the tool, refer to the Makefile.
-
-The only dependencies currently are Guile Scheme (3.0 or newer), the built-in SXML library, and GNU Make.
-
-More flexible and configurable running mechanisms are in the making, but for now some helpers are defined like ~make persona-joe-en~. Check the ~Makefile~ for more.
+Check the ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
+
+iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options. You should point iter-vitae to your configuration file:
+
+#+begin_src shell
+iter-vitae --locale nl --personal-file ~/documents/my-cv.scm --output-dir ~/documents/dist
+#+end_src
 
 
 --------------
@@ -104,4 +90,17 @@ In summary, we foster an inclusive, respectful, and cooperative environment for 
 
 -----------
 
+* Other notes
 
+A (WIP 🚧) Guix channel is in the making, to use iter-vitae as library.
+
+#+begin_src scheme
+(channel
+   (name 'iter-vitae)
+   (url "https://codeberg.org/jjba23/iter-vitae.git")
+   (branch "trunk")
+   (introduction
+    (make-channel-introduction "738a940f72e9a0053272c75e550cb06b6726a5e0"
+                               (openpgp-fingerprint
+                                "83BC 6E1C 8726 B8C2 97F8 D16E 24F4 6738 CE11 4AF6"))))
+#+end_src
