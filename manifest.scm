@@ -34,6 +34,6 @@
              ((guix licenses)
               #:prefix license:))
 
-(packages->manifest (list (specification->package "make") guile-next
-                          darkhttpd guile-ares-rs))
+(packages->manifest (list (specification->package "make") guile-next darkhttpd
+                          guile-ares-rs))
 

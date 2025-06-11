@@ -262,17 +262,18 @@ formatting."
 
 (begin
   (define* (iter-vitae-html-template #:key title body locale persona)
-    `(html (head (title ,title)
-                 (link (@ (rel preconnect)
-                          (href "https://fonts.googleapis.com")))
-                 (link (@ (rel preconnect)
-                          (href "https://fonts.gstatic.com")
-                          (crossorigin "")))
-                 (link (@ (rel stylesheet)
-                          (href
-                           "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
-                 (style (@ (type "text/tailwindcss"))
-                  "
+    `("<!DOCTYPE html>" (html (head (title ,title)
+                                    (link (@ (rel preconnect)
+                                             (href
+                                              "https://fonts.googleapis.com")))
+                                    (link (@ (rel preconnect)
+                                             (href "https://fonts.gstatic.com")
+                                             (crossorigin "")))
+                                    (link (@ (rel stylesheet)
+                                             (href
+                                              "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
+                                    (style (@ (type "text/tailwindcss"))
+                                     "
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
@@ -280,19 +281,23 @@ formatting."
   --font-mono: \"IBM Plex Mono\", monospace;
 }
 ")
-                 (link (@ (rel "stylesheet")
-                          (href
-                           "https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css")))
-                 (meta (@ (name "viewport")
-                          (content "width=device-width, initial-scale=1.0")))
-                 (meta (@ (charset "UTF-8")))
-                 (script (@ (src "js/tailwind.js")) ()))
-           (body (@ (class "break-words"))
-                 (div (@ (class ,(mk-class '(container mx-auto py-4 sm:py-6
-                                                       px-3 sm:px-6))))
-                      ,@body
-                      ,(iter-vitae-page-footer #:persona persona
-                                               #:locale locale)))))
+                                    (link (@ (rel stylesheet)
+                                             (href "/css/phosphor.css")) "")
+                                    (meta (@ (name "viewport")
+                                             (content
+                                              "width=device-width, initial-scale=1.0")))
+                                    (meta (@ (charset "UTF-8")))
+                                    (script (@ (src "js/tailwind.js")) ""))
+                              (body (@ (class "break-words"))
+                                    (div (@ (class ,(mk-class '(container
+                                                                mx-auto py-4
+                                                                sm:py-6 px-3
+                                                                sm:px-6))))
+                                         ,@body
+                                         ,(iter-vitae-page-footer #:persona
+                                                                  persona
+                                                                  #:locale
+                                                                  locale))))))
   (export iter-vitae-html-template))
 
 (begin
@@ -330,7 +335,7 @@ formatting."
 
 (define* (render-iter-vitae-email #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(bx bxs-envelope text-stone-600 text-xl))))
+         (i (@ (class ,(mk-class '(ph ph-envelope text-stone-600 text-xl))))
             "")
          (small (@ (class ,small-face))
                 ,(assq-ref (assq-ref persona
@@ -339,7 +344,7 @@ formatting."
 
 (define* (render-iter-vitae-phone-number #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(bx bxs-phone text-stone-600 text-xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-phone text-stone-600 text-xl)))) "")
          (small (@ (class ,small-face))
                 ,(assq-ref (assq-ref persona
                                      'personal-contact)
@@ -347,7 +352,7 @@ formatting."
 
 (define* (render-iter-vitae-blog-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(bx bx-rss text-stone-600 xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-rss text-stone-600 xl)))) "")
          (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
@@ -360,7 +365,7 @@ formatting."
 
 (define* (render-iter-vitae-code-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(bx bx-code-alt text-stone-600 text-xl))))
+         (i (@ (class ,(mk-class '(ph ph-code text-stone-600 text-xl))))
             "")
          (a (@ (class ,small-a-face)
                (target "_blank")
@@ -374,7 +379,7 @@ formatting."
 
 (define* (render-iter-vitae-linked-in-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(bx bx-link text-stone-600 text-xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-link text-stone-600 text-xl)))) "")
          (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
@@ -504,7 +509,7 @@ formatting."
                                       #:persona persona)
 
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(bx bxs-briefcase text-stone-600 text-xl))))
+           (i (@ (class ,(mk-class '(ph ph-briefcase text-stone-600 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -515,7 +520,7 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(bx bxs-book-open text-stone-600 text-xl))))
+           (i (@ (class ,(mk-class '(ph ph-student text-stone-600 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -526,6 +531,8 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
+            (i (@ (class ,(mk-class '(ph ph-car text-stone-600 text-xl))))
+              "")
            (h4 (@ (class ,h4-face))
                ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
@@ -537,7 +544,7 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(bx bxs-music text-stone-600 text-xl))))
+           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-stone-600 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona

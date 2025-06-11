@@ -33,11 +33,14 @@
   ;; choose person to generate curriculum vitae for
   (load persona-file)
 
-  (let* ((clean-dist-cmd (format #f "rm -rfv ~a" output-dir ))
-         (mkdir-dist-cmd (format #f "mkdir -p ~a/js" output-dir))
-         (cp-to-dist-cmd (format #f
-                          "cp -rfv ~a/js/tailwind.js ~a/js/tailwind.js"
-                          resources-dir output-dir))
+  (let* ((clean-dist-cmd (format #f "rm -rfv ~a" output-dir))
+         (mkdir-dist-cmd (format #f "mkdir -p ~a" output-dir))
+         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources-dir
+                                        output-dir)
+                                (format #f "cp -rfv ~a/css ~a/css"
+                                        resources-dir output-dir)
+                                (format #f "cp -rfv ~a/ttf ~a/ttf"
+                                        resources-dir output-dir)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
                                   (get-setting 'display-name))
@@ -73,8 +76,9 @@
     (log-info "executing: ~a" mkdir-dist-cmd)
     (syscall mkdir-dist-cmd)
 
-    (log-info "executing: ~a" cp-to-dist-cmd)
-    (syscall cp-to-dist-cmd)
+    (map (lambda (c)
+           (log-info "executing: ~a" c)
+           (syscall c)) cp-to-dist-cmds)
 
     (with-output-to-file (format #f "~a/index.html" output-dir)
       (lambda ()
