@@ -272,8 +272,10 @@ formatting."
                                     (link (@ (rel stylesheet)
                                              (href
                                               "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
-    (link (@(rel stylesheet)(type text/css)
-           (href "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
+                                    (link (@ (rel stylesheet)
+                                             (type text/css)
+                                             (href
+                                              "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
                                     (style (@ (type "text/tailwindcss"))
                                      "
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -365,8 +367,7 @@ formatting."
 
 (define* (render-iter-vitae-code-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-code text-stone-600 text-xl))))
-            "")
+         (i (@ (class ,(mk-class '(ph ph-code text-stone-600 text-xl)))) "")
          (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
@@ -531,8 +532,7 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
-            (i (@ (class ,(mk-class '(ph ph-car text-stone-600 text-xl))))
-              "")
+           (i (@ (class ,(mk-class '(ph ph-car text-stone-600 text-xl)))) "")
            (h4 (@ (class ,h4-face))
                ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
@@ -544,8 +544,8 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-stone-600 text-xl))))
-              "")
+           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-stone-600
+                                        text-xl)))) "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                           'titles)
