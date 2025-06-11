@@ -36,11 +36,7 @@
   (let* ((clean-dist-cmd (format #f "rm -rfv ~a" output-dir))
          (mkdir-dist-cmd (format #f "mkdir -p ~a" output-dir))
          (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources-dir
-                                        output-dir)
-                                (format #f "cp -rfv ~a/css ~a/css"
-                                        resources-dir output-dir)
-                                (format #f "cp -rfv ~a/ttf ~a/ttf"
-                                        resources-dir output-dir)))
+                                        output-dir)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
                                   (get-setting 'display-name))
