@@ -37,6 +37,10 @@
                                     (string-append share "/resources/help.txt"))
                       (copy-recursively "resources/js"
                                         (string-append share "/resources/js"))
+                      (copy-recursively "resources/ttf"
+                                        (string-append share "/resources/ttf"))
+                      (copy-recursively "resources/css"
+                                        (string-append share "/resources/css"))
                       (install-file "scripts/iter-vitae" bin)
                       (install-file "scripts/log.sh"
                                     (string-append share "/scripts/"))
