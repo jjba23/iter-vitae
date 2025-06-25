@@ -48,7 +48,8 @@ This sample demonstrates the capabilities of the tool in generating clean, reada
 
 * Getting started
 
-Iter vitae is quite minimalistic, and has very few dependencies. To use Iter-Vitae you'll need:
+Iter Vitae is officially distributed via the Guix package manager as ~iter-vitae~. You can alternatively choose to download it from source, useful for developing it or customizing it. 
+In that case you'll need:
 
 - *Guix*: The Guix package manager will ensure a reproducible working software, and will manage all needed dependencies for you.
 -  *Guile Scheme:*  This entire program is written using the official GNU extension language, Guile Scheme.
