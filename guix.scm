@@ -17,33 +17,11 @@
 (define-public iter-vitae
   (package
     (name "iter-vitae")
-    (version "0.3.26")
+    (version "0.3.30")
     (source
      (local-file %source-dir
-               #:recursive? #t
-               #:select? (git-predicate %source-dir))
-     ;; (origin
-     ;;   (method git-fetch)
-     ;;   (uri (git-reference
-     ;;         (url "https://codeberg.org/jjba23/iter-vitae.git")
-     ;;         (commit (string-append "v" version))))
-     ;;   (file-name (git-file-name name version))
-     ;;   (sha256
-     ;;    (base32 "053i58l23dlmsn8vwsxbvmwn036jjygf878rhbshj31zdwaxka4h"))
-     ;;   (modules '((guix build utils)))
-     ;;   (snippet '(begin
-     ;;               ;; delete irrelevant files for package installation
-     ;;               (delete-file "guix.scm")
-     ;;               (delete-file "manifest.scm")
-     ;;               (delete-file "Makefile")
-     ;;               (delete-file "README.org")
-     ;;               (delete-file "COPYING")
-     ;;               (delete-file ".gitignore")
-     ;;               (delete-file ".guix-channel")
-     ;;               (delete-file ".guix-authorizations")
-     ;;               (delete-file-recursively "populus")
-     ;;               (delete-file-recursively ".woodpecker"))))
-     )
+                 #:recursive? #t
+                 #:select? (git-predicate %source-dir)))
     (arguments
      `(#:source-directory "src"
        #:phases (modify-phases %standard-phases
@@ -68,22 +46,18 @@
     (native-inputs (list guile-3.0))
     (inputs (list guile-3.0 bash-minimal))
     (synopsis
-     "Resume / @acronym{CV, Curriculum Vitae} generator powered by HTML, SXML and Guile Scheme")
+     "Resume / @acronym{CV, Curriculum Vitae} generator written in Guile Scheme")
     (description
-     "Iter Vitae is a command-line utility that allows you togenerate an attractive,
-modern and customizable Resume / @acronym{CV, Curriculum Vitae},
-where you define all your details in S-expressions (in Scheme code).
+     "Iter Vitae is a command-line utility that allows you to generate a
+Resume / @acronym{CV, Curriculum Vitae}, by reading a S-expression version
+of your CV details (in Scheme code).
+
 With a @acronym{MVC, model-view-controller} approach,
 it lets you separate the data from the presentation (how the document looks).
 
 This tool creates a web-site version of your CV (using SXML and TailwindCSS),
 and is designed for long-term use, so you can update and evolve your CV over the years.
-
-The software supports multilingual content and is fully extensible, allowing you to
-add new data entries, customize the design, and easily support additional languages.
-
-Everyone has the right to create a professional-looking Resume/CV,
-using free software and with total freedom.")
+The program supports multilingual content and is fully extensible.")
     (home-page "https://codeberg.org/jjba23/iter-vitae")
     (license license:agpl3+)))
 
