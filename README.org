@@ -59,10 +59,10 @@ Check the ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
 
-iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options. You should point iter-vitae to your configuration file:
+iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options (also visible in ~resources/help.txt~). You should point iter-vitae to the absolute path to  your configuration file:
 
 #+begin_src shell
-iter-vitae --locale nl --personal-file ~/documents/my-cv.scm --output-dir ~/documents/dist
+iter-vitae --locale nl --persona-file /home/me/documents/my-cv.scm --output-dir /home/me/documents/dist
 #+end_src
 
 

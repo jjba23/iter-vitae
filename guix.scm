@@ -17,7 +17,7 @@
 (define-public iter-vitae
   (package
     (name "iter-vitae")
-    (version "0.3.30")
+    (version "0.3.31")
     (source
      (local-file %source-dir
                  #:recursive? #t
