@@ -6,7 +6,7 @@ Iter Vitae:
 Usage: iter-vitae [OPTIONS]
 
 Options:
-    -p, --persona-file FILE      Specify the Scheme config - persona file (required).    
+    -p, --persona-file FILE      Specify the absolute path to Scheme config - persona file (required).    
     -l, --locale LOCALE          Specify the locale (e.g., 'en', 'nl').
                                      Defaults to 'en'
     -o, --output-dir DIRECTORY   Specify the output directory for the generated CV.
