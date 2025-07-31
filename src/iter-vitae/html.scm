@@ -316,10 +316,10 @@ formatting."
            (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
                                             justify-center))))
                 (small (@ (class ,small-face))
-                 "this Curriculum Vitae was rendered with "
-                 (a (@(class ,small-a-face)
-                     (href "https://codeberg.org/jjba23/iter-vitae"))
-                    "Lisp (Guile Scheme) code"))))))
+                       "this Curriculum Vitae was rendered with "
+                       (a (@ (class ,small-a-face)
+                             (href "https://codeberg.org/jjba23/iter-vitae"))
+                          "Lisp (Guile Scheme) code"))))))
   (export iter-vitae-page-footer))
 
 (define* (render-iter-vitae-display-name #:key locale persona)
@@ -327,19 +327,19 @@ formatting."
        ,(assq-ref-all-or-lang (assq-ref persona
                                         'display-name) locale)))
 
-
 (define* (render-iter-vitae-job-title #:key locale persona)
-  (let* ((jt (assq-ref persona 'job-title-link)))
+  (let* ((jt (assq-ref persona
+                       'job-title-link)))
     (cond
-   ((list? jt)
-    `(a (@ (class ,h2-special-face)
-           (href ,(assq-ref-all-or-lang jt locale)))
-      ,(assq-ref-all-or-lang (assq-ref persona
-                                       'job-title) locale)))
-   (else `(p (@ (class ,h2-special-face))
-      ,(assq-ref-all-or-lang (assq-ref persona
-                                       'job-title) locale)))))
-  
+      ((list? jt)
+       `(a (@ (class ,h2-special-face)
+              (href ,(assq-ref-all-or-lang jt locale)))
+           ,(assq-ref-all-or-lang (assq-ref persona
+                                            'job-title) locale)))
+      (else `(p (@ (class ,h2-special-face))
+                ,(assq-ref-all-or-lang (assq-ref persona
+                                                 'job-title) locale)))))
+
   )
 
 (define* (render-iter-vitae-email #:key locale persona)
@@ -492,11 +492,28 @@ formatting."
        (assq-ref persona
                  'education)))
 
+(define* (render-iter-vitae-languages #:key locale persona)
+  `(div (h4 (@ (class ,h4-face)) "LANGUAGES")
+        ,(map (lambda (l)
+                `((div (@ (class ,(mk-class '(flex flex-row gap-4 justify-between align-center))))
+                       (p ,(assq-ref-all-or-lang (assq-ref l
+                                                           'name) locale))
+                       (div (@(class ,(mk-class '(flex flex-row gap-1 items-center align-center)))) (p ,(format #f "~a"
+                                        (assq-ref (assq-ref l
+                                                            'proficiency)
+                                                  'speaking)))
+                            (i (@ (class ,(mk-class '(ph ph-star
+                                                         text-stone-600
+                                                         text-sm)))) "")))))
+              (assq-ref persona
+                        'languages))))
+
 (begin
   (define* (iter-vitae-main-body #:key locale persona)
     `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6
                                        justify-between))))
-           (div (@(class ,(mk-class '(flex flex-col gap-3 align-center items-center))))
+           (div (@ (class ,(mk-class '(flex flex-col gap-3 align-center
+                                            items-center))))
                 ,(render-iter-vitae-display-name #:locale locale
                                                  #:persona persona)
                 ,(render-iter-vitae-job-title #:locale locale
@@ -510,11 +527,11 @@ formatting."
                 ,(render-iter-vitae-address-lines #:locale locale
                                                   #:persona persona)))
       
-      (div (@(class ,(mk-class '(mt-8))))
+      (div (@ (class ,(mk-class '(mt-8))))
            (h4 (@ (class ,h4-face))
-          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                     'titles)
-                                           'short-intro) locale)))
+               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                          'titles)
+                                                'short-intro) locale)))
       ,(render-iter-vitae-short-intro #:locale locale
                                       #:persona persona)
 
@@ -538,6 +555,11 @@ formatting."
                                                 'education) locale)))
       ,(render-iter-vitae-education #:locale locale
                                     #:persona persona)
+
+      (hr (@ (class ,hr-face)))
+
+      ,(render-iter-vitae-languages #:persona persona
+                                    #:locale locale)
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
