@@ -42,6 +42,8 @@
                                   (get-setting 'display-name))
                     (job-title unquote
                                (get-setting 'job-title))
+                    (job-title-link unquote
+                                    (get-setting 'job-title-link))
                     (personal-contact unquote
                                       (get-setting 'personal-contact))
                     (personal-links unquote

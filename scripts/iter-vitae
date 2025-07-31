@@ -29,76 +29,82 @@
 #
 # Some of the rationale behind the `SCRIPT_DIR` and `STORE_DIR`
 # can be explained due to the need of reliably and reproducibly
-# deploying source code and other resources to the store
+# deploying source code and other resources to the Guix store
 # and have access to those at runtime.
 
 set -euo pipefail
 
-SCRIPT_DIR=$(dirname "$0")
-STORE_DIR=$(readlink -f "$SCRIPT_DIR/..")
-SCHEME_SOURCES_DIR="$STORE_DIR/share/guile/site/3.0"
-RESOURCES_DIR="$STORE_DIR/share/resources"
-SCRIPTS_DIR="$STORE_DIR/share/scripts"
+script_dir=$(dirname "$0")
+store_dir=$(readlink -f "$script_dir/..")
+scheme_sources_dir="${store_dir}/share/guile/site/3.0"
+resources_dir="${store_dir}/share/resources"
+scripts_dir="${store_dir}/share/scripts"
 
-source "$SCRIPTS_DIR/log.sh"
+source "${scripts_dir}/log.sh"
 
-show-help() {
-    cat "$RESOURCES_DIR/help.txt"
+show_help() {
+  cat "${resources_dir}/help.txt"
 }
 
-PARSED_OPTIONS=$(getopt -n "iter-vitae" -o l:o:p:h --long locale:,output-dir:,persona-file:,help -- "$@")
-eval set -- "$PARSED_OPTIONS"
+parsed_options=$(getopt -n "iter-vitae" -o l:o:p:h \
+  --long locale:,output-dir:,persona-file:,help -- "$@")
 
-LOCALE=""
-OUTPUT_DIR=""
-PERSONA_FILE=""
+eval set -- "${parsed_options}"
 
-while true; do
-  case "$1" in
-    -l|--locale)
-      LOCALE="$2"
-      shift 2
-      ;;
-    -o|--output-dir)
-      OUTPUT_DIR="$2"
-      shift 2
-      ;;
-    -p|--persona-file)
-      PERSONA_FILE="$2"
-      shift 2
-      ;;
-    -h|--help)
-      show-help
-      exit 0
-      ;;
-    --) 
-      shift
-      break
-      ;;
-    *)
-      log-error "Internal error: unrecognized option '$1'"
-      show-help
-      exit 1
-      ;;
-  esac
-done
+locale_arg=""
+output_dir_arg=""
+persona_file_arg=""
 
-if [[ -z "$PERSONA_FILE" ]]; then
-  log-error "Error: The persona file is required. Use -p or --persona-file." >&2
-  show-help
-  exit 1
-fi
-
-GUILE_CMD_ARGS=(
-  "-L" "$SCHEME_SOURCES_DIR"
+guile_cmd_args=(
+  "-L" "${scheme_sources_dir}"
   "-c" "((@(iter-vitae main) main))"
 )
 
-[[ -n "$LOCALE" ]] && GUILE_CMD_ARGS+=("--locale" "$LOCALE")
-[[ -n "$OUTPUT_DIR" ]] && GUILE_CMD_ARGS+=("--output-dir" "$OUTPUT_DIR")
+while true; do
+  case "${1}" in
+  -l | --locale)
+    locale_arg="${2}"
+    [[ -n "${locale_arg}" ]] && guile_cmd_args+=("--locale" "${locale_arg}")
+    shift 2
+    ;;
+  -o | --output-dir)
+    output_dir_arg="${2}"
+    [[ -n "${output_dir_arg}" ]] && guile_cmd_args+=("--output-dir" "${output_dir_arg}")
+    shift 2
+    ;;
+  -p | --persona-file)
+    persona_file_arg="${2}"
+    shift 2
+    ;;
+  -h | --help)
+    show_help
+    exit 0
+    ;;
+  --)
+    shift
+    break
+    ;;
+  *)
+    log_error "Internal error: unrecognized option '${1}'"
+    show_help
+    exit 1
+    ;;
+  esac
+done
 
-GUILE_CMD_ARGS+=("--persona-file" "$PERSONA_FILE")
-GUILE_CMD_ARGS+=("--resources-dir" "$RESOURCES_DIR")
+# The Curriculum Vitae file
+if [[ -z "${persona_file_arg}" ]]; then
+  log_error "Error: The persona file is required. Use -p or --persona-file." >&2
+  show_help
+  exit 1
+fi
 
-log-info "Running Guile command: guile ${GUILE_CMD_ARGS[*]}"
-exec guile "${GUILE_CMD_ARGS[@]}"
+guile_cmd_args+=("--persona-file" "${persona_file_arg}")
+
+# CSS, JS, other resources...
+guile_cmd_args+=("--resources-dir" "${resources_dir}")
+
+log_info "Starting Iter Vitae: guile ${guile_cmd_args[*]}"
+
+# Run Guile application
+exec guile "${guile_cmd_args[@]}"
