@@ -56,6 +56,8 @@
                                        (get-setting 'interests-hobbies))
                     (languages unquote
                                (get-setting 'languages))
+                     (language-proficiency unquote
+                               (get-setting 'language-proficiency))
                     (education unquote
                                (get-setting 'education))
                     (titles unquote

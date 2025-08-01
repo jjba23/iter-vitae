@@ -492,21 +492,46 @@ formatting."
        (assq-ref persona
                  'education)))
 
+
+(define* (language-proficiency->string #:key persona locale level)
+  (let* ((lp (assq-ref persona 'language-proficiency))
+         (ll (assq-ref-all-or-lang lp locale)))
+      (assoc-ref ll level)))
+
 (define* (render-iter-vitae-languages #:key locale persona)
   `(div (h4 (@ (class ,h4-face)) "LANGUAGES")
-        ,(map (lambda (l)
-                `((div (@ (class ,(mk-class '(flex flex-row gap-4 justify-between align-center))))
-                       (p ,(assq-ref-all-or-lang (assq-ref l
-                                                           'name) locale))
-                       (div (@(class ,(mk-class '(flex flex-row gap-1 items-center align-center)))) (p ,(format #f "~a"
-                                        (assq-ref (assq-ref l
-                                                            'proficiency)
-                                                  'speaking)))
-                            (i (@ (class ,(mk-class '(ph ph-star
-                                                         text-stone-600
-                                                         text-sm)))) "")))))
-              (assq-ref persona
-                        'languages))))
+        (table (@ (class ,table-face))
+               (thead  (tr (@(class ,top-row-face)) (th "")
+                          (th "Speaking")
+                          (th "Reading")
+                          (th "Writing")))
+               (tbody ,(map (lambda (l)
+                              `((tr (td (@(class ,td-face)) (em ,(assq-ref-all-or-lang (assq-ref l
+                                                                         'name)
+                                                               locale)))
+                                    (td (@(class ,td-face)) ,(language-proficiency->string #:persona persona
+                                                                       #:locale locale
+                                                                       #:level (assq-ref
+                                                                        (assq-ref
+                                                                         l
+                                                                         'proficiency)
+                                                                        'speaking)))
+                                    (td (@(class ,td-face)) ,(language-proficiency->string #:persona persona
+                                                                       #:locale locale
+                                                                       #:level (assq-ref
+                                                                        (assq-ref
+                                                                         l
+                                                                         'proficiency)
+                                                                        'reading)))
+                                    (td (@(class ,td-face)) ,(language-proficiency->string #:persona persona
+                                                                       #:locale locale
+                                                                       #:level (assq-ref
+                                                                        (assq-ref
+                                                                         l
+                                                                         'proficiency)
+                                                                        'writing))))))
+                            (assq-ref persona
+                                      'languages))))))
 
 (begin
   (define* (iter-vitae-main-body #:key locale persona)

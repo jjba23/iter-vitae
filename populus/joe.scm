@@ -50,6 +50,16 @@
     ((en . "You might also find me doing CrossFit, sanding furniture down, removing weeds from the garden, or improving my house.")
      (nl . "Ik ben ook te vinden in de CrossFit gym, meubels aan het schuren, onkruid weg aan het halen of mijn huis aan het verbeteren."))))
 
+(define language-proficiency
+  `((en (1 . "beginner")
+        (2 . "good")
+        (3 . "professional")
+        (4 . "native"))
+    (nl (1 . "beginner")
+        (2 . "goed")
+        (3 . "werkbaar")
+        (4 . "native"))))
+
 (define languages
   `((en (name (en . "English")
               (nl . "Engels"))

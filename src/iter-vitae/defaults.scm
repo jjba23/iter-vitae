@@ -124,6 +124,19 @@
 (define languages
   `())
 
+;; Language proficiency levels
+;;
+;; `((en (1 . "beginner")
+;;       (2 . "good")
+;;       (3 . "professional")
+;;       (4 . "native"))
+;;   (nl (1 . "beginner")
+;;       (2 . "goed")
+;;       (3 . "werkbaar")
+;;       (4 . "native")))
+(define language-proficiency
+  `())
+
 ;; Education and certifications of persona
 ;;
 ;; example:
