@@ -42,6 +42,8 @@
                                   (get-setting 'display-name))
                     (job-title unquote
                                (get-setting 'job-title))
+                    (job-title-link unquote
+                                    (get-setting 'job-title-link))
                     (personal-contact unquote
                                       (get-setting 'personal-contact))
                     (personal-links unquote
@@ -54,6 +56,8 @@
                                        (get-setting 'interests-hobbies))
                     (languages unquote
                                (get-setting 'languages))
+                     (language-proficiency unquote
+                               (get-setting 'language-proficiency))
                     (education unquote
                                (get-setting 'education))
                     (titles unquote

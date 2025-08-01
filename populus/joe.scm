@@ -16,23 +16,13 @@
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 (define-module (iter-vitae persona)
-  #:declarative? #t
-  #:export (display-name job-title
-                         personal-contact
-                         personal-links
-                         address-lines
-                         driver-licenses
-                         interests-hobbies
-                         languages
-                         education
-                         titles
-                         short-intro
-                         jobs
-                         font
-                         palette))
+  #:declarative? #t)
 
 (define display-name
   `((all . "Josep Bigorra")))
+
+(define job-title-link
+  `((all . "https://en.wikipedia.org/wiki/Software_engineering")))
 
 (define job-title
   `((all . "Software Engineer")))
@@ -60,18 +50,28 @@
     ((en . "You might also find me doing CrossFit, sanding furniture down, removing weeds from the garden, or improving my house.")
      (nl . "Ik ben ook te vinden in de CrossFit gym, meubels aan het schuren, onkruid weg aan het halen of mijn huis aan het verbeteren."))))
 
+(define language-proficiency
+  `((en (1 . "Elementary Proficiency")
+        (2 . "Limited Working Proficiency")
+        (3 . "Professional Proficiency")
+        (4 . "Native / Bilingual"))
+    (nl (1 . "Elementaire Vaardigheid")
+        (2 . "Beperkte Werkvaardigheid")
+        (3 . "Professioneel Vaardig")
+        (4 . "Moedertaal / Tweetalig"))))
+
 (define languages
   `((en (name (en . "English")
               (nl . "Engels"))
         (proficiency (reading . 4)
-                     (speaking . 3)
+                     (speaking . 4)
                      (writing . 4)))
     (nl (name (en . "Dutch")
               (nl . "Nederlands"))
         (proficiency (reading . 3)
                      (speaking . 3)
                      (writing . 2)))
-    (call (name (en . "Catalan")
+    (cat (name (en . "Catalan")
                 (nl . "Catalaans"))
           (proficiency (reading . 4)
                        (speaking . 4)
@@ -124,11 +124,11 @@
 
 (define short-intro
   `(((en . "I am a Software Engineer and love what I do. I'm always ready to learn new things and solve problems, I have a DevOps mindset and I love perfecting my skills and taking on challenges.")
-     (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik ben altijd bereid om nieuwe dingen te leren en problemen oplossen, ik heb een DevOps mindset en ik verbeteren mijn skills graag, en ben niet bang de uitdaging aan te gaan."))
-    ((en . "I moved to the Netherlands in 2019, and I was born in 1996 in Barcelona, Spain.")
-     (nl . "Ik ben in 2019 naar Nederland verhuisd, en ik was in 1996 geboren in Barcelona, Spanje."))
-    ((en . "You could also describe me as a Free Software Advocate, an Emacs user, Guix and Nix enthusiast, Scheme, Lisp, Haskell, Rust, Scala enjoyer, functional programmer, and perfectionist.")
-     (nl . "Je zou mij ook kunnen omschrijven met: Free Software Advocate, GNU Emacs gebruiker, Guix en Nix enthusiast, Scheme, Lisp, Haskell, Rust, Scala genieter, functioneel programmeur, en perfectionistisch."))))
+     (nl . "Ik ben een Software Engineer en ik hou van mijn vak. Ik ben altijd bereid om nieuwe dingen te leren en problemen oplossen, ik heb een DevOps mindset en ik verbeter mijn skills graag, en ben niet bang de uitdaging aan te gaan."))
+    ((en . "I live in the Netherlands since 2019, I was born in 1996 in Barcelona, Spain.")
+     (nl . "Ik woon in Nederland sinds 2019, ik was in 1996 geboren in Barcelona, Spanje."))
+    ((en . "I like working with programming languages like  (λ) Scheme, Lisp, Haskell, Rust, Scala, Bash and many more. I enjoy functional programming and lambdas. Yes I am an Emacs user. Yes I have remapped my Caps to Control. I stand for Free Software, Free Society.")
+     (nl . "Ik werk graag met programmeertalen zoals  (λ) Scheme, Lisp, Haskell, Rust, Scala, Bash en veel anderen. Ik hou van functioneel programmeren en lambda's. Ja, ik ben een Emacs-gebruiker. Ja, ik heb mijn Caps-toets omgebouwd naar Control. Ik sta voor Vrije Software voor een Vrije Samenleving."))))
 
 (define joe-job-pro-warehouse
   `((name (all . "Pro Warehouse B.V."))

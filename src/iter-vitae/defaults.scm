@@ -124,6 +124,19 @@
 (define languages
   `())
 
+;; Language proficiency levels
+;;
+;; `((en (1 . "Elementary Proficiency")
+;;       (2 . "Limited Working Proficiency")
+;;       (3 . "Professional Proficiency")
+;;       (4 . "Native / Bilingual"))
+;;   (nl (1 . "Elementaire Vaardigheid")
+;;       (2 . "Beperkte Werkvaardigheid")
+;;       (3 . "Professioneel Vaardig")
+;;       (4 . "Moedertaal / Tweetalig")))
+(define language-proficiency
+  `())
+
 ;; Education and certifications of persona
 ;;
 ;; example:
@@ -156,6 +169,12 @@
               (nl . "Taalvaardigheid"))
     (my-links (en . "Me on the Internet")
               (nl . "Ik op Internet"))
+    (speaking (en . "Speaking")
+              (nl . "Spreken"))
+    (reading (en . "Reading")
+             (nl . "Lezen"))
+    (writing (en . "Writing")
+             (nl . "Schrijven"))
     (short-intro (en . "Who am I ?")
                  (nl . "Wie ben ik ?"))
     (work-experience (en . "Work experience")

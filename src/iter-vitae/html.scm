@@ -316,13 +316,10 @@ formatting."
            (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
                                             justify-center))))
                 (small (@ (class ,small-face))
-                 "this Curriculum Vitae was rendered with Lisp (Guile Scheme) code"))
-           (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
-                                            justify-center items-center))))
-                (small (@ (class ,small-face)) "find the source code here:")
-                (a (@ (class ,(mk-class '(text-green-900 text-sm font-sans)))
-                      (href "https://codeberg.org/jjba23/iter-vitae"))
-                   "codeberg.org/jjba23/iter-vitae")))))
+                       "this Curriculum Vitae was rendered with "
+                       (a (@ (class ,small-a-face)
+                             (href "https://codeberg.org/jjba23/iter-vitae"))
+                          "Lisp (Guile Scheme) code"))))))
   (export iter-vitae-page-footer))
 
 (define* (render-iter-vitae-display-name #:key locale persona)
@@ -331,9 +328,19 @@ formatting."
                                         'display-name) locale)))
 
 (define* (render-iter-vitae-job-title #:key locale persona)
-  `(p (@ (class ,h2-special-face))
-      ,(assq-ref-all-or-lang (assq-ref persona
-                                       'job-title) locale)))
+  (let* ((jt (assq-ref persona
+                       'job-title-link)))
+    (cond
+      ((list? jt)
+       `(a (@ (class ,h2-special-face)
+              (href ,(assq-ref-all-or-lang jt locale)))
+           ,(assq-ref-all-or-lang (assq-ref persona
+                                            'job-title) locale)))
+      (else `(p (@ (class ,h2-special-face))
+                ,(assq-ref-all-or-lang (assq-ref persona
+                                                 'job-title) locale)))))
+
+  )
 
 (define* (render-iter-vitae-email #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
@@ -485,11 +492,61 @@ formatting."
        (assq-ref persona
                  'education)))
 
+(define* (language-proficiency->string #:key persona locale level)
+  (let* ((lp (assq-ref persona
+                       'language-proficiency))
+         (ll (assq-ref-all-or-lang lp locale)))
+    (assoc-ref ll level)))
+
+(define* (render-iter-vitae-languages #:key locale persona)
+  `(div (table (@ (class ,table-face))
+               (thead (tr (@ (class ,top-row-face))
+                          (th "")
+                          (th (@(class ,th-face)) ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                          'titles)
+                                                'speaking) locale))
+                          (th (@(class ,th-face)) ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                          'titles)
+                                                'reading) locale))
+                          (th (@(class ,th-face)) ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                          'titles)
+                                                'writing) locale))))
+               (tbody ,(map (lambda (l)
+                              `((tr (td (@ (class ,first-td-face))
+                                        (em ,(assq-ref-all-or-lang (assq-ref l
+                                                                    'name)
+                                                                   locale)))
+                                    (td (@ (class ,td-face))
+                                        ,(language-proficiency->string
+                                          #:persona persona
+                                          #:locale locale
+                                          #:level (assq-ref (assq-ref l
+                                                                      'proficiency)
+                                                            'speaking)))
+                                    (td (@ (class ,td-face))
+                                        ,(language-proficiency->string
+                                          #:persona persona
+                                          #:locale locale
+                                          #:level (assq-ref (assq-ref l
+                                                                      'proficiency)
+                                                            'reading)))
+                                    (td (@ (class ,td-face))
+                                        ,(language-proficiency->string
+                                          #:persona persona
+                                          #:locale locale
+                                          #:level (assq-ref (assq-ref l
+                                                                      'proficiency)
+                                                            'writing))))))
+                            (assq-ref persona
+                                      'languages))))))
+
 (begin
   (define* (iter-vitae-main-body #:key locale persona)
     `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6
                                        justify-between))))
-           (div ,(render-iter-vitae-display-name #:locale locale
+           (div (@ (class ,(mk-class '(flex flex-col gap-3 align-center
+                                            items-center))))
+                ,(render-iter-vitae-display-name #:locale locale
                                                  #:persona persona)
                 ,(render-iter-vitae-job-title #:locale locale
                                               #:persona persona))
@@ -502,10 +559,11 @@ formatting."
                 ,(render-iter-vitae-address-lines #:locale locale
                                                   #:persona persona)))
       
-      (h4 (@ (class ,h4-face))
-          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                     'titles)
-                                           'short-intro) locale))
+      (div (@ (class ,(mk-class '(mt-8))))
+           (h4 (@ (class ,h4-face))
+               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                          'titles)
+                                                'short-intro) locale)))
       ,(render-iter-vitae-short-intro #:locale locale
                                       #:persona persona)
 
@@ -529,6 +587,17 @@ formatting."
                                                 'education) locale)))
       ,(render-iter-vitae-education #:locale locale
                                     #:persona persona)
+
+      (hr (@ (class ,hr-face)))
+      (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3 items-center))))
+            (i (@ (class ,(mk-class '(ph ph-translate text-stone-600 text-xl))))
+              "")
+           (h4 (@ (class ,h4-face))
+               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                          'titles)
+                                                'language) locale)))
+      ,(render-iter-vitae-languages #:persona persona
+                                    #:locale locale)
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))

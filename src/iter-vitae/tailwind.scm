@@ -30,13 +30,16 @@
                     small-face
                     address-face
                     small-a-face
-                    h1-face
-                    h2-face
                     h2-special-face
                     h4-face
                     h5-face
                     h5-strong-face
                     h5-em-face
+                    td-face
+                    first-td-face
+                    table-face
+                    th-face
+                    top-row-face
                     display-name-face))
 
 (define hr-face
@@ -55,16 +58,16 @@
   (mk-class '(font-sans text-sm text-stone-700)))
 
 (define small-a-face
-  (mk-class '(my-2 font-sans text-base text-green-900)))
+  (mk-class '(my-2 font-sans font-bold text-sm text-green-800/80 hover:text-green-900 hover:underline)))
 
-(define h1-face
-  (mk-class '(my-3 font-sans text-3xl text-stone-700)))
-
-(define h2-face
-  (mk-class '(my-3 font-sans text-2xl text-stone-700)))
+(define a-face
+  (mk-class '(my-3 font-sans font-bold text-md text-green-800/80 hover:text-green-900 hover:underline)))
 
 (define h2-special-face
-  (mk-class '(my-3 font-sans font-medium text-xl uppercase text-green-700/80)))
+  (mk-class '(my-3 font-sans text-2xl font-light uppercase text-green-800/80)))
+
+(define h2-link-special-face
+  (mk-class '(my-3 hover:underline font-sans font-light text-2xl uppercase text-green-800/80 hover:text-green-900)))
 
 (define h4-face
   (mk-class '(my-2 text-2xl font-light uppercase text-stone-600)))
@@ -79,4 +82,19 @@
   (mk-class '(text-md font-light text-stone-700)))
 
 (define display-name-face
-  (mk-class '(my-3 font-sans text-4xl text-stone-800/90 font-light)))
+  (mk-class '(my-3 font-sans text-5xl text-stone-800/90 font-light)))
+
+(define td-face
+  (mk-class '(px-5 py-1 text-xs)))
+
+(define first-td-face
+  (mk-class '(px-5 py-1 text-sm)))
+
+(define table-face
+  (mk-class '(table-auto bg-stone-100 rounded-xl my-8 shadow-md text-center)))
+
+(define top-row-face
+  (mk-class '(py-2)))
+
+(define th-face
+  (mk-class '(py-1 text-sm font-light uppercase)))
