@@ -36,7 +36,9 @@
                     h5-strong-face
                     h5-em-face
                     td-face
+                    first-td-face
                     table-face
+                    th-face
                     top-row-face
                     display-name-face))
 
@@ -83,10 +85,16 @@
   (mk-class '(my-3 font-sans text-5xl text-stone-800/90 font-light)))
 
 (define td-face
-  (mk-class '(px-5 py-1)))
+  (mk-class '(px-5 py-1 text-xs)))
+
+(define first-td-face
+  (mk-class '(px-5 py-1 text-sm)))
 
 (define table-face
-  (mk-class '(table-auto bg-stone-100 rounded-xl my-8)))
+  (mk-class '(table-auto bg-stone-100 rounded-xl my-8 shadow-md text-center)))
 
 (define top-row-face
   (mk-class '(py-2)))
+
+(define th-face
+  (mk-class '(py-1 text-sm font-light uppercase)))
