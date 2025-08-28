@@ -27,19 +27,19 @@
 (define* (main #:key (args (command-line)))
   (let* ((option-spec '((locale (single-char #\l)
                                 (value #t))
-                        (output-dir (single-char #\o)
-                                    (value #t))
+                        (destination (single-char #\o)
+                                     (value #t))
                         (resources-dir (single-char #\r)
                                        (value #t))
-                        (persona-file (single-char #\p)
-                                      (value #t)
-                                      (required? #t))))
+                        (file (single-char #\p)
+                              (value #t)
+                              (required? #t))))
          
          (options (getopt-long args option-spec))
-         (persona-file (option-ref options
-                                   'persona-file #f))
-         (output-dir (option-ref options
-                                 'output-dir "./dist"))
+         (file (option-ref options
+                           'file #f))
+         (destination (option-ref options
+                                  'destination "./dist"))
          (resources-dir (option-ref options
                                     'resources-dir #f))
          (locale (option-ref options
@@ -47,6 +47,6 @@
     (log-info
      "Iter Vitae: Generate an attractive, modern and customizable Curriculum Vitae/Resume")
     (render-curriculum #:locale (string->symbol locale)
-                       #:output-dir output-dir
+                       #:destination destination
                        #:resources-dir resources-dir
-                       #:persona-file persona-file)))
+                       #:file file)))

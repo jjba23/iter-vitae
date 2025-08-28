@@ -9,6 +9,8 @@
 
 Iter Vitae is a free software project that aims to make it easy and maintainable to generate an attractive, modern and customizable /Curriculum Vitae/ or /resume/ for yourself and to allow you to define the course of your life and career directly in Guile Scheme code.
 
+If you like my work, please support me by [[https://bmc.link/jjbigorra][buying me a cup of coffee ☕]] so I can continue with a lot of motivation.
+
 ---------------
 
 * The Manifesto
@@ -46,7 +48,25 @@ This sample demonstrates the capabilities of the tool in generating clean, reada
 
 ---------------
 
-* Getting started
+* Help
+
+The project's automation is done using [[https://codeberg.org/jjba23/maak][Maak]] , check the ~maak.scm~ file.
+
+Also, find the technical Guile Scheme API documentation for Iter Vitae here:
+
+https://jointhefreeworld.org/api-docs/iter-vitae/API.html
+
+You can see the program's help by invoking it with the ~--help~ argument or looking at ~resources/help.txt~. 
+
+* Installing
+
+iter-vitae is officially distributed via:
+- Guix package manager
+- Podman/Docker images.
+
+/That being said, feel free to use it as you wish, within the terms of the GNU Affero General Public License v3 or newer./
+
+** On Guix
 
 Iter Vitae is officially distributed via the Guix package manager as ~iter-vitae~. You can alternatively choose to download it from source, useful for developing it or customizing it. 
 In that case you'll need:
@@ -55,7 +75,7 @@ In that case you'll need:
 -  *Guile Scheme:*  This entire program is written using the official GNU extension language, Guile Scheme.
 - Any web browser of your choice (ideally which can also print to PDF)    
 
-Check the ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
+Check the ~maak.scm~,  ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
 
@@ -65,6 +85,24 @@ iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options (also vi
 iter-vitae --locale nl --persona-file /home/me/documents/my-cv.scm --output-dir /home/me/documents/dist
 #+end_src
 
+** On Podman/Docker
+
+iter-vitae is also available as a Docker container, from DockerHub (also compatible with Podman).
+
+https://hub.docker.com/repository/docker/jjba23/iter-vitae/general
+
+You can also build images of iter-vitae yourself, using ~guix pack~. See the ~maak.scm~ file for more.
+To load these tarball images, you can do ~podman load < my.tar.gz~
+
+Then you can run ggg from the container, and bind your local filesystem to give access, for example:
+
+#+begin_src shell
+docker container run -v /home/joe:/home/joe \
+    docker.io/jjba23/iter-vitae:latest iter-vitae \
+    --persona-file /home/joe/glyphs.scm \
+    --locale en \
+    --output-dir ./dist
+#+end_src
 
 --------------
 

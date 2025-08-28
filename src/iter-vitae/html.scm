@@ -502,15 +502,24 @@ formatting."
   `(div (table (@ (class ,table-face))
                (thead (tr (@ (class ,top-row-face))
                           (th "")
-                          (th (@(class ,th-face)) ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'speaking) locale))
-                          (th (@(class ,th-face)) ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'reading) locale))
-                          (th (@(class ,th-face)) ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'writing) locale))))
+                          (th (@ (class ,th-face))
+                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
+                                                                persona
+                                                                'titles)
+                                                               'speaking)
+                                                     locale))
+                          (th (@ (class ,th-face))
+                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
+                                                                persona
+                                                                'titles)
+                                                               'reading)
+                                                     locale))
+                          (th (@ (class ,th-face))
+                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
+                                                                persona
+                                                                'titles)
+                                                               'writing)
+                                                     locale))))
                (tbody ,(map (lambda (l)
                               `((tr (td (@ (class ,first-td-face))
                                         (em ,(assq-ref-all-or-lang (assq-ref l
@@ -589,8 +598,9 @@ formatting."
                                     #:persona persona)
 
       (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3 items-center))))
-            (i (@ (class ,(mk-class '(ph ph-translate text-stone-600 text-xl))))
+      (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3
+                                       items-center))))
+           (i (@ (class ,(mk-class '(ph ph-translate text-stone-600 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona

@@ -22,6 +22,7 @@
              (guix download)
              (gnu packages guile)
              (gnu packages nss)
+             (gnu packages admin)
              (gnu packages web)
              (gnu packages gnupg)
              (gnu packages guile-xyz)
@@ -34,6 +35,11 @@
              ((guix licenses)
               #:prefix license:))
 
-(packages->manifest (list (specification->package "make") guile-next darkhttpd
+(packages->manifest (list (specification->package "make")
+                          guile-next
+                          darkhttpd
+                          direvent
+                          texinfo
+                          guile-documenta
                           guile-ares-rs))
 

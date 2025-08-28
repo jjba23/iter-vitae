@@ -58,16 +58,32 @@
   (mk-class '(font-sans text-sm text-stone-700)))
 
 (define small-a-face
-  (mk-class '(my-2 font-sans font-bold text-sm text-green-800/80 hover:text-green-900 hover:underline)))
+  (mk-class '(my-2 font-sans
+                   font-bold
+                   text-sm
+                   text-green-800/80
+                   hover:text-green-900
+                   hover:underline)))
 
 (define a-face
-  (mk-class '(my-3 font-sans font-bold text-md text-green-800/80 hover:text-green-900 hover:underline)))
+  (mk-class '(my-3 font-sans
+                   font-bold
+                   text-md
+                   text-green-800/80
+                   hover:text-green-900
+                   hover:underline)))
 
 (define h2-special-face
   (mk-class '(my-3 font-sans text-2xl font-light uppercase text-green-800/80)))
 
 (define h2-link-special-face
-  (mk-class '(my-3 hover:underline font-sans font-light text-2xl uppercase text-green-800/80 hover:text-green-900)))
+  (mk-class '(my-3 hover:underline
+                   font-sans
+                   font-light
+                   text-2xl
+                   uppercase
+                   text-green-800/80
+                   hover:text-green-900)))
 
 (define h4-face
   (mk-class '(my-2 text-2xl font-light uppercase text-stone-600)))

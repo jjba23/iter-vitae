@@ -23,20 +23,20 @@
   #:use-module (iter-vitae tailwind)
   #:export (render-curriculum))
 
-(define* (render-curriculum #:key locale output-dir resources-dir persona-file)
+(define* (render-curriculum #:key locale destination resources-dir file)
   (log-info "Start rendering curriculum with settings:")
   (log-info "\tlocale: ~a" locale)
-  (log-info "\tpersona-file: ~a" persona-file)
+  (log-info "\tfile: ~a" file)
   (log-info "\tresources-dir: ~a" resources-dir)
-  (log-info "\toutput-dir: ~a" output-dir)
+  (log-info "\tdestination: ~a" destination)
 
   ;; choose person to generate curriculum vitae for
-  (load persona-file)
+  (load file)
 
-  (let* ((clean-dist-cmd (format #f "rm -rfv ~a" output-dir))
-         (mkdir-dist-cmd (format #f "mkdir -p ~a" output-dir))
+  (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
+         (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
          (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources-dir
-                                        output-dir)))
+                                        destination)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
                                   (get-setting 'display-name))
@@ -56,8 +56,8 @@
                                        (get-setting 'interests-hobbies))
                     (languages unquote
                                (get-setting 'languages))
-                     (language-proficiency unquote
-                               (get-setting 'language-proficiency))
+                    (language-proficiency unquote
+                                          (get-setting 'language-proficiency))
                     (education unquote
                                (get-setting 'education))
                     (titles unquote
@@ -80,7 +80,7 @@
            (log-info "executing: ~a" c)
            (syscall c)) cp-to-dist-cmds)
 
-    (with-output-to-file (format #f "~a/index.html" output-dir)
+    (with-output-to-file (format #f "~a/index.html" destination)
       (lambda ()
         (display (iter-vitae-curriculum-page #:locale locale
                                              #:persona persona))))

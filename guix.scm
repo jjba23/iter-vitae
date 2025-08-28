@@ -1,3 +1,20 @@
+;;; Iter Vitae 
+
+;; Copyright © Josep Jesus Bigorra Algaba
+
+;; iter-vitae is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU Affero General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; iter-vitae is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU Affero General Public License for more details.
+
+;; You should have received a copy of the GNU Affero General Public License
+;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+
 (use-modules (guix gexp)
              (guix packages)
              (guix git-download)
@@ -17,7 +34,7 @@
 (define-public iter-vitae
   (package
     (name "iter-vitae")
-    (version "0.3.32")
+    (version "dev")
     (source
      (local-file %source-dir
                  #:recursive? #t
@@ -39,7 +56,7 @@
                         (copy-recursively "resources/js"
                                           (string-append share "/resources/js"))
                         (install-file "scripts/iter-vitae" bin)
-                        (install-file "scripts/log.sh"
+                        (install-file "scripts/log.bash"
                                       (string-append share "/scripts/"))
                         (chmod (string-append bin "/iter-vitae") #o755)))))))
     (build-system guile-build-system)

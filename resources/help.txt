@@ -1,22 +1,31 @@
 
++----------------------------------------------------------------------------+
 Iter Vitae:
     Generate an attractive, modern and customizable Curriculum Vitae / Resume.
-    See more at: https://codeberg.org/jjba23/iter-vitae
     
-Usage: iter-vitae [OPTIONS]
+    See more at: https://codeberg.org/jjba23/iter-vitae
+    Software licensed under the GNU AGPL v3 or newer.
+    
+USAGE: iter-vitae [OPTIONS]
+OPTIONS:
+    -f, --file FILE
+        Specify the absolute path to Scheme config - persona file (required).
+        
+    -l, --locale LOCALE
+        Specify the locale (e.g., 'en', 'nl'). Defaults to 'en'.
+        
+    -d, --destination DIRECTORY
+        Specify the output directory for the generated CV. Defaults to "./dist".
+        
+    -h, --help
+        Display this help message and exit.
 
-Options:
-    -p, --persona-file FILE      Specify the absolute path to Scheme config - persona file (required).    
-    -l, --locale LOCALE          Specify the locale (e.g., 'en', 'nl').
-                                     Defaults to 'en'
-    -o, --output-dir DIRECTORY   Specify the output directory for the generated CV.
-                                     Defaults to "./dist"
-    -h, --help                   Display this help message and exit.
-
-Examples:
-    iter-vitae -l nl -p ~/documents/my-cv.scm -o ~/documents/dist
++----------------------------------------------------------------------------+
+EXAMPLES:
+    iter-vitae -l nl -f ~/documents/my-cv.scm -d ~/documents/dist
     
     iter-vitae --locale en \
-        --persona-file ~/Documents/my-cv.scm \
-        --output-dir ~/Documents
-        
+        --file ~/Documents/my-cv.scm \
+        --destination ~/Documents
+
++----------------------------------------------------------------------------+

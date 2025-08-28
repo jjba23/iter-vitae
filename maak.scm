@@ -1,0 +1,113 @@
+;; Iter Vitae 
+
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
+
+;; iter-vitae is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU Affero General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; iter-vitae is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU Affero General Public License for more details.
+
+;; You should have received a copy of the GNU Affero General Public License
+;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+
+(define-module (maak)
+  #:use-module (maak maak)
+  #:declarative? #t)
+
+;; ====== Maak constants ======
+
+;; The path to the directory where the main project files will be deployed.
+(define deploy-dir
+  "/srv/http/jointhefreeworld.org")
+
+;; The URL for the CSS stylesheet used to style API documentation.
+(define api-docs-css-url
+  "https://jointhefreeworld.org/static-assets/api-docs/css/style.css")
+
+(define project-name
+  'iter-vitae)
+
+;; ====== Maak tasks ======
+
+(define (help)
+  "Display program help screen."
+  (program-shell '("iter-vitae --help")))
+
+(define (default)
+  "Default task to run, call program's help."
+  ($ '("maak --list")))
+
+(define (fmt)
+  "Format Scheme source code files according to the Guix style guide."
+  ($ '("find . -maxdepth 8 -name '*.scm'" "-type f -exec guix style -f {} \\;")
+     #:verbose? #t))
+
+(define (repl)
+  "Development REPL."
+  (manifest-shell '("guile -L ./src"
+                    "-c '((@ (ares server) run-nrepl-server))'")))
+
+(define (docs)
+  "Generate technical API documentation for Maak."
+  (delete-file-recursively "doc")
+  (manifest-shell (list (~ "documenta api ./src/~a && " project-name)
+                        (~ "texi2any -v --html --css-ref=~a" api-docs-css-url)
+                        "./doc/api/index.texi"))
+  (mv "./index" "./doc/api-dist"))
+
+(define (deploy)
+  (persona-joe-en)
+  (docs)
+  ;; Deploy Iter Vitae
+  (delete-file-recursively (~ "~a/joe-cv" deploy-dir))
+  (mv "dist"
+      (~ "~a/joe-cv" deploy-dir))
+  ;; Deploy API docs
+  (remkdir-p (~ "~a/api-docs/~a" deploy-dir project-name))
+  (mv "doc/api-dist/*"
+      (~ "~a/api-docs/~a" deploy-dir project-name))
+  (delete-file-recursively "doc"))
+
+(define (package-docker)
+  "Create a Docker image for Iter Vitae."
+  ($ '("guix pack --file=./guix.scm" "--format=docker"
+       "--image-tag=iter-vitae" "-S /bin=bin"
+       "bash coreutils util-linux-with-udev guile")))
+
+(define (dev-run* persona locale)
+  (manifest-shell (list "guile -L ./src -c '((@(iter-vitae main) main))'"
+                        (~ "--file ./populus/~a.scm" persona)
+                        "--destination ./dist"
+                        (~ "--locale ~a" locale) "--resources-dir ./resources")))
+
+(define (run* persona locale)
+  (program-shell (list (~ "iter-vitae --file ./populus/~a.scm" persona)
+                       "--destination ./dist"
+                       (~ "--locale ~a" locale))))
+
+(define (run)
+  (run* 'joe
+        'en))
+
+(define (dev-run)
+  (dev-run* 'joe
+            'en))
+
+(define (run-joe-en)
+  (run* 'joe
+        'en))
+(define (run-joe-nl)
+  (run* 'joe
+        'nl))
+
+(define (dev-run-joe-en)
+  (dev-run* 'joe
+            'en))
+(define (dev-run-joe-nl)
+  (dev-run* 'joe
+            'nl))
