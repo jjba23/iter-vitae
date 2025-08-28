@@ -27,10 +27,12 @@
 
 ;; The URL for the CSS stylesheet used to style API documentation.
 (define api-docs-css-url
-  "https://jointhefreeworld.org/static-assets/api-docs/css/style.css")
+  "https://jointhefreeworld.org/static/css/jointhefreeworld.css")
 
 (define project-name
   'iter-vitae)
+
+(define hot-reload-file-types '(scm))
 
 ;; ====== Maak tasks ======
 
@@ -112,3 +114,22 @@
 (define (dev-run-joe-nl)
   (dev-run* 'joe
             'nl))
+
+(define (hot-reload)
+  "Hot-reloading developer's setup."
+  (manifest-shell (list "watchexec 'maak dev-run-joe-en'"
+                        "--clear"
+                        (~ "--exts ~a"
+                           (string-join (map symbol->string
+                                             hot-reload-file-types) ","))
+                        "--on-busy-update=restart"
+                        "--shell bash"
+                        "--watch .")))
+
+(define (hr)
+  "Alias to hot-reloading."
+  (hot-reload))
+
+(define (dev)
+  "Developer's setup."
+  (hot-reload))

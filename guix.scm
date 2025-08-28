@@ -48,13 +48,11 @@
                                                 "/bin"))
                             (share (string-append (assoc-ref outputs "out")
                                                   "/share")))
-                        (mkdir-p (string-append share "/scripts"))
-                        (mkdir-p (string-append share "/resources"))
                         (install-file "resources/help.txt"
                                       (string-append share
-                                                     "/resources/help.txt"))
+                                                     "/resources/"))
                         (copy-recursively "resources/js"
-                                          (string-append share "/resources/js"))
+                                          (string-append share "/resources/"))
                         (install-file "scripts/iter-vitae" bin)
                         (install-file "scripts/log.bash"
                                       (string-append share "/scripts/"))
