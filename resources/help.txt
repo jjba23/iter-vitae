@@ -9,7 +9,7 @@ Iter Vitae:
 USAGE: iter-vitae [OPTIONS]
 OPTIONS:
     -f, --file FILE
-        Specify the absolute path to Scheme config - persona file (required).
+        Specify the path to Scheme config - persona file (required).
         
     -l, --locale LOCALE
         Specify the locale (e.g., 'en', 'nl'). Defaults to 'en'.

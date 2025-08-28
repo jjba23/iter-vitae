@@ -81,9 +81,10 @@
 
 (define (dev-run* persona locale)
   (manifest-shell (list "guile -L ./src -c '((@(iter-vitae main) main))'"
-                        (~ "--file ./populus/~a.scm" persona)
-                        "--destination ./dist"
-                        (~ "--locale ~a" locale) "--resources-dir ./resources")))
+                        (~
+                         "--file /home/joe/hacking/iter-vitae/populus/~a.scm"
+                         persona) "--destination ./dist"
+                        (~ "--locale ~a" locale) "--resources ./resources")))
 
 (define (run* persona locale)
   (program-shell (list (~ "iter-vitae --file ./populus/~a.scm" persona)

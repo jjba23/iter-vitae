@@ -29,8 +29,8 @@
                                 (value #t))
                         (destination (single-char #\o)
                                      (value #t))
-                        (resources-dir (single-char #\r)
-                                       (value #t))
+                        (resources (single-char #\r)
+                                   (value #t))
                         (file (single-char #\p)
                               (value #t)
                               (required? #t))))
@@ -40,13 +40,13 @@
                            'file #f))
          (destination (option-ref options
                                   'destination "./dist"))
-         (resources-dir (option-ref options
-                                    'resources-dir #f))
+         (resources (option-ref options
+                                'resources #f))
          (locale (option-ref options
                              'locale "en")))
     (log-info
      "Iter Vitae: Generate an attractive, modern and customizable Curriculum Vitae/Resume")
     (render-curriculum #:locale (string->symbol locale)
                        #:destination destination
-                       #:resources-dir resources-dir
+                       #:resources resources
                        #:file file)))

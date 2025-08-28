@@ -28,7 +28,6 @@
                          titles
                          short-intro
                          jobs
-                         font
                          palette))
 
 ;; Full name of persona

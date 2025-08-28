@@ -23,11 +23,11 @@
   #:use-module (iter-vitae tailwind)
   #:export (render-curriculum))
 
-(define* (render-curriculum #:key locale destination resources-dir file)
+(define* (render-curriculum #:key locale destination resources file)
   (log-info "Start rendering curriculum with settings:")
   (log-info "\tlocale: ~a" locale)
   (log-info "\tfile: ~a" file)
-  (log-info "\tresources-dir: ~a" resources-dir)
+  (log-info "\tresources: ~a" resources)
   (log-info "\tdestination: ~a" destination)
 
   ;; choose person to generate curriculum vitae for
@@ -35,7 +35,7 @@
 
   (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
          (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
-         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources-dir
+         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources
                                         destination)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote

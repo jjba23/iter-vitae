@@ -4,7 +4,6 @@
 #+language: en
 
 [[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]  
-[[https://jointhefreeworld.org/ggg/dist/gnu-make.svg]] 
 [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]] [[https://jointhefreeworld.org/ggg/dist/css-tailwind4.svg]]
 
 Iter Vitae is a free software project that aims to make it easy and maintainable to generate an attractive, modern and customizable /Curriculum Vitae/ or /resume/ for yourself and to allow you to define the course of your life and career directly in Guile Scheme code.
@@ -34,7 +33,7 @@ Version-control your CV code, and enjoy all the benefits.
 
 Work with a sane and flexible multi-lingual compatible data model. The tool is extensible and supports an arbitrary amount of languages, data entries.
 
-Remember that with Guile Scheme, and the Lisp super-powers, everything is hackable and modifyable at any moment, giving you ultimate control and power.
+Remember that with Guile Scheme, and the Lisp super-powers, everything is hackable and modifiable at any moment, giving you ultimate control and power.
 
 ------------
 
@@ -75,14 +74,14 @@ In that case you'll need:
 -  *Guile Scheme:*  This entire program is written using the official GNU extension language, Guile Scheme.
 - Any web browser of your choice (ideally which can also print to PDF)    
 
-Check the ~maak.scm~,  ~Makefile~ and the ~guix.scm~ and  ~manifest.scm~ for more details.
+Check the ~maak.scm~,  and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
 
-iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options (also visible in ~resources/help.txt~). You should point iter-vitae to the absolute path to  your configuration file:
+iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options (also visible in ~resources/help.txt~). You should point iter-vitae to the path to  your configuration file:
 
 #+begin_src shell
-iter-vitae --locale nl --persona-file /home/me/documents/my-cv.scm --output-dir /home/me/documents/dist
+iter-vitae --locale nl --file /home/me/documents/my-cv.scm --destination /home/me/documents/dist
 #+end_src
 
 ** On Podman/Docker
@@ -99,9 +98,9 @@ Then you can run ggg from the container, and bind your local filesystem to give 
 #+begin_src shell
 docker container run -v /home/joe:/home/joe \
     docker.io/jjba23/iter-vitae:latest iter-vitae \
-    --persona-file /home/joe/glyphs.scm \
+    --file /home/joe/me.scm \
     --locale en \
-    --output-dir ./dist
+    --destination ./dist
 #+end_src
 
 --------------

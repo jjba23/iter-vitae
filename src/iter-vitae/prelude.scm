@@ -29,7 +29,6 @@
   #:export (get-setting assq-ref-all-or-lang
                         mk-class
                         syscall
-                        asset-library
                         log-message
                         log
                         log-info
