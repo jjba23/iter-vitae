@@ -61,7 +61,7 @@
   (mv "./index" "./doc/api-dist"))
 
 (define (deploy)
-  (persona-joe-en)
+  (run-joe-en)
   (docs)
   ;; Deploy Iter Vitae
   (delete-file-recursively (~ "~a/joe-cv" deploy-dir))
