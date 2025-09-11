@@ -32,7 +32,8 @@
 (define project-name
   'iter-vitae)
 
-(define hot-reload-file-types '(scm))
+(define hot-reload-file-types
+  '(scm))
 
 ;; ====== Maak tasks ======
 
