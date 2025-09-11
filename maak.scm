@@ -117,14 +117,15 @@
 
 (define (hot-reload)
   "Hot-reloading developer's setup."
-  (manifest-shell (list "watchexec 'maak dev-run-joe-en'"
+  (manifest-shell (list "watchexec"
                         "--clear"
                         (~ "--exts ~a"
                            (string-join (map symbol->string
                                              hot-reload-file-types) ","))
                         "--on-busy-update=restart"
                         "--shell bash"
-                        "--watch .")))
+                        "--watch . --"
+                        "maak dev-run-joe-en")))
 
 (define (hr)
   "Alias to hot-reloading."
