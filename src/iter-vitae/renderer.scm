@@ -20,7 +20,7 @@
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae html)
   #:use-module (iter-vitae prelude)
-  #:use-module (iter-vitae tailwind)
+  #:use-module (iter-vitae faces)
   #:export (render-curriculum))
 
 (define* (render-curriculum #:key locale destination resources file)

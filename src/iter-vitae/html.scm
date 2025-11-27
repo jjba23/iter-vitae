@@ -32,7 +32,7 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 time)
-  #:use-module (iter-vitae tailwind)
+  #:use-module (iter-vitae faces)
   #:use-module (iter-vitae prelude)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
@@ -276,20 +276,12 @@ formatting."
                                              (type text/css)
                                              (href
                                               "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
-                                    (style (@ (type "text/tailwindcss"))
-                                     "
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-@theme {
-  --font-sans: \"IBM Plex Sans\", sans-serif;
-  --font-mono: \"IBM Plex Mono\", monospace;
-}
-")
+                                    (link (@ (rel stylesheet)
+                                       (href "css/rc-huidkliniek.olive.min.css")))
                                     (meta (@ (name "viewport")
                                              (content
                                               "width=device-width, initial-scale=1.0")))
-                                    (meta (@ (charset "UTF-8")))
-                                    (script (@ (src "js/tailwind.js")) ""))
+                                    (meta (@ (charset "UTF-8"))))
                               (body (@ (class "break-words"))
                                     (div (@ (class ,(mk-class '(container
                                                                 mx-auto py-4
@@ -344,7 +336,7 @@ formatting."
 
 (define* (render-iter-vitae-email #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-envelope text-stone-600 text-xl))))
+         (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl))))
             "")
          (small (@ (class ,small-face))
                 ,(assq-ref (assq-ref persona
@@ -353,7 +345,7 @@ formatting."
 
 (define* (render-iter-vitae-phone-number #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-phone text-stone-600 text-xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-phone text-onyx-500 text-xl)))) "")
          (small (@ (class ,small-face))
                 ,(assq-ref (assq-ref persona
                                      'personal-contact)
@@ -361,7 +353,7 @@ formatting."
 
 (define* (render-iter-vitae-blog-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-rss text-stone-600 xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-rss text-onyx-500 xl)))) "")
          (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
@@ -374,7 +366,7 @@ formatting."
 
 (define* (render-iter-vitae-code-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-code text-stone-600 text-xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-code text-onyx-500 text-xl)))) "")
          (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
@@ -387,7 +379,7 @@ formatting."
 
 (define* (render-iter-vitae-linked-in-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-link text-stone-600 text-xl)))) "")
+         (i (@ (class ,(mk-class '(ph ph-link text-onyx-500 text-xl)))) "")
          (a (@ (class ,small-a-face)
                (target "_blank")
                (href ,(format #f "https://~a"
@@ -577,7 +569,7 @@ formatting."
                                       #:persona persona)
 
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-briefcase text-stone-600 text-xl))))
+           (i (@ (class ,(mk-class '(ph ph-briefcase text-onyx-500 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -588,7 +580,7 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-student text-stone-600 text-xl))))
+           (i (@ (class ,(mk-class '(ph ph-student text-onyx-500 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -600,7 +592,7 @@ formatting."
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3
                                        items-center))))
-           (i (@ (class ,(mk-class '(ph ph-translate text-stone-600 text-xl))))
+           (i (@ (class ,(mk-class '(ph ph-translate text-onyx-500 text-xl))))
               "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -611,7 +603,7 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-car text-stone-600 text-xl)))) "")
+           (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
            (h4 (@ (class ,h4-face))
                ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
@@ -623,7 +615,7 @@ formatting."
 
       (hr (@ (class ,hr-face)))
       (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-stone-600
+           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-onyx-500
                                         text-xl)))) "")
            (h4 (@ (class ,h4-face))
                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
