@@ -47,7 +47,7 @@
   (mk-class '(my-4 border-t-2 border-t-onyx-200)))
 
 (define p-face
-  (mk-class '(my-4 font-sans text-lg text-black-900 max-w-prose leading-7)))
+  (mk-class '(my-4 font-sans text-lg text-black-900 max-w-196 leading-7)))
 
 (define bullet-face
   (mk-class '(my-1 ml-8 leading-7 font-sans text-lg text-onyx-500)))
@@ -75,11 +75,18 @@
                    hover:underline)))
 
 (define h2-special-face
-  (mk-class '(my-1 font-sans text-2xl font-light uppercase text-asparagus-700)))
+  (mk-class '(my-1 font-sans
+                   text-2xl
+                   no-underline
+                   hover:underline
+                   font-light
+                   uppercase
+                   text-asparagus-700)))
 
 (define h2-link-special-face
   (mk-class '(my-3 hover:underline
                    font-sans
+                   no-underline
                    font-light
                    text-2xl
                    uppercase

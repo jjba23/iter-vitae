@@ -25,7 +25,7 @@
   `((all . "https://en.wikipedia.org/wiki/Software_engineering")))
 
 (define job-title
-  `((all . "Software Engineer")))
+  `((all . "Software Engineer ⚙️")))
 
 (define personal-contact
   `((emails . "jjbigorra@gmail.com") (phone-numbers . "+31 639825138")))
@@ -45,8 +45,8 @@
 (define interests-hobbies
   `(((en . "I like building and tweaking computers, blogging about my tech opinions and discoveries and playing strategy games sometimes.")
      (nl . "Ik bouw en speel graag met computers, ik heb een blog waar ik mijn meningen over technologie en andere uit, en soms speel ik strategie spelletjes."))
-    ((en . "I love playing classical and electric guitar.")
-     (nl . "Ik ben dol op klassieke en elektrische gitaar."))
+    ((en . "I love playing classical and electric guitar 🎸.")
+     (nl . "Ik ben dol op klassieke en elektrische gitaar 🎸."))
     ((en . "You might also find me doing CrossFit, sanding furniture down, removing weeds from the garden, or improving my house.")
      (nl . "Ik ben ook te vinden in de CrossFit gym, meubels aan het schuren, onkruid weg aan het halen of mijn huis aan het verbeteren."))))
 
