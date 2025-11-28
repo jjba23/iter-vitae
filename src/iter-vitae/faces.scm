@@ -27,7 +27,6 @@
   #:use-module (iter-vitae prelude)
   #:export (hr-face p-face
                     bullet-face
-                    small-face
                     address-face
                     small-a-face
                     h2-special-face
