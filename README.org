@@ -93,7 +93,7 @@ https://hub.docker.com/repository/docker/jjba23/iter-vitae/general
 You can also build images of iter-vitae yourself, using ~guix pack~. See the ~maak.scm~ file for more.
 To load these tarball images, you can do ~podman load < my.tar.gz~
 
-Then you can run ggg from the container, and bind your local filesystem to give access, for example:
+Then you can run iter-vitae from the container, and bind your local filesystem to give access, for example:
 
 #+begin_src shell
 docker container run -v /home/joe:/home/joe \
