@@ -39,11 +39,11 @@
 
 (define (help)
   "Display program help screen."
-  (program-shell '("iter-vitae --help")))
+  (time-machine-program-shell '("iter-vitae --help")))
 
 (define (default)
   "Default task to run, call program's help."
-  ($ '("maak --list")))
+  (list-tasks))
 
 (define (fmt)
   "Format Scheme source code files according to the Guix style guide."
@@ -78,19 +78,19 @@
 
 (define (package-docker)
   "Create a Docker image for Iter Vitae."
-  ($ '("guix pack --file=./guix.scm" "--format=docker"
+  (time-machine-manifest-shell '("guix pack --file=./guix.scm" "--format=docker"
        "--image-tag=iter-vitae" "-S /bin=bin"
        "bash coreutils util-linux-with-udev guile")))
 
 (define (dev-run* persona locale)
-  (manifest-shell (list "guile -L ./src -c '((@(iter-vitae main) main))'"
+  (time-machine-manifest-shell (list "guile -L ./src -c '((@(iter-vitae main) main))'"
                         (~
                          "--file /home/joe/hacking/iter-vitae/populus/~a.scm"
                          persona) "--destination ./dist"
                         (~ "--locale ~a" locale) "--resources ./resources")))
 
 (define (run* persona locale)
-  (program-shell (list (~ "iter-vitae --file ./populus/~a.scm" persona)
+  (time-machine-program-shell (list (~ "iter-vitae --file ./populus/~a.scm" persona)
                        "--destination ./dist"
                        (~ "--locale ~a" locale))))
 
@@ -105,6 +105,7 @@
 (define (run-joe-en)
   (run* 'joe
         'en))
+
 (define (run-joe-nl)
   (run* 'joe
         'nl))
@@ -135,3 +136,7 @@
 (define (dev)
   "Developer's setup."
   (hot-reload))
+
+(define (olive-css)
+  ($ '("curl --verbose --output \"./resources/css/iter-vitae.olive.min.css\""
+       "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/iter-vitae.olive.min.css\"")))

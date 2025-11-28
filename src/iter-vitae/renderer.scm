@@ -20,7 +20,7 @@
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae html)
   #:use-module (iter-vitae prelude)
-  #:use-module (iter-vitae tailwind)
+  #:use-module (iter-vitae faces)
   #:export (render-curriculum))
 
 (define* (render-curriculum #:key locale destination resources file)
@@ -35,7 +35,7 @@
 
   (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
          (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
-         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources
+         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/css ~a/css" resources
                                         destination)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote

@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU Affero General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(define-module (iter-vitae tailwind)
+(define-module (iter-vitae faces)
   #:declarative? #t
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
@@ -31,6 +31,7 @@
                     address-face
                     small-a-face
                     h2-special-face
+                    a-face
                     h4-face
                     h5-face
                     h5-strong-face
@@ -43,38 +44,38 @@
                     display-name-face))
 
 (define hr-face
-  (mk-class '(my-4 border-t-2 border-t-stone-200)))
+  (mk-class '(my-4 border-t-2 border-t-onyx-200)))
 
 (define p-face
-  (mk-class '(my-4 font-sans text-lg text-black-800 max-w-prose)))
+  (mk-class '(my-4 font-sans text-lg text-black-900 max-w-prose leading-7)))
 
 (define bullet-face
-  (mk-class '(my-2 ml-8 font-sans text-lg text-stone-700)))
-
-(define small-face
-  (mk-class '(my-2 font-sans text-sm text-stone-600)))
+  (mk-class '(my-1 ml-8 leading-7 font-sans text-lg text-onyx-500)))
 
 (define address-face
-  (mk-class '(font-sans text-sm text-stone-700)))
+  (mk-class '(my-2 font-sans text-md text-onyx-500)))
 
 (define small-a-face
   (mk-class '(my-2 font-sans
                    font-bold
-                   text-sm
-                   text-green-800/80
-                   hover:text-green-900
+                   text-md
+                   cursor-pointer
+                   no-underline
+                   text-asparagus-700
+                   hover:asparagus-300
                    hover:underline)))
 
 (define a-face
   (mk-class '(my-3 font-sans
                    font-bold
-                   text-md
-                   text-green-800/80
-                   hover:text-green-900
+                   text-lg
+                   cursor-pointer
+                   text-asparagus-700
+                   hover:asparagus-300
                    hover:underline)))
 
 (define h2-special-face
-  (mk-class '(my-3 font-sans text-2xl font-light uppercase text-green-800/80)))
+  (mk-class '(my-1 font-sans text-2xl font-light uppercase text-asparagus-700)))
 
 (define h2-link-special-face
   (mk-class '(my-3 hover:underline
@@ -82,35 +83,35 @@
                    font-light
                    text-2xl
                    uppercase
-                   text-green-800/80
-                   hover:text-green-900)))
+                   text-asparagus-700
+                   hover:text-asparagus-300)))
 
 (define h4-face
-  (mk-class '(my-2 text-2xl font-light uppercase text-stone-600)))
+  (mk-class '(my-2 text-2xl font-light uppercase text-onyx-500)))
 
 (define h5-face
-  (mk-class '(text-xl font-light text-stone-800)))
+  (mk-class '(text-xl font-light text-onyx-700)))
 
 (define h5-strong-face
-  (mk-class '(text-xl font-medium text-stone-800)))
+  (mk-class '(text-xl font-medium text-onyx-700)))
 
 (define h5-em-face
-  (mk-class '(text-md font-light text-stone-700)))
+  (mk-class '(text-md font-light text-onyx-500)))
 
 (define display-name-face
-  (mk-class '(my-3 font-sans text-5xl text-stone-800/90 font-light)))
+  (mk-class '(my-3 font-sans text-16 font-serif text-onyx-300 font-light)))
 
 (define td-face
-  (mk-class '(px-5 py-1 text-xs)))
+  (mk-class '(px-5 py-2 text-md text-onyx-100)))
 
 (define first-td-face
-  (mk-class '(px-5 py-1 text-sm)))
+  (mk-class '(px-5 py-2 text-md text-onyx-100 font-bold)))
 
 (define table-face
-  (mk-class '(table-auto bg-stone-100 rounded-xl my-8 shadow-md text-center)))
+  (mk-class '(table-auto bg-stone-300 rounded-xl my-8 shadow-md text-center)))
 
 (define top-row-face
   (mk-class '(py-2)))
 
 (define th-face
-  (mk-class '(py-1 text-sm font-light uppercase)))
+  (mk-class '(py-1 text-md font-light uppercase)))

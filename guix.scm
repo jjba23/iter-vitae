@@ -50,8 +50,8 @@
                                                   "/share")))
                         (install-file "resources/help.txt"
                                       (string-append share "/resources/"))
-                        (install-file "resources/js/tailwind.js"
-                                      (string-append share "/resources/js"))
+                        (install-file "resources/css/iter-vitae.olive.min.css"
+                                      (string-append share "/resources/css"))
                         (install-file "scripts/iter-vitae" bin)
                         (install-file "scripts/log.bash"
                                       (string-append share "/scripts/"))
@@ -69,7 +69,7 @@ of your CV details (in Scheme code).
 With a @acronym{MVC, model-view-controller} approach,
 it lets you separate the data from the presentation (how the document looks).
 
-This tool creates a web-site version of your CV (using SXML and TailwindCSS),
+This tool creates a web-site version of your CV (using SXML and Olive CSS),
 and is designed for long-term use, so you can update and evolve your CV over the years.
 The program supports multilingual content and is fully extensible.")
     (home-page "https://codeberg.org/jjba23/iter-vitae")
