@@ -58,9 +58,11 @@
 (define (docs)
   "Generate technical API documentation for Maak."
   (delete-file-recursively "doc")
-  (manifest-shell (list (~ "documenta api ./src/~a && " project-name)
-                        (~ "texi2any -v --html --css-ref=~a" api-docs-css-url)
-                        "./doc/api/index.texi"))
+  (time-machine-manifest-shell (list (~ "documenta api ./src/~a && "
+                                        project-name)
+                                     (~ "texi2any -v --html --css-ref=~a"
+                                        api-docs-css-url)
+                                     "./doc/api/index.texi"))
   (mv "./index" "./doc/api-dist"))
 
 (define (deploy)
@@ -78,21 +80,24 @@
 
 (define (package-docker)
   "Create a Docker image for Iter Vitae."
-  (time-machine-manifest-shell '("guix pack --file=./guix.scm" "--format=docker"
-       "--image-tag=iter-vitae" "-S /bin=bin"
-       "bash coreutils util-linux-with-udev guile")))
+  (time-machine-manifest-shell '("guix pack --file=./guix.scm"
+                                 "--format=docker" "--image-tag=iter-vitae"
+                                 "-S /bin=bin"
+                                 "bash coreutils util-linux-with-udev guile")))
 
 (define (dev-run* persona locale)
-  (time-machine-manifest-shell (list "guile -L ./src -c '((@(iter-vitae main) main))'"
-                        (~
-                         "--file /home/joe/hacking/iter-vitae/populus/~a.scm"
-                         persona) "--destination ./dist"
-                        (~ "--locale ~a" locale) "--resources ./resources")))
+  (time-machine-manifest-shell (list
+                                "guile -L ./src -c '((@(iter-vitae main) main))'"
+                                (~
+                                 "--file /home/joe/hacking/iter-vitae/populus/~a.scm"
+                                 persona) "--destination ./dist"
+                                (~ "--locale ~a" locale)
+                                "--resources ./resources")))
 
 (define (run* persona locale)
-  (time-machine-program-shell (list (~ "iter-vitae --file ./populus/~a.scm" persona)
-                       "--destination ./dist"
-                       (~ "--locale ~a" locale))))
+  (time-machine-program-shell (list (~ "iter-vitae --file ./populus/~a.scm"
+                                       persona) "--destination ./dist"
+                                    (~ "--locale ~a" locale))))
 
 (define (run)
   (run* 'joe
@@ -119,15 +124,16 @@
 
 (define (hot-reload)
   "Hot-reloading developer's setup."
-  (manifest-shell (list "watchexec"
-                        "--clear"
-                        (~ "--exts ~a"
-                           (string-join (map symbol->string
-                                             hot-reload-file-types) ","))
-                        "--on-busy-update=restart"
-                        "--shell bash"
-                        "--watch . --"
-                        "maak dev-run-joe-en")))
+  (time-machine-manifest-shell (list "watchexec"
+                                     "--clear"
+                                     (~ "--exts ~a"
+                                        (string-join (map symbol->string
+                                                      hot-reload-file-types)
+                                                     ","))
+                                     "--on-busy-update=restart"
+                                     "--shell bash"
+                                     "--watch . --"
+                                     "maak dev-run-joe-en")))
 
 (define (hr)
   "Alias to hot-reloading."
