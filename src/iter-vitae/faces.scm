@@ -31,6 +31,7 @@
                     address-face
                     small-a-face
                     h2-special-face
+                    a-face
                     h4-face
                     h5-face
                     h5-strong-face
@@ -46,21 +47,20 @@
   (mk-class '(my-4 border-t-2 border-t-onyx-200)))
 
 (define p-face
-  (mk-class '(my-4 font-sans text-lg text-black-900 max-w-prose)))
+  (mk-class '(my-4 font-sans text-lg text-black-900 max-w-prose leading-7)))
 
 (define bullet-face
-  (mk-class '(my-2 ml-8 font-sans text-lg text-onyx-500)))
-
-(define small-face
-  (mk-class '(my-2 font-sans text-sm text-onyx-500)))
+  (mk-class '(my-1 ml-8 leading-7 font-sans text-lg text-onyx-500)))
 
 (define address-face
-  (mk-class '(font-sans text-sm text-onyx-500)))
+  (mk-class '(my-2 font-sans text-md text-onyx-500)))
 
 (define small-a-face
   (mk-class '(my-2 font-sans
                    font-bold
-                   text-sm
+                   text-md
+                   cursor-pointer
+                   no-underline
                    text-asparagus-700
                    hover:asparagus-300
                    hover:underline)))
@@ -68,13 +68,14 @@
 (define a-face
   (mk-class '(my-3 font-sans
                    font-bold
-                   text-md
+                   text-lg
+                   cursor-pointer
                    text-asparagus-700
                    hover:asparagus-300
                    hover:underline)))
 
 (define h2-special-face
-  (mk-class '(my-3 font-sans text-2xl font-light uppercase text-asparagus-700)))
+  (mk-class '(my-1 font-sans text-2xl font-light uppercase text-asparagus-700)))
 
 (define h2-link-special-face
   (mk-class '(my-3 hover:underline
@@ -98,19 +99,19 @@
   (mk-class '(text-md font-light text-onyx-500)))
 
 (define display-name-face
-  (mk-class '(my-3 font-sans text-5xl text-onyx-700 font-light)))
+  (mk-class '(my-3 font-sans text-16 font-serif text-onyx-300 font-light)))
 
 (define td-face
-  (mk-class '(px-5 py-1 text-xs)))
+  (mk-class '(px-5 py-2 text-md text-onyx-100)))
 
 (define first-td-face
-  (mk-class '(px-5 py-1 text-sm)))
+  (mk-class '(px-5 py-2 text-md text-onyx-100 font-bold)))
 
 (define table-face
-  (mk-class '(table-auto bg-onyx-100 rounded-xl my-8 shadow-md text-center)))
+  (mk-class '(table-auto bg-stone-300 rounded-xl my-8 shadow-md text-center)))
 
 (define top-row-face
   (mk-class '(py-2)))
 
 (define th-face
-  (mk-class '(py-1 text-sm font-light uppercase)))
+  (mk-class '(py-1 text-md font-light uppercase)))

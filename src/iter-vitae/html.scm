@@ -277,16 +277,14 @@ formatting."
                                              (href
                                               "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
                                     (link (@ (rel stylesheet)
-                                       (href "css/rc-huidkliniek.olive.min.css")))
+                                       (href "css/iter-vitae.olive.min.css")))
                                     (meta (@ (name "viewport")
                                              (content
                                               "width=device-width, initial-scale=1.0")))
                                     (meta (@ (charset "UTF-8"))))
                               (body (@ (class "break-words"))
-                                    (div (@ (class ,(mk-class '(container
-                                                                mx-auto py-4
-                                                                sm:py-6 px-3
-                                                                sm:px-6))))
+                                    (div (@ (class ,(mk-class '(px-4 sm:px-8 md:px-12
+                                                                     py-4 sm:py-8 md:py-12 font-sans))))
                                          ,@body
                                          ,(iter-vitae-page-footer #:persona
                                                                   persona
@@ -304,10 +302,10 @@ formatting."
                                          #:persona persona)
            ,(render-iter-vitae-linked-in-link #:locale locale
                                               #:persona persona))
-      (div (@ (class ,(mk-class '(block text-center font-sans))))
+      (div (@ (class ,(mk-class '(my-2 block text-center font-sans))))
            (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
                                             justify-center))))
-                (small (@ (class ,small-face))
+                (small (@ (class ,address-face))
                        "this Curriculum Vitae was rendered with "
                        (a (@ (class ,small-a-face)
                              (href "https://codeberg.org/jjba23/iter-vitae"))
@@ -338,7 +336,7 @@ formatting."
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
          (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl))))
             "")
-         (small (@ (class ,small-face))
+         (a (@ (class ,small-a-face))
                 ,(assq-ref (assq-ref persona
                                      'personal-contact)
                            'emails)))))
@@ -346,7 +344,7 @@ formatting."
 (define* (render-iter-vitae-phone-number #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
          (i (@ (class ,(mk-class '(ph ph-phone text-onyx-500 text-xl)))) "")
-         (small (@ (class ,small-face))
+         (small (@ (class ,address-face))
                 ,(assq-ref (assq-ref persona
                                      'personal-contact)
                            'phone-numbers)))))
@@ -391,7 +389,7 @@ formatting."
                        'linked-in)))))
 
 (define* (render-iter-vitae-address-lines #:key locale persona)
-  `(small (@ (class ,(mk-class '(flex flex-col gap-1))))
+  `(small (@ (class ,(mk-class '(flex flex-col))))
           ,(map (lambda (address-line)
                   `(span (@ (class ,address-face))
                          ,(assq-ref-all-or-lang address-line locale)))
@@ -425,8 +423,10 @@ formatting."
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (div (@ (class ,(mk-class '(flex flex-row flex-wrap
-                                                          gap-3 items-center))))
+                    (div (@(class ,(mk-class '(flex flex-col gap-2))))
+                     
+                     (div (@ (class ,(mk-class '(flex flex-row flex-wrap
+                                                          gap-2 items-center))))
                               (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'name)
@@ -457,7 +457,9 @@ formatting."
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (div (@ (class ,(mk-class '(flex flex-row flex-wrap
+                    (div
+                     (@(class ,(mk-class '(flex flex-col gap-2))))
+                     (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-3 items-center))))
                               (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref education
@@ -545,8 +547,8 @@ formatting."
   (define* (iter-vitae-main-body #:key locale persona)
     `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6
                                        justify-between))))
-           (div (@ (class ,(mk-class '(flex flex-col gap-3 align-center
-                                            items-center))))
+           (div (@ (class ,(mk-class '(flex flex-col gap-3 align-left
+                                            items-start))))
                 ,(render-iter-vitae-display-name #:locale locale
                                                  #:persona persona)
                 ,(render-iter-vitae-job-title #:locale locale

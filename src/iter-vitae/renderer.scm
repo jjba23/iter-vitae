@@ -35,7 +35,7 @@
 
   (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
          (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
-         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/js ~a/js" resources
+         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/css ~a/css" resources
                                         destination)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
