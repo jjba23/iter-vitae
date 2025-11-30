@@ -36,8 +36,6 @@
 
   (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
          (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
-         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/css ~a/" resources
-                                        destination)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
                                   (get-setting 'display-name))
@@ -76,10 +74,6 @@
 
     (log-info "executing: ~a" mkdir-dist-cmd)
     (syscall mkdir-dist-cmd)
-
-    (map (lambda (c)
-           (log-info "executing: ~a" c)
-           (syscall c)) cp-to-dist-cmds)
 
     (with-output-to-file (format #f "~a/index.html" destination)
       (lambda ()
