@@ -26,15 +26,15 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 regex)
-  #:use-module (kracht prelude)
   #:export (get-setting assq-ref-all-or-lang
-                        mk-class
+                        log-info
+                        log-error
                         my-asset-library
-                        syscall
                         log-message
                         log
-                        log-info
-                        log-error))
+                        mk-class
+                        syscall
+                        ))
 
 (define-syntax-rule (get-setting setting)
   "Get a setting for iter-vitae, either from persona or from default values."
@@ -72,23 +72,12 @@
 ;; returns an S-expression `(class "class-names")`. The class names are
 ;; space-separated in a string. If the input is an empty list or `#f`,
 ;; it returns `(class "")`, ensuring that an empty class attribute is still valid.
-;;
-;; Examples:
-;; (mk-class '())                       ⇒ ""
-;; (mk-class '(p-2 bg-stone-900/75))    ⇒ "bg-stone-900/75 p-2 "
-;; (mk-class #f)                        ⇒ ""
-;;
 (define* (mk-class xs)
   (cond
     ((nil? xs)
      "")
     (else (string-join (sort (map symbol->string
                                   (delete-duplicates xs)) string<?) " "))))
-
-(define (syscall cmd)
-  (let* ((process (open-input-pipe cmd))
-         (process-output (get-string-all process)))
-    (close-pipe process) process-output))
 
 (define (log-message msg)
   (display (format #f "\n~a" msg)))
@@ -107,6 +96,22 @@
                        (apply format
                               (append (list #f msg) args)))))
 
+(define (syscall cmd)
+  (let* ((process (open-input-pipe cmd))
+         (process-output (get-string-all process)))
+    (close-pipe process) process-output))
+
+(define* (build-asset-library files)
+  (let* ((lib '()))
+    (for-each (lambda (f)
+                (let* ((file-contents (get-string-all (open-input-file f)))
+                       (min-contents (cond
+                                       ((string-suffix? ".css" f)
+                                        (string-replace-substring
+                                         file-contents "\n" ""))
+                                       (else file-contents))))
+                  (set! lib
+                        (assoc-set! lib f min-contents)))) files) lib))
+
 (define my-asset-library
   (build-asset-library '("resources/css/iter-vitae.olive.min.css")))
-

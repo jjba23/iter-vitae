@@ -54,7 +54,7 @@ eval set -- "${parsed_options}"
 locale_arg=""
 destination_arg=""
 file_arg=""
-resources_arg=""
+resources_arg="${resources_dir}"
 
 guile_cmd_args=(
   "-L" "${scheme_sources_dir}"
@@ -79,12 +79,9 @@ while true; do
     shift 2
     ;;
   -r | --resources)
-    resources_arg="${2}"
-    if [[ -n "${resources_arg}" ]]; then
-      guile_cmd_args+=("--resources" "${resources_arg}")
-      shift 2
-    else
-      guile_cmd_args+=("--resources" "${resources_dir}")
+    resources="${2}"
+    if [[ -n "${resources}" ]]; then
+      resources_arg="${resources}"
       shift 2
     fi
     ;;
@@ -104,6 +101,9 @@ while true; do
   esac
 done
 
+# The resources
+guile_cmd_args+=("--resources" "${resources_arg}")
+
 # The Curriculum Vitae file
 if [[ -z "${file_arg}" ]]; then
   log_error "Error: The file argument is required. Use -f or --file." >&2
@@ -115,5 +115,4 @@ log_info "-------------------------------------------------"
 log_info "Starting Iter Vitae: guile ${guile_cmd_args[*]}"
 
 # Run Guile application
-log_info "${guile_cmd_args[@]}"
 exec guile "${guile_cmd_args[@]}"

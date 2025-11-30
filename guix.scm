@@ -28,42 +28,13 @@
              (gnu packages guile)
              (gnu packages guile-xyz))
 
-(define-public guile-kracht
-  (package
-    (name "guile-kracht")
-    (version "0.2.20")
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-             (url "https://codeberg.org/jjba23/kracht.git")
-             (commit (string-append "v" version))))
-       (file-name (git-file-name name version))
-       (sha256
-        (base32 "0hqaibs34dls8z6rzs3hh9blbjqllvlsp9h45g2i2n3mfvd9hp8m"))))
-    (build-system guile-build-system)
-    (native-inputs (list guile-3.0))
-    (arguments
-     (list
-      #:source-directory "src"))
-    (home-page "https://codeberg.org/jjba23/kracht")
-    (synopsis
-     "Utility methods and functionalities for Guile Scheme programming")
-    (description
-     "Kracht provides helpful and convenient functionalities that can help you
-develop more comfortably in your Guile Scheme project. You can see it as a
-batteries-included addition to the (already great) standard library
-of Guile Scheme, complementing it, and helping developers write cleaner,
-more efficient, and more powerful code.")
-    (license license:lgpl3+)))
-
 (define %source-dir
   (dirname (current-filename)))
 
 (define-public iter-vitae
   (package
     (name "iter-vitae")
-    (version "dev2")
+    (version "dev")
     (source
      (local-file %source-dir
                  #:recursive? #t
@@ -88,8 +59,7 @@ more efficient, and more powerful code.")
     
     (build-system guile-build-system)
     (native-inputs (list guile-3.0))
-    (propagated-inputs (list ))
-    (inputs (list guile-3.0 bash-minimal guile-kracht))
+    (inputs (list guile-3.0 bash-minimal))
     (synopsis
      "Resume / @acronym{CV, Curriculum Vitae} generator written in Guile Scheme")
     (description
