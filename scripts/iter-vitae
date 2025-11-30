@@ -46,19 +46,19 @@ show_help() {
   cat "${resources_dir}/help.txt"
 }
 
-parsed_options=$(getopt -n "iter-vitae" -o l:d:f:h \
-  --long locale:,destination:,file:,help -- "$@")
+parsed_options=$(getopt -n "iter-vitae" -o l:d:f:r:h \
+  --long locale:,destination:,file:,resources:,help -- "$@")
 
 eval set -- "${parsed_options}"
 
 locale_arg=""
 destination_arg=""
 file_arg=""
+resources_arg=""
 
 guile_cmd_args=(
   "-L" "${scheme_sources_dir}"
   "-c" "((@(iter-vitae main) main))"
-  "--resources" "${resources_dir}"
 )
 
 while true; do
@@ -77,6 +77,16 @@ while true; do
     file_arg="${2}"
     guile_cmd_args+=("--file" "$(realpath "${file_arg}")")
     shift 2
+    ;;
+  -r | --resources)
+    resources_arg="${2}"
+    if [[ -n "${resources_arg}" ]]; then
+      guile_cmd_args+=("--resources" "${resources_arg}")
+      shift 2
+    else
+      guile_cmd_args+=("--resources" "${resources_dir}")
+      shift 2
+    fi
     ;;
   -h | --help)
     show_help
@@ -101,7 +111,9 @@ if [[ -z "${file_arg}" ]]; then
   exit 1
 fi
 
+log_info "-------------------------------------------------"
 log_info "Starting Iter Vitae: guile ${guile_cmd_args[*]}"
 
 # Run Guile application
+log_info "${guile_cmd_args[@]}"
 exec guile "${guile_cmd_args[@]}"

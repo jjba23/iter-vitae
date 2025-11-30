@@ -26,8 +26,10 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 regex)
+  #:use-module (kracht prelude)
   #:export (get-setting assq-ref-all-or-lang
                         mk-class
+                        my-asset-library
                         syscall
                         log-message
                         log
@@ -88,27 +90,23 @@
          (process-output (get-string-all process)))
     (close-pipe process) process-output))
 
-(define preferred-strftime-format
-  (make-parameter "%Y-%m-%d %H:%M:%S%z"))
-
 (define (log-message msg)
-  (display (format #f "\n\x1b[1m~a\x1b[0m" msg)))
+  (display (format #f "\n~a" msg)))
 
 (define (log msg . args)
   (log-message (apply format
                       (append (list #f msg) args))))
 
 (define (log-info msg . args)
-  (log-message (format #f "[INFO][~a] ~a"
-                       (strftime (preferred-strftime-format)
-                                 (localtime (current-time)))
+  (log-message (format #f "~a"
                        (apply format
                               (append (list #f msg) args)))))
 
 (define (log-error msg . args)
-  (log-message (format #f "[ERROR][~a] ~a"
-                       (strftime (preferred-strftime-format)
-                                 (localtime (current-time)))
+  (log-message (format #f "[error] ~a"
                        (apply format
                               (append (list #f msg) args)))))
+
+(define my-asset-library
+  (build-asset-library '("resources/css/iter-vitae.olive.min.css")))
 

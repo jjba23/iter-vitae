@@ -29,6 +29,7 @@
   (log-info "\tfile: ~a" file)
   (log-info "\tresources: ~a" resources)
   (log-info "\tdestination: ~a" destination)
+  
 
   ;; choose person to generate curriculum vitae for
   (load file)
