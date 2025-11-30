@@ -92,7 +92,8 @@
                                  "--file /home/joe/hacking/iter-vitae/populus/~a.scm"
                                  persona) "--destination ./dist"
                                 (~ "--locale ~a" locale)
-                                "--resources ./resources")))
+                                "--resources ./resources")
+                               #:verbose? #t))
 
 (define (run* persona locale)
   (time-machine-program-shell (list (~ "iter-vitae --file ./populus/~a.scm"

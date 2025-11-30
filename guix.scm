@@ -56,6 +56,7 @@
                         (install-file "scripts/log.bash"
                                       (string-append share "/scripts/"))
                         (chmod (string-append bin "/iter-vitae") #o755)))))))
+    
     (build-system guile-build-system)
     (native-inputs (list guile-3.0))
     (inputs (list guile-3.0 bash-minimal))

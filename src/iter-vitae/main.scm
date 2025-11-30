@@ -25,7 +25,12 @@
   #:export (main))
 
 (define* (main #:key (args (command-line)))
-  (let* ((option-spec '((locale (single-char #\l)
+  
+  (let* ((_ (begin
+              (newline)
+              (write args)
+              (newline)))
+         (option-spec '((locale (single-char #\l)
                                 (value #t))
                         (destination (single-char #\o)
                                      (value #t))
@@ -34,7 +39,7 @@
                         (file (single-char #\p)
                               (value #t)
                               (required? #t))))
-         
+
          (options (getopt-long args option-spec))
          (file (option-ref options
                            'file #f))

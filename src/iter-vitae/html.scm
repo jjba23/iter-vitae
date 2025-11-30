@@ -36,6 +36,7 @@
   #:use-module (iter-vitae prelude)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
+  #:use-module (iter-vitae prelude)
   #:use-module (ice-9 threads))
 
 ;; ====== Serialize (SXML) ======
@@ -276,12 +277,12 @@ formatting."
                                              (type text/css)
                                              (href
                                               "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
-                                    (link (@ (rel stylesheet)
-                                       (href "css/iter-vitae.olive.min.css")))
                                     (meta (@ (name "viewport")
                                              (content
                                               "width=device-width, initial-scale=1.0")))
-                                    (meta (@ (charset "UTF-8"))))
+                                    (meta (@ (charset "UTF-8")))
+                                    (style ,(assoc-ref my-asset-library "resources/css/iter-vitae.olive.min.css" ))
+                                    )
                               (body (@ (class "break-words"))
                                     (div (@ (class ,(mk-class '(px-4 sm:px-8 md:px-12
                                                                      py-4 sm:py-8 md:py-12 font-sans))))

@@ -17,13 +17,8 @@
 
 set -euo pipefail
 
-bold_text='\033[1m'
 red_text='\033[0;31m'
 reset_text='\033[0m'
-
-get_timestamp() {
-  date '+%Y-%m-%d %H:%M:%S%:z'
-}
 
 log_error() {
   if [ -z "${1}" ]; then
@@ -31,7 +26,7 @@ log_error() {
     return 1
   fi
 
-  echo -e "${red_text}[ERROR][$(get_timestamp)] $1${reset_text}" >&2
+  echo -e "${red_text}[error] $1${reset_text}" >&2
 }
 
 log_info() {
@@ -40,5 +35,5 @@ log_info() {
     return 1
   fi
 
-  echo -e "${bold_text}[INFO][$(get_timestamp)] $1${reset_text}"
+  echo -e "$1"
 }

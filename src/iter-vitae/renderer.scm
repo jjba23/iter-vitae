@@ -29,13 +29,14 @@
   (log-info "\tfile: ~a" file)
   (log-info "\tresources: ~a" resources)
   (log-info "\tdestination: ~a" destination)
+  
 
   ;; choose person to generate curriculum vitae for
   (load file)
 
   (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
          (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
-         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/css ~a/css" resources
+         (cp-to-dist-cmds (list (format #f "cp -rfv ~a/css ~a/" resources
                                         destination)))
          ;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
