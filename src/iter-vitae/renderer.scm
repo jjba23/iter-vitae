@@ -64,8 +64,6 @@
                                  (get-setting 'short-intro))
                     (jobs unquote
                           (get-setting 'jobs))
-                    (font unquote
-                          (get-setting 'font))
                     (document-theme unquote
                              (get-setting 'document-theme)))))
     (log-info "executing: ~a" clean-dist-cmd)

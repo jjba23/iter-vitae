@@ -1,4 +1,4 @@
-;; Iter Vitae 
+;; Iter Vitae
 
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
@@ -89,7 +89,7 @@
   (time-machine-manifest-shell (list
                                 "guile -L ./src -c '((@(iter-vitae main) main))'"
                                 (~
-                                 "--file /home/joe/hacking/iter-vitae/populus/~a.scm"
+                                 "--file /home/joe/Hacking/iter-vitae/populus/~a.scm"
                                  persona) "--destination ./dist"
                                 (~ "--locale ~a" locale)
                                 "--resources ./resources")

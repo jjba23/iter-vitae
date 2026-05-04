@@ -205,4 +205,4 @@
         joe-job-pro-warehouse))
 
 (define document-theme
-  'fundamental)
+  'ef-cyprus)
