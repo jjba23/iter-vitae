@@ -55,14 +55,12 @@
                                   (meta (@ (charset "UTF-8")))
                                   (style ,(assoc-ref my-asset-library
                                            "resources/css/iter-vitae.olive.min.css")))
-                            (body (@ (class "break-words"))
+                            (body (@ (class ,(mk-class '(break-words flex justify-center))))
                                   (div (@ (class ,(mk-class '(px-4 sm:px-8
                                                                    md:px-12
                                                                    py-4
                                                                    sm:py-8
                                                                    md:py-12
-                                                                   max-w-4xl
-                                                                   lg:mx-6
                                                                    font-sans))))
                                        ,@body
                                        ,(page-footer #:persona persona
@@ -330,7 +328,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-    
+
     (div (@ (class ,(mk-class '(mt-8))))
          (h4 (@ (class ,h4-face))
              ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
