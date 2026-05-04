@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -37,6 +37,7 @@
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
   #:use-module (iter-vitae prelude)
+  #:use-module (iter-vitae theme ef-cyprus)
   #:use-module (ice-9 threads))
 
 ;; ====== Serialize (SXML) ======
@@ -218,7 +219,7 @@ formatting."
 
 (define (make-char-quotator char-encoding)
   (let ((bad-chars (list->char-set (map car char-encoding))))
-    
+
     ;; Check to see if str contains one of the characters in charset,
     ;; from the position i onward. If so, return that character's index.
     ;; otherwise, return #f
@@ -262,383 +263,25 @@ formatting."
 ;; ================================
 
 (begin
-  (define* (iter-vitae-html-template #:key title body locale persona)
-    `("<!DOCTYPE html>" (html (head (title ,title)
-                                    (link (@ (rel preconnect)
-                                             (href
-                                              "https://fonts.googleapis.com")))
-                                    (link (@ (rel preconnect)
-                                             (href "https://fonts.gstatic.com")
-                                             (crossorigin "")))
-                                    (link (@ (rel stylesheet)
-                                             (href
-                                              "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
-                                    (link (@ (rel stylesheet)
-                                             (type text/css)
-                                             (href
-                                              "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
-                                    (meta (@ (name "viewport")
-                                             (content
-                                              "width=device-width, initial-scale=1.0")))
-                                    (meta (@ (charset "UTF-8")))
-                                    (style ,(assoc-ref my-asset-library "resources/css/iter-vitae.olive.min.css" ))
-                                    )
-                              (body (@ (class "break-words"))
-                                    (div (@ (class ,(mk-class '(px-4 sm:px-8 md:px-12
-                                                                     py-4 sm:py-8 md:py-12 font-sans))))
-                                         ,@body
-                                         ,(iter-vitae-page-footer #:persona
-                                                                  persona
-                                                                  #:locale
-                                                                  locale))))))
-  (export iter-vitae-html-template))
-
-(begin
-  (define* (iter-vitae-page-footer #:key locale persona)
-    `((hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-2 justify-evenly))))
-           ,(render-iter-vitae-blog-link #:locale locale
-                                         #:persona persona)
-           ,(render-iter-vitae-code-link #:locale locale
-                                         #:persona persona)
-           ,(render-iter-vitae-linked-in-link #:locale locale
-                                              #:persona persona))
-      (div (@ (class ,(mk-class '(my-2 block text-center font-sans))))
-           (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
-                                            justify-center))))
-                (small (@ (class ,address-face))
-                       "this Curriculum Vitae was rendered with "
-                       (a (@ (class ,small-a-face)
-                             (href "https://codeberg.org/jjba23/iter-vitae"))
-                          "Lisp (Guile Scheme) code"))))))
-  (export iter-vitae-page-footer))
-
-(define* (render-iter-vitae-display-name #:key locale persona)
-  `(h1 (@ (class ,display-name-face))
-       ,(assq-ref-all-or-lang (assq-ref persona
-                                        'display-name) locale)))
-
-(define* (render-iter-vitae-job-title #:key locale persona)
-  (let* ((jt (assq-ref persona
-                       'job-title-link)))
-    (cond
-      ((list? jt)
-       `(a (@ (class ,h2-special-face)
-              (href ,(assq-ref-all-or-lang jt locale)))
-           ,(assq-ref-all-or-lang (assq-ref persona
-                                            'job-title) locale)))
-      (else `(p (@ (class ,h2-special-face))
-                ,(assq-ref-all-or-lang (assq-ref persona
-                                                 'job-title) locale)))))
-
-  )
-
-(define* (render-iter-vitae-email #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl))))
-            "")
-         (a (@ (class ,small-a-face))
-                ,(assq-ref (assq-ref persona
-                                     'personal-contact)
-                           'emails)))))
-
-(define* (render-iter-vitae-phone-number #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-phone text-onyx-500 text-xl)))) "")
-         (small (@ (class ,address-face))
-                ,(assq-ref (assq-ref persona
-                                     'personal-contact)
-                           'phone-numbers)))))
-
-(define* (render-iter-vitae-blog-link #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-rss text-onyx-500 xl)))) "")
-         (a (@ (class ,small-a-face)
-               (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'blog))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'blog)))))
-
-(define* (render-iter-vitae-code-link #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-code text-onyx-500 text-xl)))) "")
-         (a (@ (class ,small-a-face)
-               (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'code))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'code)))))
-
-(define* (render-iter-vitae-linked-in-link #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-link text-onyx-500 text-xl)))) "")
-         (a (@ (class ,small-a-face)
-               (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'linked-in))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'linked-in)))))
-
-(define* (render-iter-vitae-address-lines #:key locale persona)
-  `(small (@ (class ,(mk-class '(flex flex-col))))
-          ,(map (lambda (address-line)
-                  `(span (@ (class ,address-face))
-                         ,(assq-ref-all-or-lang address-line locale)))
-                (assq-ref persona
-                          'address-lines))))
-
-(define* (render-iter-vitae-driver-licenses #:key locale persona)
-  `(p (@ (class ,p-face))
-      ,(map (lambda (driver-license)
-              `(span (@ (class ,(mk-class '(mr-4))))
-                     ,(assq-ref-all-or-lang driver-license locale)))
-            (assq-ref persona
-                      'driver-licenses))))
-
-(define* (render-iter-vitae-short-intro #:key locale persona)
-  (map (lambda (intro-line)
-         `(p (@ (class ,p-face))
-             ,(assq-ref-all-or-lang intro-line locale)))
-       (assq-ref persona
-                 'short-intro)))
-
-(define* (render-iter-vitae-interests-hobbies #:key locale persona)
-  (map (lambda (interest-hobby)
-         `(p (@ (class ,p-face))
-             ,(assq-ref-all-or-lang interest-hobby locale)))
-       (assq-ref persona
-                 'interests-hobbies)))
-
-(define* (render-iter-vitae-jobs #:key locale persona)
-  (map (lambda (job)
-         `(div (@ (class ,(mk-class '(p-3))))
-               (div (@ (class ,(mk-class '(flex flex-row gap-4))))
-                    (span (@ (class "")) "⤷")
-                    (div (@(class ,(mk-class '(flex flex-col gap-2))))
-                     
-                     (div (@ (class ,(mk-class '(flex flex-row flex-wrap
-                                                          gap-2 items-center))))
-                              (h5 (@ (class ,h5-face))
-                                  ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'name)
-                                                         locale))
-                              (span "-")
-                              (h5 (@ (class ,h5-strong-face))
-                                  ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'position)
-                                                         locale)))
-                         (em (@ (class ,h5-em-face))
-                             ,(assq-ref-all-or-lang (assq-ref job
-                                                              'location)
-                                                    locale))
-                         (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
-                            ,(assq-ref-all-or-lang (assq-ref job
-                                                             'time) locale))
-                         (ul ,(map (lambda (ip)
-                                     `(li (@ (class ,bullet-face)
-                                             (style "list-style: circle"))
-                                          ,(assq-ref-all-or-lang ip locale)))
-                                   (assq-ref job
-                                             'experience)))))))
-       (assq-ref persona
-                 'jobs)))
-
-(define* (render-iter-vitae-education #:key locale persona)
-  (map (lambda (education)
-         `(div (@ (class ,(mk-class '(p-3))))
-               (div (@ (class ,(mk-class '(flex flex-row gap-4))))
-                    (span (@ (class "")) "⤷")
-                    (div
-                     (@(class ,(mk-class '(flex flex-col gap-2))))
-                     (div (@ (class ,(mk-class '(flex flex-row flex-wrap
-                                                          gap-3 items-center))))
-                              (h5 (@ (class ,h5-face))
-                                  ,(assq-ref-all-or-lang (assq-ref education
-                                                                   'name)
-                                                         locale))
-                              (span "-")
-                              (h5 (@ (class ,h5-strong-face))
-                                  ,(assq-ref-all-or-lang (assq-ref education
-                                                                   'position)
-                                                         locale)))
-                         (em (@ (class ,h5-em-face))
-                             ,(assq-ref-all-or-lang (assq-ref education
-                                                              'location)
-                                                    locale))
-                         (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
-                            ,(assq-ref-all-or-lang (assq-ref education
-                                                             'time) locale))
-                         (ul ,(map (lambda (ip)
-                                     `(li (@ (class ,bullet-face)
-                                             (style "list-style: circle"))
-                                          ,(assq-ref-all-or-lang ip locale)))
-                                   (assq-ref education
-                                             'experience)))))))
-       (assq-ref persona
-                 'education)))
-
-(define* (language-proficiency->string #:key persona locale level)
-  (let* ((lp (assq-ref persona
-                       'language-proficiency))
-         (ll (assq-ref-all-or-lang lp locale)))
-    (assoc-ref ll level)))
-
-(define* (render-iter-vitae-languages #:key locale persona)
-  `(div (table (@ (class ,table-face))
-               (thead (tr (@ (class ,top-row-face))
-                          (th "")
-                          (th (@ (class ,th-face))
-                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
-                                                                persona
-                                                                'titles)
-                                                               'speaking)
-                                                     locale))
-                          (th (@ (class ,th-face))
-                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
-                                                                persona
-                                                                'titles)
-                                                               'reading)
-                                                     locale))
-                          (th (@ (class ,th-face))
-                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
-                                                                persona
-                                                                'titles)
-                                                               'writing)
-                                                     locale))))
-               (tbody ,(map (lambda (l)
-                              `((tr (td (@ (class ,first-td-face))
-                                        (em ,(assq-ref-all-or-lang (assq-ref l
-                                                                    'name)
-                                                                   locale)))
-                                    (td (@ (class ,td-face))
-                                        ,(language-proficiency->string
-                                          #:persona persona
-                                          #:locale locale
-                                          #:level (assq-ref (assq-ref l
-                                                                      'proficiency)
-                                                            'speaking)))
-                                    (td (@ (class ,td-face))
-                                        ,(language-proficiency->string
-                                          #:persona persona
-                                          #:locale locale
-                                          #:level (assq-ref (assq-ref l
-                                                                      'proficiency)
-                                                            'reading)))
-                                    (td (@ (class ,td-face))
-                                        ,(language-proficiency->string
-                                          #:persona persona
-                                          #:locale locale
-                                          #:level (assq-ref (assq-ref l
-                                                                      'proficiency)
-                                                            'writing))))))
-                            (assq-ref persona
-                                      'languages))))))
-
-(begin
-  (define* (iter-vitae-main-body #:key locale persona)
-    `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6
-                                       justify-between))))
-           (div (@ (class ,(mk-class '(flex flex-col gap-3 align-left
-                                            items-start))))
-                ,(render-iter-vitae-display-name #:locale locale
-                                                 #:persona persona)
-                ,(render-iter-vitae-job-title #:locale locale
-                                              #:persona persona))
-           (div (@ (class ,(mk-class '(my-3 sm:my-1 flex flex-col
-                                            justify-start))))
-                ,(render-iter-vitae-email #:locale locale
-                                          #:persona persona)
-                ,(render-iter-vitae-phone-number #:locale locale
-                                                 #:persona persona)
-                ,(render-iter-vitae-address-lines #:locale locale
-                                                  #:persona persona)))
-      
-      (div (@ (class ,(mk-class '(mt-8))))
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'short-intro) locale)))
-      ,(render-iter-vitae-short-intro #:locale locale
-                                      #:persona persona)
-
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-briefcase text-onyx-500 text-xl))))
-              "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'work-experience) locale)))
-      ,(render-iter-vitae-jobs #:locale locale
-                               #:persona persona)
-
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-student text-onyx-500 text-xl))))
-              "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'education) locale)))
-      ,(render-iter-vitae-education #:locale locale
-                                    #:persona persona)
-
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3
-                                       items-center))))
-           (i (@ (class ,(mk-class '(ph ph-translate text-onyx-500 text-xl))))
-              "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'language) locale)))
-      ,(render-iter-vitae-languages #:persona persona
-                                    #:locale locale)
-
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
-           (h4 (@ (class ,h4-face))
-               ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
-                                                                persona
-                                                                'titles)
-                                                               'driver-license)
-                                                     locale) ":"))
-           ,(render-iter-vitae-driver-licenses #:locale locale
-                                               #:persona persona))
-
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-onyx-500
-                                        text-xl)))) "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'interests-hobbies) locale)))
-      ,(render-iter-vitae-interests-hobbies #:locale locale
-                                            #:persona persona)))
-  (export iter-vitae-main-body))
-
-(begin
   (define* (iter-vitae-curriculum-page #:key locale persona)
     (with-output-to-string (lambda ()
-                             (sxml->xml (iter-vitae-html-template #:title
-                                         "Iter Vitae"
-                                         #:persona persona
-                                         #:body (iter-vitae-main-body #:locale
-                                                                      locale
-                                                                      #:persona
-                                                                      persona)
-                                         #:locale locale)))))
-
+                             (sxml->xml (cond
+                                          ((eq? 'fundamental
+                                                (assq-ref persona
+                                                          'document-theme))
+                                           (iter-vitae-html-template #:title
+                                            "Iter Vitae"
+                                            #:persona persona
+                                            #:body (iter-vitae-main-body
+                                                    #:locale locale
+                                                    #:persona persona)
+                                            #:locale locale))
+                                          (else (iter-vitae-html-template
+                                                 #:title "Iter Vitae"
+                                                 #:persona persona
+                                                 #:body (iter-vitae-main-body
+                                                         #:locale locale
+                                                         #:persona persona)
+                                                 #:locale locale)))
+                                        ))))
   (export iter-vitae-curriculum-page))
-
