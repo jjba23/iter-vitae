@@ -24,45 +24,46 @@
   #:use-module (ice-9 regex)
   #:use-module (srfi srfi-13)
   #:use-module (ice-9 popen)
-  #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 time)
   #:use-module (iter-vitae prelude)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
-  #:use-module (iter-vitae prelude)
   #:use-module (ice-9 threads)
   #:export (fundamental-html-template fundamental-main-body))
 
 (define* (fundamental-html-template #:key title body locale persona)
   `("<!DOCTYPE html>" (html (head (title ,title)
-                                  (link (@ (rel preconnect)
-                                           (href
-                                            "https://fonts.googleapis.com")))
-                                  (link (@ (rel preconnect)
-                                           (href "https://fonts.gstatic.com")
-                                           (crossorigin "")))
                                   (meta (@ (name "viewport")
                                            (content
                                             "width=device-width, initial-scale=1.0")))
                                   (meta (@ (charset "UTF-8"))))
-                            (body (div (@ (style "font-family: sans-serif;"))
-                                       ,@body
+                            (body (@ (style
+                                      "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px 20px;"))
+                                  (div ,@body
                                        ,(page-footer #:persona persona
                                                      #:locale locale))))))
 
 (define* (page-footer #:key locale persona)
-  `((hr)
-    (div ,(render-blog-link #:locale locale
-                            #:persona persona)
-         ,(render-code-link #:locale locale
-                            #:persona persona)
-         ,(render-linked-in-link #:locale locale
-                                 #:persona persona))
-    (div (div (small "this Curriculum Vitae was rendered with "
-                     (a "Lisp (Guile Scheme) code"))))))
+  `(div (@ (style
+            "margin-top: 50px; font-size: 0.8rem; color: #666; text-align: center; border-top: 1px solid #ddd; padding-top: 20px;"))
+        (div (@ (style
+                 "display: flex; justify-content: center; gap: 15px; margin-bottom: 10px;"))
+             ,(render-blog-link #:locale locale
+                                #:persona persona)
+             ,(render-code-link #:locale locale
+                                #:persona persona)
+             ,(render-linked-in-link #:locale locale
+                                     #:persona persona))
+        (div (small "Rendered with "
+                    (a (@ (style
+                           "color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;")
+                          (href "https://www.gnu.org/software/guile/"))
+                       "Lisp (Guile Scheme)")))))
 
 (define* (render-display-name #:key locale persona)
-  `(h1 ,(assq-ref-all-or-lang (assq-ref persona
+  `(h1 (@ (style
+           "margin: 0 0 5px 0; font-size: 2.5rem; letter-spacing: -0.02em;"))
+       ,(assq-ref-all-or-lang (assq-ref persona
                                         'display-name) locale)))
 
 (define* (render-job-title #:key locale persona)
@@ -70,129 +71,143 @@
                        'job-title-link)))
     (cond
       ((list? jt)
-       `(a (@ (href ,(assq-ref-all-or-lang jt locale)))
-           ,(assq-ref-all-or-lang (assq-ref persona
-                                            'job-title) locale)))
-      (else `(p ,(assq-ref-all-or-lang (assq-ref persona
-                                                 'job-title) locale)))))
-
-  )
+       `(div (@ (style "font-size: 1.2rem; color: #666;"))
+             (a (@ (style
+                    "color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;")
+                   (href ,(assq-ref-all-or-lang jt locale)))
+                ,(assq-ref-all-or-lang (assq-ref persona
+                                                 'job-title) locale))))
+      (else `(div (@ (style "font-size: 1.2rem; color: #666;"))
+                  ,(assq-ref-all-or-lang (assq-ref persona
+                                                   'job-title) locale))))))
 
 (define* (render-email #:key locale persona)
-  `((div (a ,(assq-ref (assq-ref persona
-                                 'personal-contact)
-                       'emails)))))
+  `(div (a (@ (style "color: inherit; text-decoration: none;")
+              (href ,(string-append "mailto:"
+                                    (assq-ref (assq-ref persona
+                                                        'personal-contact)
+                                              'emails))))
+           ,(assq-ref (assq-ref persona
+                                'personal-contact)
+                      'emails))))
 
 (define* (render-phone-number #:key locale persona)
-  `((div (small ,(assq-ref (assq-ref persona
-                                     'personal-contact)
-                           'phone-numbers)))))
+  `(div ,(assq-ref (assq-ref persona
+                             'personal-contact)
+                   'phone-numbers)))
 
 (define* (render-blog-link #:key locale persona)
-  `((div
-
-         (a (@ (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'blog))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'blog)))))
+  `(div (a (@ (style
+               "color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;")
+              (target "_blank")
+              (href ,(format #f "https://~a"
+                             (assq-ref (assq-ref persona
+                                                 'personal-links)
+                                       'blog)))) "Blog")))
 
 (define* (render-code-link #:key locale persona)
-  `((div
-
-         (a (@ (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'code))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'code)))))
+  `(div (a (@ (style
+               "color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;")
+              (target "_blank")
+              (href ,(format #f "https://~a"
+                             (assq-ref (assq-ref persona
+                                                 'personal-links)
+                                       'code)))) "Code")))
 
 (define* (render-linked-in-link #:key locale persona)
-  `((div
-
-         (a (@ (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'linked-in))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'linked-in)))))
+  `(div (a (@ (style
+               "color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;")
+              (target "_blank")
+              (href ,(format #f "https://~a"
+                             (assq-ref (assq-ref persona
+                                                 'personal-links)
+                                       'linked-in)))) "LinkedIn")))
 
 (define* (render-address-lines #:key locale persona)
-  `(small ,(map (lambda (address-line)
-                  `(span ,(assq-ref-all-or-lang address-line locale)))
-                (assq-ref persona
-                          'address-lines))))
+  `(div ,(string-join (map (lambda (address-line)
+                             (assq-ref-all-or-lang address-line locale))
+                           (assq-ref persona
+                                     'address-lines)) ", ")))
 
 (define* (render-driver-licenses #:key locale persona)
-  `(p ,(map (lambda (driver-license)
-              `(span ,(assq-ref-all-or-lang driver-license locale)))
-            (assq-ref persona
-                      'driver-licenses))))
+  `(p (@ (style "margin: 0 0 10px 0;"))
+      ,(string-join (map (lambda (driver-license)
+                           (assq-ref-all-or-lang driver-license locale))
+                         (assq-ref persona
+                                   'driver-licenses)) ", ")))
 
 (define* (render-short-intro #:key locale persona)
   (map (lambda (intro-line)
-         `(p ,(assq-ref-all-or-lang intro-line locale)))
+         `(p (@ (style "margin: 0 0 10px 0;"))
+             ,(assq-ref-all-or-lang intro-line locale)))
        (assq-ref persona
                  'short-intro)))
 
 (define* (render-interests-hobbies #:key locale persona)
   (map (lambda (interest-hobby)
-         `(p ,(assq-ref-all-or-lang interest-hobby locale)))
+         `(p (@ (style "margin: 0 0 10px 0;"))
+             ,(assq-ref-all-or-lang interest-hobby locale)))
        (assq-ref persona
                  'interests-hobbies)))
 
 (define* (render-jobs #:key locale persona)
   (map (lambda (job)
-         `(div (div (span "⤷")
-                    (div
-
-                         (div (h5 ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'name)
-                                                         locale))
-                              (span "-")
-                              (h5 ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'position)
-                                                         locale)))
-                         (em ,(assq-ref-all-or-lang (assq-ref job
-                                                              'location)
-                                                    locale))
-                         (p ,(assq-ref-all-or-lang (assq-ref job
-                                                             'time) locale))
-                         (ul ,(map (lambda (ip)
-                                     `(li (@ (style "list-style: circle"))
-                                          ,(assq-ref-all-or-lang ip locale)))
-                                   (assq-ref job
-                                             'experience)))))))
+         `(div (@ (style "margin-bottom: 25px;"))
+               (div (@ (style
+                        "display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;"))
+                    (h5 (@ (style
+                            "margin: 0; font-size: 1.1rem; font-weight: 600;"))
+                        ,(string-append (assq-ref-all-or-lang (assq-ref job
+                                                                        'position)
+                                                              locale) ", "
+                                        (assq-ref-all-or-lang (assq-ref job
+                                                                        'name)
+                                                              locale)))
+                    (span (@ (style
+                              "font-style: italic; color: #666; font-size: 0.9rem;"))
+                          ,(assq-ref-all-or-lang (assq-ref job
+                                                           'time) locale)))
+               (div (@ (style
+                        "font-style: italic; color: #666; font-size: 0.9rem; margin-bottom: 8px;"))
+                    ,(assq-ref-all-or-lang (assq-ref job
+                                                     'location) locale))
+               (ul (@ (style "margin: 5px 0 15px 0; padding-left: 20px;"))
+                   ,(map (lambda (ip)
+                           `(li (@ (style "margin-bottom: 4px;"))
+                                ,(assq-ref-all-or-lang ip locale)))
+                         (assq-ref job
+                                   'experience)))))
        (assq-ref persona
                  'jobs)))
 
 (define* (render-education #:key locale persona)
   (map (lambda (education)
-         `(div (div (span "⤷")
-                    (div (div (h5 ,(assq-ref-all-or-lang (assq-ref education
-                                                                   'name)
-                                                         locale))
-                              (span "-")
-                              (h5 ,(assq-ref-all-or-lang (assq-ref education
-                                                                   'position)
-                                                         locale)))
-                         (em ,(assq-ref-all-or-lang (assq-ref education
-                                                              'location)
-                                                    locale))
-                         (p ,(assq-ref-all-or-lang (assq-ref education
-                                                             'time) locale))
-                         (ul ,(map (lambda (ip)
-                                     `(li (@ (style "list-style: circle"))
-                                          ,(assq-ref-all-or-lang ip locale)))
-                                   (assq-ref education
-                                             'experience)))))))
+         `(div (@ (style "margin-bottom: 25px;"))
+               (div (@ (style
+                        "display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;"))
+                    (h5 (@ (style
+                            "margin: 0; font-size: 1.1rem; font-weight: 600;"))
+                        ,(string-append (assq-ref-all-or-lang (assq-ref
+                                                               education
+                                                               'position)
+                                                              locale) ", "
+                                        (assq-ref-all-or-lang (assq-ref
+                                                               education
+                                                               'name) locale)))
+                    (span (@ (style
+                              "font-style: italic; color: #666; font-size: 0.9rem;"))
+                          ,(assq-ref-all-or-lang (assq-ref education
+                                                           'time) locale)))
+               (div (@ (style
+                        "font-style: italic; color: #666; font-size: 0.9rem; margin-bottom: 8px;"))
+                    ,(assq-ref-all-or-lang (assq-ref education
+                                                     'location) locale))
+               (ul (@ (style "margin: 5px 0 15px 0; padding-left: 20px;"))
+                   ,(map (lambda (ip)
+                           `(li (@ (style "margin-bottom: 4px;"))
+                                ,(assq-ref-all-or-lang ip locale)))
+                         (assq-ref education
+                                   'experience)))))
        (assq-ref persona
                  'education)))
 
@@ -203,104 +218,134 @@
     (assoc-ref ll level)))
 
 (define* (render-languages #:key locale persona)
-  `(div (table (thead (tr (th "")
-                          (th ,(assq-ref-all-or-lang (assq-ref (assq-ref
+  `(div (table (@ (style
+                   "width: 100%; border-collapse: collapse; margin-bottom: 15px;"))
+               (thead (tr (th (@ (style
+                                  "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-weight: 600; color: #666;"))
+                              "")
+                          (th (@ (style
+                                  "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-weight: 600; color: #666;"))
+                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
                                                                'speaking)
                                                      locale))
-                          (th ,(assq-ref-all-or-lang (assq-ref (assq-ref
+                          (th (@ (style
+                                  "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-weight: 600; color: #666;"))
+                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
                                                                'reading)
                                                      locale))
-                          (th ,(assq-ref-all-or-lang (assq-ref (assq-ref
+                          (th (@ (style
+                                  "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-weight: 600; color: #666;"))
+                              ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
                                                                'writing)
                                                      locale))))
                (tbody ,(map (lambda (l)
-                              `((tr (td (em ,(assq-ref-all-or-lang (assq-ref l
-                                                                    'name)
-                                                                   locale)))
-                                    (td ,(language-proficiency->string
-                                          #:persona persona
-                                          #:locale locale
-                                          #:level (assq-ref (assq-ref l
-                                                                      'proficiency)
-                                                            'speaking)))
-                                    (td ,(language-proficiency->string
-                                          #:persona persona
-                                          #:locale locale
-                                          #:level (assq-ref (assq-ref l
-                                                                      'proficiency)
-                                                            'reading)))
-                                    (td ,(language-proficiency->string
-                                          #:persona persona
-                                          #:locale locale
-                                          #:level (assq-ref (assq-ref l
-                                                                      'proficiency)
-                                                            'writing))))))
+                              `(tr (td (@ (style
+                                           "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5;"))
+                                       (strong ,(assq-ref-all-or-lang (assq-ref
+                                                                       l
+                                                                       'name)
+                                                                      locale)))
+                                   (td (@ (style
+                                           "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5;"))
+                                       ,(language-proficiency->string
+                                                                      #:persona
+                                                                      persona
+                                                                      #:locale
+                                                                      locale
+                                                                      #:level (assq-ref
+                                                                               (assq-ref
+                                                                                l
+                                                                                'proficiency)
+                                                                               'speaking)))
+                                   (td (@ (style
+                                           "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5;"))
+                                       ,(language-proficiency->string
+                                                                      #:persona
+                                                                      persona
+                                                                      #:locale
+                                                                      locale
+                                                                      #:level (assq-ref
+                                                                               (assq-ref
+                                                                                l
+                                                                                'proficiency)
+                                                                               'reading)))
+                                   (td (@ (style
+                                           "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5;"))
+                                       ,(language-proficiency->string
+                                                                      #:persona
+                                                                      persona
+                                                                      #:locale
+                                                                      locale
+                                                                      #:level (assq-ref
+                                                                               (assq-ref
+                                                                                l
+                                                                                'proficiency)
+                                                                               'writing)))))
                             (assq-ref persona
                                       'languages))))))
 
 (define* (fundamental-main-body #:key locale persona)
-  `((div (div ,(render-display-name #:locale locale
-                                    #:persona persona)
-              ,(render-job-title #:locale locale
-                                 #:persona persona))
-         (div ,(render-email #:locale locale
-                             #:persona persona)
-              ,(render-phone-number #:locale locale
-                                    #:persona persona)
-              ,(render-address-lines #:locale locale
-                                     #:persona persona)))
-    
-    (div (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                        'titles)
-                                              'short-intro) locale)))
-    ,(render-short-intro #:locale locale
-                         #:persona persona)
+  (let ((h4-style
+         "border-bottom: 1px solid #ddd; padding-bottom: 5px; margin: 35px 0 15px 0; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; color: #666;"))
+    `((div (@ (style "margin-bottom: 40px;"))
+           ,(render-display-name #:locale locale
+                                 #:persona persona)
+           ,(render-job-title #:locale locale
+                              #:persona persona)
+           (div (@ (style
+                    "display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.9rem; color: #666; margin-top: 10px;"))
+                ,(render-email #:locale locale
+                               #:persona persona)
+                ,(render-phone-number #:locale locale
+                                      #:persona persona)
+                ,(render-address-lines #:locale locale
+                                       #:persona persona)))
+      
+      (h4 (@ (style ,h4-style))
+          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                     'titles)
+                                           'short-intro) locale))
+      ,@(render-short-intro #:locale locale
+                            #:persona persona)
 
-    (div
+      (h4 (@ (style ,h4-style))
+          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                     'titles)
+                                           'work-experience) locale))
+      ,@(render-jobs #:locale locale
+                     #:persona persona)
 
-         (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                        'titles)
-                                              'work-experience) locale)))
-    ,(render-jobs #:locale locale
-                  #:persona persona)
+      (h4 (@ (style ,h4-style))
+          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                     'titles)
+                                           'education) locale))
+      ,@(render-education #:locale locale
+                          #:persona persona)
 
-    (hr)
-    (div
+      (h4 (@ (style ,h4-style))
+          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                     'titles)
+                                           'language) locale))
+      ,(render-languages #:persona persona
+                         #:locale locale)
 
-         (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                        'titles)
-                                              'education) locale)))
-    ,(render-education #:locale locale
-                       #:persona persona)
+      (h4 (@ (style ,h4-style))
+          ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                                    'titles)
+                                                          'driver-license)
+                                                locale) ":"))
+      ,(render-driver-licenses #:locale locale
+                               #:persona persona)
 
-    (hr)
-    (div
-
-         (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                        'titles)
-                                              'language) locale)))
-    ,(render-languages #:persona persona
-                       #:locale locale)
-
-    (hr)
-    (div
-
-         (h4 ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                              'titles)
-                                                             'driver-license)
-                                                   locale) ":"))
-         ,(render-driver-licenses #:locale locale
-                                  #:persona persona))
-
-    (hr)
-    (div (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                        'titles)
-                                              'interests-hobbies) locale)))
-    ,(render-interests-hobbies #:locale locale
-                               #:persona persona)))
+      (h4 (@ (style ,h4-style))
+          ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                     'titles)
+                                           'interests-hobbies) locale))
+      ,@(render-interests-hobbies #:locale locale
+                                  #:persona persona))))
