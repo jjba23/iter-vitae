@@ -61,6 +61,8 @@
                                                                    py-4
                                                                    sm:py-8
                                                                    md:py-12
+                                                                   max-w-4xl
+                                                                   lg:mx-6
                                                                    font-sans))))
                                        ,@body
                                        ,(page-footer #:persona persona
@@ -328,7 +330,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-
+    
     (div (@ (class ,(mk-class '(mt-8))))
          (h4 (@ (class ,h4-face))
              ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
