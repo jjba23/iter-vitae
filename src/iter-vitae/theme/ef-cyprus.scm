@@ -55,7 +55,8 @@
                                   (meta (@ (charset "UTF-8")))
                                   (style ,(assoc-ref my-asset-library
                                            "resources/css/iter-vitae.olive.min.css")))
-                            (body (@ (class ,(mk-class '(break-words flex justify-center))))
+                            (body (@ (class ,(mk-class '(break-words flex
+                                                         justify-center))))
                                   (div (@ (class ,(mk-class '(px-4 sm:px-8
                                                                    md:px-12
                                                                    py-4
@@ -197,7 +198,8 @@
                     (div (@ (class ,(mk-class '(flex flex-col gap-2))))
 
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
-                                                          gap-2 items-center))))
+                                                          gap-2 items-center
+                                                          align-center))))
                               (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'name)
@@ -206,11 +208,12 @@
                               (h5 (@ (class ,h5-strong-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'position)
-                                                         locale)))
-                         (em (@ (class ,h5-em-face))
-                             ,(assq-ref-all-or-lang (assq-ref job
-                                                              'location)
-                                                    locale))
+                                                         locale))
+                              (em (@ (class ,h5-em-face))
+                                  ,(format #f "(~a)"
+                                           (assq-ref-all-or-lang (assq-ref job
+                                                                  'location)
+                                                                 locale))))
                          (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
                             ,(assq-ref-all-or-lang (assq-ref job
                                                              'time) locale))
@@ -230,7 +233,7 @@
                     (span (@ (class "")) "⤷")
                     (div (@ (class ,(mk-class '(flex flex-col gap-2))))
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
-                                                          gap-3 items-center))))
+                                                          gap-2 items-center))))
                               (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'name)
@@ -239,11 +242,13 @@
                               (h5 (@ (class ,h5-strong-face))
                                   ,(assq-ref-all-or-lang (assq-ref education
                                                                    'position)
-                                                         locale)))
-                         (em (@ (class ,h5-em-face))
-                             ,(assq-ref-all-or-lang (assq-ref education
-                                                              'location)
-                                                    locale))
+                                                         locale))
+                              (em (@ (class ,h5-em-face))
+                                  ,(format #f "(~a)"
+                                           (assq-ref-all-or-lang (assq-ref
+                                                                  education
+                                                                  'location)
+                                                                 locale))))
                          (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
                             ,(assq-ref-all-or-lang (assq-ref education
                                                              'time) locale))

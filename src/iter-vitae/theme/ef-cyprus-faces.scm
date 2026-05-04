@@ -103,7 +103,7 @@
   (mk-class '(text-xl font-medium text-onyx-700)))
 
 (define h5-em-face
-  (mk-class '(text-md font-light text-onyx-500)))
+  (mk-class '(text-md font-light text-onyx-300)))
 
 (define display-name-face
   (mk-class '(my-3 font-sans text-16 font-serif text-onyx-300 font-light)))
