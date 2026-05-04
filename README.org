@@ -3,8 +3,8 @@
 #+email: jjbigorra@gmail.com
 #+language: en
 
-[[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]  
-[[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]] 
+[[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]]
+[[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]]    [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]
 
 Iter Vitae is a free software project that aims to make it easy and maintainable to generate an attractive, modern and customizable /Curriculum Vitae/ or /resume/ for yourself and to allow you to define the course of your life and career directly in Guile Scheme code.
 
@@ -27,13 +27,11 @@ The tool separates data from its presentation (following the principles of the M
 
 ** Build a Curriculum Vitae for your next 40 years
 
-This tool isn't just about creating a one-off CV — it's designed for long-term use, so you can update and evolve your resume over the years. The software supports multilingual content and is fully extensible, allowing you to add new data entries, customize the design, and even support additional languages.
+This tool isn't just about creating a one-off CV — it's designed for long-term use, so you can update and evolve your resume over the years. The software supports multilingual content and is fully extensible, allowing you to add new data entries, customize the design, etc.
 
-Version-control your CV code, and enjoy all the benefits.
+Also, version-control your CV code, and enjoy all the benefits. Work with a sane and flexible multi-lingual compatible data model.
 
-Work with a sane and flexible multi-lingual compatible data model. The tool is extensible and supports an arbitrary amount of languages, data entries.
-
-Remember that with Guile Scheme, and the Lisp super-powers, everything is hackable and modifiable at any moment, giving you ultimate control and power.
+Remember that with Guile Scheme, and the Lisp super-powers, everything is extensible, hackable and modifiable at any moment, giving you ultimate control and power.
 
 ------------
 
@@ -43,7 +41,21 @@ You can see an example of the most up-to-date version of my CV generated with It
 
 [[https://jointhefreeworld.org/cv/][https://jointhefreeworld.org/joe-cv/]]
 
-This sample demonstrates the capabilities of the tool in generating clean, readable, and professional-looking resumes.
+---------------
+
+* Supported document-themes
+
+*** ef-cyprus
+
+Simple, clean, light and green tones with advanced typography with varying font families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex fonts. Inspired by Protesilaos ef-themes for Emacs.
+
+[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-04-13-01-41.png]]
+
+*** fundamental
+
+Minimalistic light and simple theme, with simple sans-serif font for everything and basic styles. Minimal dependencies.
+
+[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-04-13-01-26.png]]
 
 ---------------
 
@@ -55,7 +67,7 @@ Also, find the technical Guile Scheme API documentation for Iter Vitae here:
 
 https://jointhefreeworld.org/api-docs/iter-vitae/API.html
 
-You can see the program's help by invoking it with the ~--help~ argument or looking at ~resources/help.txt~. 
+You can see the program's help by invoking it with the ~--help~ argument or looking at ~resources/help.txt~.
 
 * Installing
 
@@ -67,12 +79,12 @@ iter-vitae is officially distributed via:
 
 ** On Guix
 
-Iter Vitae is officially distributed via the Guix package manager as ~iter-vitae~. You can alternatively choose to download it from source, useful for developing it or customizing it. 
+Iter Vitae is officially distributed via the Guix package manager as ~iter-vitae~. You can alternatively choose to download it from source, useful for developing it or customizing it.
 In that case you'll need:
 
 - *Guix*: The Guix package manager will ensure a reproducible working software, and will manage all needed dependencies for you.
 -  *Guile Scheme:*  This entire program is written using the official GNU extension language, Guile Scheme.
-- Any web browser of your choice (ideally which can also print to PDF)    
+- Any web browser of your choice (ideally which can also print to PDF)
 
 Check the ~maak.scm~,  and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
@@ -114,7 +126,7 @@ https://www.gnu.org/licenses/agpl-3.0.html
 The documentation and examples, including this document, which are provided with iter-vitae, are all licensed under the GNU Free Documentation License v1.3 (or newer at your convenience).
 
 https://www.gnu.org/licenses/fdl-1.3.html
-  
+
 
 ----------
 
@@ -138,4 +150,3 @@ Find here the Backlog and Kanban boards for iter-vitae: https://lucidplan.jointh
 
 
 -------
-
