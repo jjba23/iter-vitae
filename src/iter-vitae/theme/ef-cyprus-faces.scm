@@ -25,7 +25,6 @@
   #:use-module (ice-9 iconv)
   #:use-module (ice-9 futures)
   #:use-module (iter-vitae prelude)
-
   #:export (hr-face p-face
                     bullet-face
                     address-face
@@ -44,36 +43,48 @@
                     display-name-face))
 
 (define hr-face
-  (mk-class '(my-4 border-t-2 border-t-onyx-200)))
+  (mk-class '(my-2 md:my-4 border-t-2 border-t-onyx-200)))
 
 (define bullet-face
-  (mk-class '(my-1 ml-8 leading-7 font-sans text-lg text-onyx-500)))
+  (mk-class '(my-1 ml-4
+                   md:ml-8
+                   leading-6
+                   md:leading-7
+                   font-sans
+                   text-md
+                   md:text-lg
+                   text-onyx-500)))
 
 (define address-face
-  (mk-class '(my-2 font-sans text-md text-onyx-500)))
+  (mk-class '(my-1 md:my-2 font-sans text-sm md:text-md text-onyx-500)))
 
 (define small-a-face
-  (mk-class '(my-2 font-sans
+  (mk-class '(my-1 md:my-2
+                   font-sans
                    font-bold
-                   text-md
+                   text-sm
+                   md:text-md
                    cursor-pointer
                    no-underline
                    text-asparagus-700
-                   hover:asparagus-300
+                   hover:text-asparagus-300
                    hover:underline)))
 
 (define a-face
-  (mk-class '(my-3 font-sans
+  (mk-class '(my-2 md:my-3
+                   font-sans
                    font-bold
-                   text-lg
+                   text-md
+                   md:text-lg
                    cursor-pointer
                    text-asparagus-700
-                   hover:asparagus-300
+                   hover:text-asparagus-300
                    hover:underline)))
 
 (define h2-special-face
   (mk-class '(my-1 font-sans
-                   text-2xl
+                   text-xl
+                   md:text-2xl
                    no-underline
                    hover:underline
                    font-light
@@ -81,44 +92,87 @@
                    text-asparagus-700)))
 
 (define h2-link-special-face
-  (mk-class '(my-3 hover:underline
+  (mk-class '(my-2 md:my-3
+                   hover:underline
                    font-sans
                    no-underline
                    font-light
-                   text-2xl
+                   text-xl
+                   md:text-2xl
                    uppercase
                    text-asparagus-700
                    hover:text-asparagus-300)))
 
 (define h4-face
-  (mk-class '(my-2 text-2xl font-light uppercase text-onyx-500)))
+  (mk-class '(my-1 md:my-2
+                   text-xl
+                   md:text-2xl
+                   font-light
+                   uppercase
+                   text-onyx-500)))
 
 (define h5-face
-  (mk-class '(text-xl font-light text-onyx-700)))
+  (mk-class '(text-lg md:text-xl font-light text-onyx-700)))
 
 (define h5-strong-face
-  (mk-class '(text-xl font-medium text-onyx-700)))
+  (mk-class '(text-lg md:text-xl font-medium text-onyx-700)))
 
 (define h5-em-face
-  (mk-class '(text-md font-light text-onyx-300)))
+  (mk-class '(text-sm md:text-md font-light text-onyx-300)))
 
 (define td-face
-  (mk-class '(px-5 py-2 text-md text-onyx-100)))
+  (mk-class '(px-3 md:px-5
+                   py-1
+                   md:py-2
+                   text-sm
+                   md:text-md
+                   text-onyx-100)))
 
 (define first-td-face
-  (mk-class '(px-5 py-2 text-md text-onyx-100 font-bold)))
+  (mk-class '(px-3 md:px-5
+                   py-1
+                   md:py-2
+                   text-sm
+                   md:text-md
+                   text-onyx-100
+                   font-bold)))
 
 (define table-face
-  (mk-class '(table-auto bg-stone-300 rounded-xl my-8 shadow-md text-center)))
+  (mk-class '(w-full table-auto
+                     bg-stone-300
+                     rounded-lg
+                     md:rounded-xl
+                     my-4
+                     md:my-8
+                     shadow-md
+                     text-center)))
 
 (define top-row-face
-  (mk-class '(py-2)))
+  (mk-class '(py-1 md:py-2)))
 
 (define display-name-face
-  (mk-class '(my-3 font-sans text-4xl md:text-5xl lg:text-6xl font-serif text-onyx-300 font-light)))
+  (mk-class '(my-3 font-sans
+                   text-4xl
+                   md:text-5xl
+                   lg:text-6xl
+                   font-serif
+                   text-onyx-300
+                   font-light)))
 
 (define p-face
-  (mk-class '(my-4 font-sans text-base md:text-lg text-black-900 w-full max-w-prose leading-7)))
+  (mk-class '(my-4 font-sans
+                   text-md
+                   md:text-lg
+                   text-black-900
+                   w-full
+                   max-w-prose
+                   leading-7)))
 
 (define th-face
-  (mk-class '(py-1 px-2 md:px-4 text-sm md:text-md font-light uppercase whitespace-nowrap)))
+  (mk-class '(py-1 px-2
+                   md:px-4
+                   text-sm
+                   md:text-md
+                   font-light
+                   uppercase
+                   whitespace-nowrap)))
