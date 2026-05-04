@@ -17,9 +17,6 @@
 
 (define-module (iter-vitae theme ef-cyprus)
   #:declarative? #t
-  #:use-module (web server)
-  #:use-module (web request)
-  #:use-module (web response)
   #:use-module (web uri)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 format)
@@ -29,71 +26,70 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 time)
-  #:use-module (iter-vitae faces)
+  #:use-module (iter-vitae theme ef-cyprus-faces)
   #:use-module (iter-vitae prelude)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
   #:use-module (iter-vitae prelude)
-  #:use-module (ice-9 threads))
+  #:use-module (ice-9 threads)
+  #:export (ef-cyprus-html-template ef-cyprus-main-body))
 
-(begin
-  (define* (ef-cyprus-html-template #:key title body locale persona)
-    `("<!DOCTYPE html>" (html (head (title ,title)
-                                    (link (@ (rel preconnect)
-                                             (href
-                                              "https://fonts.googleapis.com")))
-                                    (link (@ (rel preconnect)
-                                             (href "https://fonts.gstatic.com")
-                                             (crossorigin "")))
-                                    (link (@ (rel stylesheet)
-                                             (href
-                                              "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
-                                    (link (@ (rel stylesheet)
-                                             (type text/css)
-                                             (href
-                                              "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
-                                    (meta (@ (name "viewport")
-                                             (content
-                                              "width=device-width, initial-scale=1.0")))
-                                    (meta (@ (charset "UTF-8")))
-                                    (style ,(assoc-ref my-asset-library "resources/css/iter-vitae.olive.min.css" ))
-                                    )
-                              (body (@ (class "break-words"))
-                                    (div (@ (class ,(mk-class '(px-4 sm:px-8 md:px-12
-                                                                     py-4 sm:py-8 md:py-12 font-sans))))
-                                         ,@body
-                                         ,(ef-cyprus-page-footer #:persona
-                                                                  persona
-                                                                  #:locale
-                                                                  locale))))))
-  (export ef-cyprus-html-template))
+(define* (ef-cyprus-html-template #:key title body locale persona)
+  `("<!DOCTYPE html>" (html (head (title ,title)
+                                  (link (@ (rel preconnect)
+                                           (href
+                                            "https://fonts.googleapis.com")))
+                                  (link (@ (rel preconnect)
+                                           (href "https://fonts.gstatic.com")
+                                           (crossorigin "")))
+                                  (link (@ (rel stylesheet)
+                                           (href
+                                            "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
+                                  (link (@ (rel stylesheet)
+                                           (type text/css)
+                                           (href
+                                            "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
+                                  (meta (@ (name "viewport")
+                                           (content
+                                            "width=device-width, initial-scale=1.0")))
+                                  (meta (@ (charset "UTF-8")))
+                                  (style ,(assoc-ref my-asset-library
+                                           "resources/css/iter-vitae.olive.min.css")))
+                            (body (@ (class "break-words"))
+                                  (div (@ (class ,(mk-class '(px-4 sm:px-8
+                                                                   md:px-12
+                                                                   py-4
+                                                                   sm:py-8
+                                                                   md:py-12
+                                                                   font-sans))))
+                                       ,@body
+                                       ,(page-footer #:persona persona
+                                                     #:locale locale))))))
 
-(begin
-  (define* (ef-cyprus-page-footer #:key locale persona)
-    `((hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-2 justify-evenly))))
-           ,(render-ef-cyprus-blog-link #:locale locale
-                                         #:persona persona)
-           ,(render-ef-cyprus-code-link #:locale locale
-                                         #:persona persona)
-           ,(render-ef-cyprus-linked-in-link #:locale locale
-                                              #:persona persona))
-      (div (@ (class ,(mk-class '(my-2 block text-center font-sans))))
-           (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
-                                            justify-center))))
-                (small (@ (class ,address-face))
-                       "this Curriculum Vitae was rendered with "
-                       (a (@ (class ,small-a-face)
-                             (href "https://codeberg.org/jjba23/ef-cyprus"))
-                          "Lisp (Guile Scheme) code"))))))
-  (export ef-cyprus-page-footer))
+(define* (page-footer #:key locale persona)
+  `((hr (@ (class ,hr-face)))
+    (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-2 justify-evenly))))
+         ,(render-blog-link #:locale locale
+                            #:persona persona)
+         ,(render-code-link #:locale locale
+                            #:persona persona)
+         ,(render-linked-in-link #:locale locale
+                                 #:persona persona))
+    (div (@ (class ,(mk-class '(my-2 block text-center font-sans))))
+         (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
+                                          justify-center))))
+              (small (@ (class ,address-face))
+                     "this Curriculum Vitae was rendered with "
+                     (a (@ (class ,small-a-face)
+                           (href "https://codeberg.org/jjba23/iter-vitae"))
+                        "Lisp (Guile Scheme) code"))))))
 
-(define* (render-ef-cyprus-display-name #:key locale persona)
+(define* (render-display-name #:key locale persona)
   `(h1 (@ (class ,display-name-face))
        ,(assq-ref-all-or-lang (assq-ref persona
                                         'display-name) locale)))
 
-(define* (render-ef-cyprus-job-title #:key locale persona)
+(define* (render-job-title #:key locale persona)
   (let* ((jt (assq-ref persona
                        'job-title-link)))
     (cond
@@ -108,16 +104,15 @@
 
   )
 
-(define* (render-ef-cyprus-email #:key locale persona)
+(define* (render-email #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl))))
-            "")
+         (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl)))) "")
          (a (@ (class ,small-a-face))
-                ,(assq-ref (assq-ref persona
-                                     'personal-contact)
-                           'emails)))))
+            ,(assq-ref (assq-ref persona
+                                 'personal-contact)
+                       'emails)))))
 
-(define* (render-ef-cyprus-phone-number #:key locale persona)
+(define* (render-phone-number #:key locale persona)
   `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
          (i (@ (class ,(mk-class '(ph ph-phone text-onyx-500 text-xl)))) "")
          (small (@ (class ,address-face))
@@ -125,7 +120,7 @@
                                      'personal-contact)
                            'phone-numbers)))))
 
-(define* (render-ef-cyprus-blog-link #:key locale persona)
+(define* (render-blog-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
          (i (@ (class ,(mk-class '(ph ph-rss text-onyx-500 xl)))) "")
          (a (@ (class ,small-a-face)
@@ -138,7 +133,7 @@
                                  'personal-links)
                        'blog)))))
 
-(define* (render-ef-cyprus-code-link #:key locale persona)
+(define* (render-code-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
          (i (@ (class ,(mk-class '(ph ph-code text-onyx-500 text-xl)))) "")
          (a (@ (class ,small-a-face)
@@ -151,7 +146,7 @@
                                  'personal-links)
                        'code)))))
 
-(define* (render-ef-cyprus-linked-in-link #:key locale persona)
+(define* (render-linked-in-link #:key locale persona)
   `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
          (i (@ (class ,(mk-class '(ph ph-link text-onyx-500 text-xl)))) "")
          (a (@ (class ,small-a-face)
@@ -164,7 +159,7 @@
                                  'personal-links)
                        'linked-in)))))
 
-(define* (render-ef-cyprus-address-lines #:key locale persona)
+(define* (render-address-lines #:key locale persona)
   `(small (@ (class ,(mk-class '(flex flex-col))))
           ,(map (lambda (address-line)
                   `(span (@ (class ,address-face))
@@ -172,7 +167,7 @@
                 (assq-ref persona
                           'address-lines))))
 
-(define* (render-ef-cyprus-driver-licenses #:key locale persona)
+(define* (render-driver-licenses #:key locale persona)
   `(p (@ (class ,p-face))
       ,(map (lambda (driver-license)
               `(span (@ (class ,(mk-class '(mr-4))))
@@ -180,28 +175,28 @@
             (assq-ref persona
                       'driver-licenses))))
 
-(define* (render-ef-cyprus-short-intro #:key locale persona)
+(define* (render-short-intro #:key locale persona)
   (map (lambda (intro-line)
          `(p (@ (class ,p-face))
              ,(assq-ref-all-or-lang intro-line locale)))
        (assq-ref persona
                  'short-intro)))
 
-(define* (render-ef-cyprus-interests-hobbies #:key locale persona)
+(define* (render-interests-hobbies #:key locale persona)
   (map (lambda (interest-hobby)
          `(p (@ (class ,p-face))
              ,(assq-ref-all-or-lang interest-hobby locale)))
        (assq-ref persona
                  'interests-hobbies)))
 
-(define* (render-ef-cyprus-jobs #:key locale persona)
+(define* (render-jobs #:key locale persona)
   (map (lambda (job)
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (@(class ,(mk-class '(flex flex-col gap-2))))
+                    (div (@ (class ,(mk-class '(flex flex-col gap-2))))
 
-                     (div (@ (class ,(mk-class '(flex flex-row flex-wrap
+                         (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center))))
                               (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
@@ -228,14 +223,13 @@
        (assq-ref persona
                  'jobs)))
 
-(define* (render-ef-cyprus-education #:key locale persona)
+(define* (render-education #:key locale persona)
   (map (lambda (education)
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div
-                     (@(class ,(mk-class '(flex flex-col gap-2))))
-                     (div (@ (class ,(mk-class '(flex flex-row flex-wrap
+                    (div (@ (class ,(mk-class '(flex flex-col gap-2))))
+                         (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-3 items-center))))
                               (h5 (@ (class ,h5-face))
                                   ,(assq-ref-all-or-lang (assq-ref education
@@ -268,7 +262,7 @@
          (ll (assq-ref-all-or-lang lp locale)))
     (assoc-ref ll level)))
 
-(define* (render-ef-cyprus-languages #:key locale persona)
+(define* (render-languages #:key locale persona)
   `(div (table (@ (class ,table-face))
                (thead (tr (@ (class ,top-row-face))
                           (th "")
@@ -319,86 +313,80 @@
                             (assq-ref persona
                                       'languages))))))
 
-(begin
-  (define* (ef-cyprus-main-body #:key locale persona)
-    `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6
-                                       justify-between))))
-           (div (@ (class ,(mk-class '(flex flex-col gap-3 align-left
-                                            items-start))))
-                ,(render-ef-cyprus-display-name #:locale locale
-                                                 #:persona persona)
-                ,(render-ef-cyprus-job-title #:locale locale
-                                              #:persona persona))
-           (div (@ (class ,(mk-class '(my-3 sm:my-1 flex flex-col
-                                            justify-start))))
-                ,(render-ef-cyprus-email #:locale locale
-                                          #:persona persona)
-                ,(render-ef-cyprus-phone-number #:locale locale
-                                                 #:persona persona)
-                ,(render-ef-cyprus-address-lines #:locale locale
-                                                  #:persona persona)))
-
-      (div (@ (class ,(mk-class '(mt-8))))
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'short-intro) locale)))
-      ,(render-ef-cyprus-short-intro #:locale locale
-                                      #:persona persona)
-
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-briefcase text-onyx-500 text-xl))))
-              "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'work-experience) locale)))
-      ,(render-ef-cyprus-jobs #:locale locale
-                               #:persona persona)
-
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-student text-onyx-500 text-xl))))
-              "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'education) locale)))
-      ,(render-ef-cyprus-education #:locale locale
+(define* (ef-cyprus-main-body #:key locale persona)
+  `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6 justify-between))))
+         (div (@ (class ,(mk-class '(flex flex-col gap-3 align-left
+                                          items-start))))
+              ,(render-display-name #:locale locale
                                     #:persona persona)
+              ,(render-job-title #:locale locale
+                                 #:persona persona))
+         (div (@ (class ,(mk-class '(my-3 sm:my-1 flex flex-col justify-start))))
+              ,(render-email #:locale locale
+                             #:persona persona)
+              ,(render-phone-number #:locale locale
+                                    #:persona persona)
+              ,(render-address-lines #:locale locale
+                                     #:persona persona)))
 
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3
-                                       items-center))))
-           (i (@ (class ,(mk-class '(ph ph-translate text-onyx-500 text-xl))))
-              "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'language) locale)))
-      ,(render-ef-cyprus-languages #:persona persona
-                                    #:locale locale)
+    (div (@ (class ,(mk-class '(mt-8))))
+         (h4 (@ (class ,h4-face))
+             ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                        'titles)
+                                              'short-intro) locale)))
+    ,(render-short-intro #:locale locale
+                         #:persona persona)
 
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
-           (h4 (@ (class ,h4-face))
-               ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
-                                                                persona
-                                                                'titles)
-                                                               'driver-license)
-                                                     locale) ":"))
-           ,(render-ef-cyprus-driver-licenses #:locale locale
-                                               #:persona persona))
+    (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
+         (i (@ (class ,(mk-class '(ph ph-briefcase text-onyx-500 text-xl))))
+            "")
+         (h4 (@ (class ,h4-face))
+             ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                        'titles)
+                                              'work-experience) locale)))
+    ,(render-jobs #:locale locale
+                  #:persona persona)
 
-      (hr (@ (class ,hr-face)))
-      (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
-           (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-onyx-500
-                                        text-xl)))) "")
-           (h4 (@ (class ,h4-face))
-               ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                          'titles)
-                                                'interests-hobbies) locale)))
-      ,(render-ef-cyprus-interests-hobbies #:locale locale
-                                            #:persona persona)))
-  (export ef-cyprus-main-body))
+    (hr (@ (class ,hr-face)))
+    (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
+         (i (@ (class ,(mk-class '(ph ph-student text-onyx-500 text-xl)))) "")
+         (h4 (@ (class ,h4-face))
+             ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                        'titles)
+                                              'education) locale)))
+    ,(render-education #:locale locale
+                       #:persona persona)
+
+    (hr (@ (class ,hr-face)))
+    (div (@ (class ,(mk-class '(mt-3 flex flex-row flex-wrap gap-3
+                                     items-center))))
+         (i (@ (class ,(mk-class '(ph ph-translate text-onyx-500 text-xl))))
+            "")
+         (h4 (@ (class ,h4-face))
+             ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                        'titles)
+                                              'language) locale)))
+    ,(render-languages #:persona persona
+                       #:locale locale)
+
+    (hr (@ (class ,hr-face)))
+    (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-4 items-center))))
+         (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
+         (h4 (@ (class ,h4-face))
+             ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                              'titles)
+                                                             'driver-license)
+                                                   locale) ":"))
+         ,(render-driver-licenses #:locale locale
+                                  #:persona persona))
+
+    (hr (@ (class ,hr-face)))
+    (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-3 items-center))))
+         (i (@ (class ,(mk-class '(ph ph-person-simple-ski text-onyx-500
+                                      text-xl)))) "")
+         (h4 (@ (class ,h4-face))
+             ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                        'titles)
+                                              'interests-hobbies) locale)))
+    ,(render-interests-hobbies #:locale locale
+                               #:persona persona)))

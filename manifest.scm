@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -32,6 +32,7 @@
              (gnu packages compression)
              (gnu packages texinfo)
              (gnu packages autotools)
+             (gnu packages rust-apps)
              ((guix licenses)
               #:prefix license:))
 
@@ -40,6 +41,6 @@
                           darkhttpd
                           direvent
                           texinfo
+                          watchexec
                           guile-documenta
                           guile-ares-rs))
-

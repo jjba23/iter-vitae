@@ -32,12 +32,12 @@
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 time)
-  #:use-module (iter-vitae faces)
   #:use-module (iter-vitae prelude)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 iconv)
   #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae theme ef-cyprus)
+  #:use-module (iter-vitae theme fundamental)
   #:use-module (ice-9 threads))
 
 ;; ====== Serialize (SXML) ======
@@ -269,17 +269,17 @@ formatting."
                                           ((eq? 'fundamental
                                                 (assq-ref persona
                                                           'document-theme))
-                                           (iter-vitae-html-template #:title
+                                           (fundamental-html-template #:title
                                             "Iter Vitae"
                                             #:persona persona
-                                            #:body (iter-vitae-main-body
+                                            #:body (fundamental-main-body
                                                     #:locale locale
                                                     #:persona persona)
                                             #:locale locale))
-                                          (else (iter-vitae-html-template
+                                          (else (ef-cyprus-html-template
                                                  #:title "Iter Vitae"
                                                  #:persona persona
-                                                 #:body (iter-vitae-main-body
+                                                 #:body (ef-cyprus-main-body
                                                          #:locale locale
                                                          #:persona persona)
                                                  #:locale locale)))

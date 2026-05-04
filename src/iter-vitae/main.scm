@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -21,11 +21,10 @@
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae renderer)
-  #:use-module (iter-vitae faces)
   #:export (main))
 
 (define* (main #:key (args (command-line)))
-  
+
   (let* ((_ (begin
               (newline)
               (write args)

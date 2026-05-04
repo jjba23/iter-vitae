@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU Affero General Public License
 ;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
-(define-module (iter-vitae faces)
+(define-module (iter-vitae theme ef-cyprus-faces)
   #:declarative? #t
   #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
@@ -25,7 +25,7 @@
   #:use-module (ice-9 iconv)
   #:use-module (ice-9 futures)
   #:use-module (iter-vitae prelude)
-  
+
   #:export (hr-face p-face
                     bullet-face
                     address-face
