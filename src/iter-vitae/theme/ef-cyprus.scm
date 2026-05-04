@@ -56,7 +56,7 @@
                                   (style ,(assoc-ref my-asset-library
                                            "resources/css/iter-vitae.olive.min.css")))
                             (body (@ (class ,(mk-class '(break-words flex
-                                                         justify-center))))
+                                                         md:justify-center))))
                                   (div (@ (class ,(mk-class '(px-4 sm:px-8
                                                                    md:px-12
                                                                    py-4
