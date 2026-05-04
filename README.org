@@ -49,7 +49,7 @@ You can see an example of the most up-to-date version of my CV generated with It
 
 Simple, clean, light and green tones with advanced typography with varying font families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex fonts. Inspired by Protesilaos ef-themes for Emacs.
 
-[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-04-13-01-41.png]]
+[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-04-13-29-04.png]]
 
 *** fundamental
 
