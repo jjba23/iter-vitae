@@ -195,7 +195,7 @@
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (@ (class ,(mk-class '(flex flex-col gap-2))))
+                    (div (@ (class ,(mk-class '(flex flex-col gap-2 flex-1 min-w-0))))
 
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center
@@ -231,7 +231,7 @@
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
                     (span (@ (class "")) "⤷")
-                    (div (@ (class ,(mk-class '(flex flex-col gap-2))))
+                    (div (@ (class ,(mk-class '(flex flex-col gap-2 flex-1 min-w-0))))
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center))))
                               (h5 (@ (class ,h5-face))
@@ -268,7 +268,8 @@
     (assoc-ref ll level)))
 
 (define* (render-languages #:key locale persona)
-  `(div (table (@ (class ,table-face))
+  `(div (@(class ,(mk-class '(w-full overflow-x-auto))))
+        (table (@ (class ,table-face))
                (thead (tr (@ (class ,top-row-face))
                           (th "")
                           (th (@ (class ,th-face))
@@ -319,7 +320,7 @@
                                       'languages))))))
 
 (define* (ef-cyprus-main-body #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-6 justify-between))))
+  `((div (@ (class ,(mk-class '(flex flex-col md:flex-row md:flex-wrap gap-6 justify-between))))
          (div (@ (class ,(mk-class '(flex flex-col gap-3 align-left
                                           items-start))))
               ,(render-display-name #:locale locale

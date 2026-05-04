@@ -46,9 +46,6 @@
 (define hr-face
   (mk-class '(my-4 border-t-2 border-t-onyx-200)))
 
-(define p-face
-  (mk-class '(my-4 font-sans text-lg text-black-900 max-w-196 leading-7)))
-
 (define bullet-face
   (mk-class '(my-1 ml-8 leading-7 font-sans text-lg text-onyx-500)))
 
@@ -105,9 +102,6 @@
 (define h5-em-face
   (mk-class '(text-md font-light text-onyx-300)))
 
-(define display-name-face
-  (mk-class '(my-3 font-sans text-16 font-serif text-onyx-300 font-light)))
-
 (define td-face
   (mk-class '(px-5 py-2 text-md text-onyx-100)))
 
@@ -120,5 +114,11 @@
 (define top-row-face
   (mk-class '(py-2)))
 
+(define display-name-face
+  (mk-class '(my-3 font-sans text-4xl md:text-5xl lg:text-6xl font-serif text-onyx-300 font-light)))
+
+(define p-face
+  (mk-class '(my-4 font-sans text-base md:text-lg text-black-900 w-full max-w-prose leading-7)))
+
 (define th-face
-  (mk-class '(py-1 text-md font-light uppercase)))
+  (mk-class '(py-1 px-2 md:px-4 text-sm md:text-md font-light uppercase whitespace-nowrap)))
