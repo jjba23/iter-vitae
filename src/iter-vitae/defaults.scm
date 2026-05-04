@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -28,7 +28,7 @@
                          titles
                          short-intro
                          jobs
-                         palette))
+                         document-theme))
 
 ;; Full name of persona
 ;;
@@ -207,10 +207,9 @@
 (define jobs
   `())
 
-;; Palette to be used for the curriculum vitae
-;; choose between:
-;;
-;; ef-cyprus
-;;
-(define palette
+;; document-theme is a symbol that represents the Curriculum Vitae type/theme you want to use.
+;; supported values are:
+;; - ef-cyprus: a light colored and green accent theme
+;; - fundamental: a no-frills vanilla HTML, simple, effective
+(define document-theme
   'ef-cyprus)

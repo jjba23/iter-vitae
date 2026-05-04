@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -204,8 +204,5 @@
   (list joe-job-vandebron joe-job-zorgdomein joe-job-ikea
         joe-job-pro-warehouse))
 
-(define font
-  'monaspace-neon)
-
-(define palette
-  'ef-cyprus)
+(define document-theme
+  'fundamental)
