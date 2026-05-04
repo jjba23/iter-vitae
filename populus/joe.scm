@@ -150,7 +150,7 @@
                  (nl . "Agile-werk-methodologie en Extreme Programming geïntroduceerd.")))))
 
 (define joe-job-ikea
-  `((name (all . "IKEA - Ingka Digital"))
+  `((name (all . "IKEA, Ingka Digital"))
     (location (en . "Amsterdam, The Netherlands")
               (nl . "Amsterdam, Nederland"))
     (position (en . "Software Engineer")

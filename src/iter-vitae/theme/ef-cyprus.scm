@@ -192,10 +192,10 @@
 
 (define* (render-jobs #:key locale persona)
   (map (lambda (job)
-         `(div (@ (class ,(mk-class '(p-3))))
+         `(div (@ (class ,(mk-class '(pt-3 pb-2 px-1))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
-                    (span (@ (class "")) "⤷")
-                    (div (@ (class ,(mk-class '(flex flex-col gap-2 flex-1 min-w-0))))
+                    (div (@ (class ,(mk-class '(flex flex-col gap-2 flex-1
+                                                     min-w-0))))
 
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center
@@ -214,15 +214,18 @@
                                            (assq-ref-all-or-lang (assq-ref job
                                                                   'location)
                                                                  locale))))
-                         (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
-                            ,(assq-ref-all-or-lang (assq-ref job
-                                                             'time) locale))
-                         (ul ,(map (lambda (ip)
-                                     `(li (@ (class ,bullet-face)
-                                             (style "list-style: circle"))
-                                          ,(assq-ref-all-or-lang ip locale)))
-                                   (assq-ref job
-                                             'experience)))))))
+                         (em (@ (class ,(mk-class '(pl-2 italic text-sm
+                                                         md:text-md font-light))))
+                             ,(assq-ref-all-or-lang (assq-ref job
+                                                              'time) locale))
+                         (div (@ (class ,(mk-class '(pl-2))))
+                              (ul ,(map (lambda (ip)
+                                          `(li (@ (class ,bullet-face)
+                                                  (style "list-style: circle"))
+                                               ,(assq-ref-all-or-lang ip
+                                                                      locale)))
+                                        (assq-ref job
+                                                  'experience))))))))
        (assq-ref persona
                  'jobs)))
 
@@ -230,8 +233,8 @@
   (map (lambda (education)
          `(div (@ (class ,(mk-class '(p-3))))
                (div (@ (class ,(mk-class '(flex flex-row gap-4))))
-                    (span (@ (class "")) "⤷")
-                    (div (@ (class ,(mk-class '(flex flex-col gap-2 flex-1 min-w-0))))
+                    (div (@ (class ,(mk-class '(flex flex-col gap-2 flex-1
+                                                     min-w-0))))
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center))))
                               (h5 (@ (class ,h5-face))
@@ -249,15 +252,18 @@
                                                                   education
                                                                   'location)
                                                                  locale))))
-                         (p (@ (class ,(mk-class '(text-lg font-light mb-4))))
-                            ,(assq-ref-all-or-lang (assq-ref education
-                                                             'time) locale))
-                         (ul ,(map (lambda (ip)
-                                     `(li (@ (class ,bullet-face)
-                                             (style "list-style: circle"))
-                                          ,(assq-ref-all-or-lang ip locale)))
-                                   (assq-ref education
-                                             'experience)))))))
+                         (em (@ (class ,(mk-class '(pl-2 italic text-sm
+                                                         md:text-md font-light))))
+                             ,(assq-ref-all-or-lang (assq-ref education
+                                                              'time) locale))
+                         (div (@ (class ,(mk-class '(pl-2))))
+                              (ul ,(map (lambda (ip)
+                                          `(li (@ (class ,bullet-face)
+                                                  (style "list-style: circle"))
+                                               ,(assq-ref-all-or-lang ip
+                                                                      locale)))
+                                        (assq-ref education
+                                                  'experience))))))))
        (assq-ref persona
                  'education)))
 
@@ -268,7 +274,7 @@
     (assoc-ref ll level)))
 
 (define* (render-languages #:key locale persona)
-  `(div (@(class ,(mk-class '(w-full overflow-x-auto))))
+  `(div (@ (class ,(mk-class '(w-full overflow-x-auto))))
         (table (@ (class ,table-face))
                (thead (tr (@ (class ,top-row-face))
                           (th "")
@@ -320,7 +326,8 @@
                                       'languages))))))
 
 (define* (ef-cyprus-main-body #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-col md:flex-row md:flex-wrap gap-6 justify-between))))
+  `((div (@ (class ,(mk-class '(flex flex-col md:flex-row md:flex-wrap gap-6
+                                     justify-between))))
          (div (@ (class ,(mk-class '(flex flex-col gap-3 align-left
                                           items-start))))
               ,(render-display-name #:locale locale

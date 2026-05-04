@@ -46,8 +46,8 @@
   (mk-class '(my-2 md:my-4 border-t-2 border-t-onyx-200)))
 
 (define bullet-face
-  (mk-class '(my-1 ml-4
-                   md:ml-8
+  (mk-class '(ml-2
+                   md:ml-4
                    leading-6
                    md:leading-7
                    font-sans
@@ -112,10 +112,10 @@
                    text-onyx-500)))
 
 (define h5-face
-  (mk-class '(text-lg md:text-xl font-light text-onyx-700)))
+  (mk-class '(text-md md:text-lg font-light text-onyx-700)))
 
 (define h5-strong-face
-  (mk-class '(text-lg md:text-xl font-medium text-onyx-700)))
+  (mk-class '(text-md md:text-lg font-medium text-onyx-700)))
 
 (define h5-em-face
   (mk-class '(text-sm md:text-md font-light text-onyx-300)))
