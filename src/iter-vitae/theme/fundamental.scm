@@ -45,7 +45,8 @@
                                            (content
                                             "width=device-width, initial-scale=1.0")))
                                   (meta (@ (charset "UTF-8"))))
-                            (body (div ,@body
+                            (body (div (@ (style "font-family: sans-serif;"))
+                                       ,@body
                                        ,(page-footer #:persona persona
                                                      #:locale locale))))))
 
@@ -254,7 +255,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-
+    
     (div (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                         'titles)
                                               'short-intro) locale)))
@@ -298,9 +299,7 @@
                                   #:persona persona))
 
     (hr)
-    (div
-
-         (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+    (div (h4 ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                         'titles)
                                               'interests-hobbies) locale)))
     ,(render-interests-hobbies #:locale locale
