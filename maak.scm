@@ -112,6 +112,10 @@
   (run* 'joe
         'en))
 
+(define (run-joe-es)
+  (run* 'joe
+        'es))
+
 (define (run-joe-nl)
   (run* 'joe
         'nl))
@@ -122,6 +126,10 @@
 (define (dev-run-joe-nl)
   (dev-run* 'joe
             'nl))
+
+(define (dev-run-joe-es)
+  (dev-run* 'joe
+            'es))
 
 (define (hot-reload)
   "Hot-reloading developer's setup."
