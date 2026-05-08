@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -64,7 +64,7 @@
     ((not (equal? #f
                   (assq k al)))
      (assq-ref al k))
-    (else (symbol->string k))))
+    (else "")))
 
 ;; mk-class: Convert a list of symbols into a CSS `class` attribute pair.
 ;;
