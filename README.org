@@ -10,6 +10,8 @@ Iter Vitae is a free software project that aims to make it easy and maintainable
 
 If you like my work, please support me by [[https://bmc.link/jjbigorra][buying me a cup of coffee ☕]] so I can continue with a lot of motivation.
 
+To see the changelog and news about this project, check [[file:NEWS.org][the NEWS file]]
+
 ---------------
 
 * The Manifesto

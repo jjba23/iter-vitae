@@ -1,0 +1,24 @@
+#+title: Changelog and News 📰
+#+author: Josep Bigorra
+#+email: jjbigorra@gmail.com
+#+options: toc:nil
+
+All notable changes to this project will be documented in this file. Changes are listed per project release (tag) and within each tag there are details about changes, additions, fixes and removals.
+
+This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic Versioning]].
+
+*[Unreleased]*
+
+---------
+
+*[Released]*
+
+** v0.7.4 (2026-05-08)
+
+*** Added
+
+- Spanish language in the example: [[file:populus/joe.scm][populus/joe.scm]]
+
+*** Modified
+
+- ~assq-ref-all-or-lang~ now will return empty string as fallback if no entry is found in the alist, instead of the lookup key.
