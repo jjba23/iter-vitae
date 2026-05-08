@@ -1,4 +1,4 @@
-;;; Iter Vitae 
+;;; Iter Vitae
 
 ;; Copyright © Josep Jesus Bigorra Algaba
 
@@ -40,23 +40,22 @@
                  #:recursive? #t
                  #:select? (git-predicate %source-dir)))
     (arguments
-     `(#:source-directory "src"
-       #:phases (modify-phases %standard-phases
-                  (add-before 'build 'install-program-files
-                    (lambda* (#:key outputs #:allow-other-keys)
-                      (let ((bin (string-append (assoc-ref outputs "out")
-                                                "/bin"))
-                            (share (string-append (assoc-ref outputs "out")
-                                                  "/share")))
-                        (install-file "resources/help.txt"
-                                      (string-append share "/resources/"))
-                        (install-file "resources/css/iter-vitae.olive.min.css"
-                                      (string-append share "/resources/css"))
-                        (install-file "scripts/iter-vitae" bin)
-                        (install-file "scripts/log.bash"
-                                      (string-append share "/scripts/"))
-                        (chmod (string-append bin "/iter-vitae") #o755)))))))
-    
+     (list
+      #:source-directory "src"
+      #:phases
+      #~(modify-phases %standard-phases
+          (add-before 'build 'install-program-files
+            (lambda _
+              (let ((bin (string-append #$output "/bin"))
+                    (share (string-append #$output "/share")))
+                (install-file "resources/help.txt"
+                              (string-append share "/resources/"))
+                (install-file "resources/css/iter-vitae.olive.min.css"
+                              (string-append share "/resources/css"))
+                (install-file "scripts/iter-vitae" bin)
+                (install-file "scripts/log.bash"
+                              (string-append share "/scripts/"))
+                (chmod (string-append bin "/iter-vitae") #o755)))))))
     (build-system guile-build-system)
     (native-inputs (list guile-3.0))
     (inputs (list guile-3.0 bash-minimal))
@@ -77,4 +76,3 @@ The program supports multilingual content and is fully extensible.")
     (license license:agpl3+)))
 
 iter-vitae
-
