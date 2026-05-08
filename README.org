@@ -92,6 +92,17 @@ In that case you'll need:
 
 Check the ~maak.scm~,  and the ~guix.scm~ and  ~manifest.scm~ for more details.
 
+For example, to enter an environment shell with mutastructura temporarily you can use:
+#+begin_src shell
+guix time-machine --channels=channels.scm -- shell -f guix.scm
+#+end_src
+
+You can also chain commands to it:
+#+begin_src shell
+guix time-machine --channels=channels.scm -- \
+     shell -f guix.scm -- iter-vitae --help
+#+end_src
+
 In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
 
 iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options (also visible in ~resources/help.txt~). You should point iter-vitae to the path to  your configuration file:
