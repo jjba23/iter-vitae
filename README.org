@@ -165,3 +165,30 @@ Find here the Backlog and Kanban boards for iter-vitae: https://lucidplan.jointh
 
 
 -------
+
+* How to write your CV in Lisp?
+
+Here follows an explanation of all the fields and possibilities that ~iter-vitae~ provides you.
+
+Iter Vitae gives you the power of Lisp to define your CV. That means we mostly work with idiomatic data structures, specially ~list~ and ~alist~ (association lists). Some of those alists contain language-specific content, and as such, we call them ~translation-alist~, e.g.
+
+#+begin_src scheme
+`((en . "Software Engineer ⚙️")
+  (nl . "Software Engineer ⚙️")
+  (es . "Ingeniero de Software ⚙️"))
+#+end_src
+
+translation-alists can contain endless amount of translations for every language code that you want to support. If the value should be the same for all languages, simply use the key ~all~, e.g.
+
+#+begin_src scheme
+`((all . "Software Engineer ⚙️"))
+#+end_src
+
+The following variables are read by Iter Vitae to construct a CV:
+
+- ~display-name~ is a *required* ~translation-alist~ that represents the person's name.
+- ~job-title~ is a *required* ~translation-alist~ that represents the job title to be displayed.
+- ~job-title-link~ is an optional ~translation-alist~ that represents the URL to visit when clicking the job title header
+- ~personal-contact~ is an ~alist~ that expects the person's e-mail in the ~emails~ field, and the person's phone number in the ~phone-numbers~ field
+- ~personal-links~ is an ~alist~ of optional fields that can contain ~blog~ , ~code~ and ~linked-in~ , all of which are strings.
+- ~address-lines~ is a ~list~ of ~translation-alist~ and allows one to display address details.
