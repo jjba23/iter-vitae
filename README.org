@@ -187,6 +187,8 @@ translation-alists can contain endless amount of translations for every language
 Some variables have sensible defaults, and as such can be skipped from customization.
 You should also look at the defaults for more info: [[file:src/iter-vitae/defaults.scm]]
 
+Also, for a "real-world" example, you can see my own CV: [[file:populus/joe.scm]]
+
 The following variables are read by Iter Vitae to construct a CV:
 
 - ~titles~ is a list of ~translation-alist~ with content for each section's header, in different languages.
