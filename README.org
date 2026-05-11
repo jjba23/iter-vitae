@@ -184,11 +184,23 @@ translation-alists can contain endless amount of translations for every language
 `((all . "Software Engineer ⚙️"))
 #+end_src
 
+Some variables have sensible defaults, and as such can be skipped from customization.
+You should also look at the defaults for more info: [[file:src/iter-vitae/defaults.scm]]
+
 The following variables are read by Iter Vitae to construct a CV:
 
+- ~titles~ is a list of ~translation-alist~ with content for each section's header, in different languages.
+- ~document-theme~ is a quoted symbol (e.g., ~'ef-cyprus~) that specifies the visual theme, color scheme, or styling to be applied when the document is ultimately generated.
 - ~display-name~ is a *required* ~translation-alist~ that represents the person's name.
 - ~job-title~ is a *required* ~translation-alist~ that represents the job title to be displayed.
 - ~job-title-link~ is an optional ~translation-alist~ that represents the URL to visit when clicking the job title header
 - ~personal-contact~ is an ~alist~ that expects the person's e-mail in the ~emails~ field, and the person's phone number in the ~phone-numbers~ field
 - ~personal-links~ is an ~alist~ of optional fields that can contain ~blog~ , ~code~ and ~linked-in~ , all of which are strings.
-- ~address-lines~ is a ~list~ of ~translation-alist~ and allows one to display address details.
+- ~address-lines~ is a ~list~ of ~translation-alist~ and allows one to display address details, line-by-line.
+- ~driver-licenses~ is an optional ~list~ of ~translation-alist~ that outlines your driving qualifications.
+- ~interests-hobbies~ is a ~list~ of ~translation-alist~ used to describe your hobbies and personal interests. Each element in the list represents a separate bullet point or paragraph in the final document.
+- ~language-proficiency~ is an ~alist~ that defines the grading scale for your language skills. It maps a language code (like ~en~ or ~nl~) to an ~alist~ of integer levels (e.g., 1 to 4) alongside their localized string descriptions (e.g. ~"Elementary Proficiency"~ , ~"Native"~).
+- ~languages~ is an ~alist~ detailing the languages you actually speak. Each key is a language code mapped to an ~alist~ containing a ~name~ (a ~translation-alist~ with the language's display name and optional emoji) and a ~proficiency~ field. The ~proficiency~ field is itself an ~alist~ mapping ~reading~, ~speaking~, and ~writing~ to the integer levels you defined in ~language-proficiency~.
+- ~education~ is a ~list~ of ~alist~ data structures detailing your academic background, courses, and educational internships. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you learned or achieved).
+- ~short-intro~ is a ~list~ of ~translation-alist~ that acts as your personal summary, biography, or cover letter excerpt.
+- ~jobs~ is a ~list~ of ~alist~ data structures detailing your professional experience. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you did or achieved).
