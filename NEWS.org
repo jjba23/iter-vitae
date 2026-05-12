@@ -13,6 +13,12 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *[Released]*
 
+** v0.7.6 (2026-05-12)
+
+*** Modified
+
+- Fixed driver license and interests-hobbies, making them optional and hide if nil
+
 ** v0.7.5 (2026-05-08)
 
 *** Modified

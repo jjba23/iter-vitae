@@ -200,7 +200,7 @@ The following variables are read by Iter Vitae to construct a CV:
 - ~personal-links~ is an ~alist~ of optional fields that can contain ~blog~ , ~code~ and ~linked-in~ , all of which are strings.
 - ~address-lines~ is a ~list~ of ~translation-alist~ and allows one to display address details, line-by-line.
 - ~driver-licenses~ is an optional ~list~ of ~translation-alist~ that outlines your driving qualifications.
-- ~interests-hobbies~ is a ~list~ of ~translation-alist~ used to describe your hobbies and personal interests. Each element in the list represents a separate bullet point or paragraph in the final document.
+- ~interests-hobbies~ is an optional ~list~ of ~translation-alist~ used to describe your hobbies and personal interests.
 - ~language-proficiency~ is an ~alist~ that defines the grading scale for your language skills. It maps a language code (like ~en~ or ~nl~) to an ~alist~ of integer levels (e.g., 1 to 4) alongside their localized string descriptions (e.g. ~"Elementary Proficiency"~ , ~"Native"~).
 - ~languages~ is an ~alist~ detailing the languages you actually speak. Each key is a language code mapped to an ~alist~ containing a ~name~ (a ~translation-alist~ with the language's display name and optional emoji) and a ~proficiency~ field. The ~proficiency~ field is itself an ~alist~ mapping ~reading~, ~speaking~, and ~writing~ to the integer levels you defined in ~language-proficiency~.
 - ~education~ is a ~list~ of ~alist~ data structures detailing your academic background, courses, and educational internships. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you learned or achieved).
