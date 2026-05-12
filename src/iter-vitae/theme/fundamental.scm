@@ -389,17 +389,21 @@
     ,(render-languages #:persona persona
                        #:locale locale)
 
-    (h4 (@ (style ,h4-style))
-        ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                                  'titles)
-                                                        'driver-license)
-                                              locale) ":"))
-    ,(render-driver-licenses #:locale locale
-                             #:persona persona)
+    ,(unless (nil? (assq-ref persona
+                             'driver-licenses))
+       `((h4 (@ (style ,h4-style))
+             ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                              'titles)
+                                                             'driver-license)
+                                                   locale) ":"))
+         ,(render-driver-licenses #:locale locale
+                                  #:persona persona)))
 
-    (h4 (@ (style ,h4-style))
-        ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                   'titles)
-                                         'interests-hobbies) locale))
-    ,@(render-interests-hobbies #:locale locale
-                                #:persona persona)))
+    ,(unless (nil? (assq-ref persona
+                             'interests-hobbies))
+       `((h4 (@ (style ,h4-style))
+             ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                        'titles)
+                                              'interests-hobbies) locale))
+         ,@(render-interests-hobbies #:locale locale
+                                     #:persona persona)))))
