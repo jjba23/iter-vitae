@@ -49,12 +49,6 @@ You can see a published example of the most up-to-date version of my CV generate
 
 * Supported document-themes
 
-*** ef-cyprus
-
-Simple, clean, light and green tones with advanced typography with varying font families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex fonts. Inspired by Protesilaos ef-themes for Emacs.
-
-[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-04-13-29-04.png]]
-
 *** fundamental
 
 Minimalistic light and simple theme, with simple sans-serif font for everything and basic styles. Minimal dependencies.
@@ -64,6 +58,14 @@ Minimalistic light and simple theme, with simple sans-serif font for everything 
 *** fatum
 
 Joe's (jjbigorra@gmail.com / jjba23) custom theme, showcasing the hacker nature and tailored for engineers, computer scientists and techies
+
+[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-12-17-15-44.png]]
+
+*** ef-cyprus
+
+Simple, clean, light and green tones with advanced typography with varying font families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex fonts. Inspired by Protesilaos ef-themes for Emacs.
+
+[[https://jointhefreeworld.org/static-assets/iter-vitae/screen-2026-05-04-13-29-04.png]]
 
 ---------------
 
