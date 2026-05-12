@@ -221,5 +221,6 @@
 ;; supported values are:
 ;; - ef-cyprus: a light colored and green accent theme
 ;; - fundamental: a no-frills vanilla HTML, simple, effective
+;; - fatum: a hacker inspired visual for engineers, computer scientists and techies
 (define document-theme
   'ef-cyprus)

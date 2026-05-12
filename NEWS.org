@@ -13,6 +13,12 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *[Released]*
 
+** v0.8.0 (2026-05-12)
+
+*** Added
+
+- Fatum theme
+
 ** v0.7.6 (2026-05-12)
 
 *** Modified
