@@ -52,6 +52,8 @@
                               (string-append share "/resources/"))
                 (install-file "resources/css/iter-vitae.olive.min.css"
                               (string-append share "/resources/css"))
+                (install-file "resources/css/fatum.olive.min.css"
+                              (string-append share "/resources/css"))
                 (install-file "scripts/iter-vitae" bin)
                 (install-file "scripts/log.bash"
                               (string-append share "/scripts/"))

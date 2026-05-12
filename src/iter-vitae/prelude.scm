@@ -114,4 +114,5 @@
                         (assoc-set! lib f min-contents)))) files) lib))
 
 (define my-asset-library
-  (build-asset-library '("resources/css/iter-vitae.olive.min.css")))
+  (build-asset-library '("resources/css/iter-vitae.olive.min.css"
+                         "resources/css/fatum.olive.min.css")))

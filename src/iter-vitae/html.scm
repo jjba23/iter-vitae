@@ -37,8 +37,10 @@
   #:use-module (ice-9 iconv)
   #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae theme ef-cyprus)
+  #:use-module (iter-vitae theme fatum)
   #:use-module (iter-vitae theme fundamental)
-  #:use-module (ice-9 threads))
+  #:use-module (ice-9 threads)
+  #:export (iter-vitae-curriculum-page))
 
 ;; ====== Serialize (SXML) ======
 
@@ -262,26 +264,27 @@ formatting."
 
 ;; ================================
 
-(begin
-  (define* (iter-vitae-curriculum-page #:key locale persona)
+(define* (iter-vitae-curriculum-page #:key locale persona)
+  (let* ((theme (assq-ref persona
+                          'document-theme))
+         (title (assq-ref-all-or-lang (assq-ref persona
+                                                'display-name) locale))
+         ;; 1. Determine the correct template and body procedures based on the theme
+         (procs (case theme
+                  ((fundamental)
+                   (cons fundamental-html-template fundamental-main-body))
+                  ((fatum)
+                   (cons fatum-html-template fatum-main-body))
+                  (else (cons ef-cyprus-html-template ef-cyprus-main-body))))
+         (template-fn (car procs))
+         (body-fn (cdr procs)))
+
+    ;; 2. Execute the SXML generation and string conversion once
     (with-output-to-string (lambda ()
-                             (sxml->xml (cond
-                                          ((eq? 'fundamental
-                                                (assq-ref persona
-                                                          'document-theme))
-                                           (fundamental-html-template #:title
-                                            "Iter Vitae"
-                                            #:persona persona
-                                            #:body (fundamental-main-body
-                                                    #:locale locale
-                                                    #:persona persona)
-                                            #:locale locale))
-                                          (else (ef-cyprus-html-template
-                                                 #:title "Iter Vitae"
-                                                 #:persona persona
-                                                 #:body (ef-cyprus-main-body
-                                                         #:locale locale
-                                                         #:persona persona)
-                                                 #:locale locale)))
-                                        ))))
-  (export iter-vitae-curriculum-page))
+                             (sxml->xml (template-fn #:title title
+                                                     #:persona persona
+                                                     #:locale locale
+                                                     #:body (body-fn #:locale
+                                                                     locale
+                                                                     #:persona
+                                                                     persona)))))))

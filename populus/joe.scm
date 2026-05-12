@@ -247,9 +247,10 @@
     (time (en . "August 2024 => present")
           (nl . "Augustus 2024 => heden")
           (es . "Agosto 2024 => presente"))
-    (experience ((en . "Back-end, asynchronous and event-driven services with Kotlin, GraphQL, Scala, ZIO, REST APIs, Java, Spring")
-                 (nl . "Back-end, asynchroon en event-driven services met Kotlin, GraphQL, Scala, ZIO, REST API's, Java, Spring")
-                 (es . "Servicios back-end asíncronos y orientados a eventos con Kotlin, GraphQL, Scala, ZIO, APIs REST, Java y Spring."))
+    (experience ((en . "Back-end, asynchronous and event-driven services, system architecture and engineering")
+                 (nl . "Back-end, asynchroon en event-driven services, system architecture and engineering ")
+                 (es . "Servicios back-end asíncronos y orientados a eventos, system architecture and engineering."))
+                ((all . "Kotlin, GraphQL, Scala, ZIO, REST API's, Java, Spring"))
                 ((en . "Distributed micro-services, Kafka, PostgreSQL, Elasticsearch")
                  (nl . "Distributed micro-services, Kafka, PostgreSQL, Elasticsearch")
                  (es . "Microservicios distribuidos, Kafka, PostgreSQL, Elasticsearch."))
@@ -262,4 +263,4 @@
         joe-job-pro-warehouse))
 
 (define document-theme
-  'ef-cyprus)
+  'fatum)

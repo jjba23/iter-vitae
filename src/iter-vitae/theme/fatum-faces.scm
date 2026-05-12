@@ -43,7 +43,7 @@
                     display-name-face))
 
 (define hr-face
-  (mk-class '(my-2 md:my-4 border-t-2 border-t-onyx-200)))
+  (mk-class '(my-2 md:my-4 border-t-2 border-t-onyx-300)))
 
 (define bullet-face
   (mk-class '(ml-2
@@ -66,8 +66,8 @@
                    md:text-md
                    cursor-pointer
                    no-underline
-                   text-asparagus-700
-                   hover:text-asparagus-300
+                   text-jeans-blue-700
+                   hover:text-jeans-blue-300
                    hover:underline)))
 
 (define a-face
@@ -77,8 +77,8 @@
                    text-md
                    md:text-lg
                    cursor-pointer
-                   text-asparagus-700
-                   hover:text-asparagus-300
+                   text-jeans-blue-700
+                   hover:text-jeans-blue-300
                    hover:underline)))
 
 (define h2-special-face
@@ -89,19 +89,19 @@
                    hover:underline
                    font-light
                    uppercase
-                   text-asparagus-700)))
+                   text-jeans-blue-700)))
 
 (define h2-link-special-face
   (mk-class '(my-2 md:my-3
                    hover:underline
                    font-sans
-                   no-underline
+                   underline
                    font-light
                    text-xl
                    md:text-2xl
                    uppercase
-                   text-asparagus-700
-                   hover:text-asparagus-300)))
+                   text-jeans-blue-700
+                   hover:text-jeans-blue-300)))
 
 (define h4-face
   (mk-class '(my-1 md:my-2
