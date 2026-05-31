@@ -155,7 +155,6 @@
                    text-4xl
                    md:text-5xl
                    lg:text-6xl
-                   font-serif
                    text-onyx-300
                    font-light)))
 

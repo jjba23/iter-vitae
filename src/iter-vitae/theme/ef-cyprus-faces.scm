@@ -46,8 +46,7 @@
   (mk-class '(my-2 md:my-4 border-t-2 border-t-onyx-200)))
 
 (define bullet-face
-  (mk-class '(ml-2
-                   md:ml-4
+  (mk-class '(ml-2 md:ml-4
                    leading-6
                    md:leading-7
                    font-sans
@@ -151,8 +150,7 @@
   (mk-class '(py-1 md:py-2)))
 
 (define display-name-face
-  (mk-class '(my-3 font-sans
-                   text-4xl
+  (mk-class '(my-3 text-4xl
                    md:text-5xl
                    lg:text-6xl
                    font-serif
