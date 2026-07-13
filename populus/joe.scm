@@ -55,19 +55,18 @@
     ((en . "Active in CrossFit, furniture restoration, and home improvement projects outside of engineering.")
      (nl . "Naast engineering actief met CrossFit, meubelrestauratie en woningverbetering.")
      (es . "Práctica de CrossFit, restauración de muebles y proyectos de mejora del hogar fuera del ámbito de la ingeniería."))))
-unbalanced
 
 (define language-proficiency
   `((en (1 . "Elementary Proficiency")
-        (2 . "Limited Working Proficiency")
+        (2 . "Basic Proficiency")
         (3 . "Professional Proficiency")
         (4 . "Native / Bilingual"))
     (nl (1 . "Elementaire Vaardigheid")
-        (2 . "Beperkte Werkvaardigheid")
+        (2 . "Basis Vaardigheid")
         (3 . "Professioneel Vaardig")
         (4 . "Moedertaal / Tweetalig"))
     (es (1 . "Competencia Elemental")
-        (2 . "Competencia Profesional Limitada")
+        (2 . "Competencia Básica")
         (3 . "Competencia Profesional")
         (4 . "Nativo / Bilingüe"))))
 
@@ -83,7 +82,7 @@ unbalanced
               (es . "🇳🇱 Neerlandés"))
         (proficiency (reading . 3)
                      (speaking . 3)
-                     (writing . 2)))
+                     (writing . 3)))
     (cat (name (en . "🇪🇸 Catalan")
                (nl . "🇪🇸 Catalaans")
                (es . "🇪🇸 Catalán"))
@@ -146,7 +145,6 @@ unbalanced
                 (nl . "Afgestudeerd met een score van 190/200 en de maximale beoordeling behaald voor de software-engineeringstage.")
                 (es . "Graduación con calificación sobresaliente de 190/200, obteniendo la nota máxima en las prácticas de ingeniería de software."))
                ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM")))))
-unbalanced
 
 (define short-intro
   `(((en . "Driven Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
@@ -155,7 +153,6 @@ unbalanced
     ((en . "Architect of robust solutions using a diverse tech stack, including Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme, and Lisp.")
      (nl . "Ontwerper van robuuste oplossingen met een diverse tech-stack, waaronder Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme en Lisp.")
      (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme y Lisp."))))
-unbalanced
 
 (define joe-job-pro-warehouse
   `((name (all . "Pro Warehouse B.V."))
