@@ -24,7 +24,7 @@
   #:export (main))
 
 (define* (main #:key (args (command-line)))
-
+  
   (let* ((_ (begin
               (newline)
               (write args)

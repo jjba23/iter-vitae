@@ -221,7 +221,7 @@ formatting."
 
 (define (make-char-quotator char-encoding)
   (let ((bad-chars (list->char-set (map car char-encoding))))
-
+    
     ;; Check to see if str contains one of the characters in charset,
     ;; from the position i onward. If so, return that character's index.
     ;; otherwise, return #f
@@ -278,7 +278,7 @@ formatting."
                   (else (cons ef-cyprus-html-template ef-cyprus-main-body))))
          (template-fn (car procs))
          (body-fn (cdr procs)))
-
+    
     ;; 2. Execute the SXML generation and string conversion once
     (with-output-to-string (lambda ()
                              (sxml->xml (template-fn #:title title

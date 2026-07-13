@@ -33,8 +33,7 @@
                         log-message
                         log
                         mk-class
-                        syscall
-                        ))
+                        syscall))
 
 (define-syntax-rule (get-setting setting)
   "Get a setting for iter-vitae, either from persona or from default values."

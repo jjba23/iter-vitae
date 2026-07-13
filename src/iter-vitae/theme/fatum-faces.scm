@@ -46,8 +46,7 @@
   (mk-class '(my-2 md:my-4 border-t-2 border-t-onyx-300)))
 
 (define bullet-face
-  (mk-class '(ml-2
-                   md:ml-4
+  (mk-class '(ml-2 md:ml-4
                    leading-6
                    md:leading-7
                    font-sans

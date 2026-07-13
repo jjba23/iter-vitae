@@ -178,5 +178,5 @@
 (define (olive-css)
   ($ '("curl --verbose --output \"./resources/css/iter-vitae.olive.min.css\""
        "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/iter-vitae.olive.min.css\""))
-    ($ '("curl --verbose --output \"./resources/css/fatum.olive.min.css\""
+  ($ '("curl --verbose --output \"./resources/css/fatum.olive.min.css\""
        "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/fatum.olive.min.css\"")))

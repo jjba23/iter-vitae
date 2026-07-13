@@ -29,7 +29,6 @@
   (log-info "\tresources: ~a" resources)
   (log-info "\tdestination: ~a" destination)
 
-
   ;; choose person to generate curriculum vitae for
   (load file)
 
@@ -65,7 +64,7 @@
                     (jobs unquote
                           (get-setting 'jobs))
                     (document-theme unquote
-                             (get-setting 'document-theme)))))
+                                    (get-setting 'document-theme)))))
     (log-info "executing: ~a" clean-dist-cmd)
     (syscall clean-dist-cmd)
 

@@ -56,13 +56,22 @@
                                   (style ,(assoc-ref my-asset-library
                                            "resources/css/fatum.olive.min.css")))
                             (body (@ (class ,(mk-class '(break-words flex
-                                                         md:justify-center))))
+                                                         md:justify-center
+                                                         md:bg-onyx-100/50
+                                                         md:py-12
+                                                         md:min-h-screen))))
                                   (div (@ (class ,(mk-class '(px-4 sm:px-8
-                                                                   md:px-12
-                                                                   py-4
-                                                                   sm:py-8
-                                                                   md:py-12
-                                                                   font-sans))))
+                                                              md:px-12
+                                                              py-4
+                                                              sm:py-8
+                                                              md:py-12
+                                                              font-sans
+                                                              w-full
+                                                              md:w-312
+                                                              md:min-h-96
+                                                              md:bg-white
+                                                              md:shadow-2xl
+                                                              md:rounded-md))))
                                        ,@body
                                        ,(page-footer #:persona persona
                                                      #:locale locale))))))
@@ -341,7 +350,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-
+    
     (div (@ (class ,(mk-class '(mt-8))))
          (h4 (@ (class ,h4-face))
              ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
