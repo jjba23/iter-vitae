@@ -32,7 +32,7 @@
   `((emails . "jjbigorra@gmail.com") (phone-numbers . "+31 639825138")))
 
 (define personal-links
-  `((all . "jointhefreeworld.org") (code . "codeberg.org/jjba23")
+  `((blog . "jointhefreeworld.org") (code . "codeberg.org/jjba23")
     (linked-in . "linkedin.com/in/josepjba")))
 
 (define address-lines
