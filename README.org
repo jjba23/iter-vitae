@@ -49,17 +49,17 @@ You can see a published example of the most up-to-date version of my CV generate
 
 * Supported document-themes
 
-*** fundamental
-
-Minimalistic light and simple theme, with simple sans-serif font for everything and basic styles. Minimal dependencies.
-
-[[https://jointhefreeworld.org/static-assets/iter-vitae/fundamental.png]]
-
 *** fatum
 
 Joe's (jjbigorra@gmail.com / jjba23) custom theme, showcasing the hacker nature and tailored for engineers, computer scientists and techies
 
 [[https://jointhefreeworld.org/static-assets/iter-vitae/fatum.png]]
+
+*** fundamental
+
+Minimalistic light and simple theme, with simple sans-serif font for everything and basic styles. Minimal dependencies.
+
+[[https://jointhefreeworld.org/static-assets/iter-vitae/fundamental.png]]
 
 *** ef-cyprus
 
@@ -182,6 +182,10 @@ Find here the Backlog and Kanban boards for iter-vitae: https://lucidplan.jointh
 
 
 -------
+
+[[https://jointhefreeworld.org/static-assets/iter-vitae/iter-vitae-small-logo.png]]
+
+----------
 
 * How to write your CV in Lisp?
 
