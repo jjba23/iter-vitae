@@ -47,6 +47,7 @@
 
 (define bullet-face
   (mk-class '(ml-2 md:ml-4
+                   mb-2
                    leading-6
                    md:leading-7
                    font-sans
