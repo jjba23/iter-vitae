@@ -150,8 +150,8 @@
   `(((en . "Driven Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
      (nl . "Gedreven Senior Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
      (es . "Ingeniero de Software Sénior proactivo con sólida experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
-    ((en . "Architect of robust solutions using a diverse tech stack, including Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme, and Lisp.")
-     (nl . "Ontwerper van robuuste oplossingen met een diverse tech-stack, waaronder Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme en Lisp.")
+    ((en . "Architect of robust solutions using diverse tech stacks, including Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme, and Lisp.")
+     (nl . "Ontwerper van robuuste oplossingen met diverse tech-stacks, waaronder Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme en Lisp.")
      (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme y Lisp."))))
 
 (define joe-job-pro-warehouse
