@@ -208,7 +208,14 @@ translation-alists can contain endless amount of translations for every language
 Some variables have sensible defaults, and as such can be skipped from customization.
 You should also look at the defaults for more info: [[file:src/iter-vitae/defaults.scm]]
 
+Bear in mind that some themes might require additional variables that are not in other themes.
+
 Also, for a "real-world" example, you can see my own CV: [[file:populus/joe.scm]]
+
+HTML is directly supported in most localized fields, for example:
+#+begin_src scheme
+(en . "Architected and delivered a high-performance, real-time energy calculation service (<em class=\"italic\">“greenest moment of the day”</em>).")
+#+end_src
 
 The following variables are read by Iter Vitae to construct a CV:
 
