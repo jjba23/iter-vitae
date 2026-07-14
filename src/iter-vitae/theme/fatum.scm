@@ -350,7 +350,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-    
+
     (div (@ (class ,(mk-class '(mt-8))))
          (h4 (@ (class ,h4-face))
              ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -398,7 +398,7 @@
                                           items-center))))
               (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
               (h4 (@ (class ,h4-face))
-                  (assq-ref-all-or-lang (assq-ref (assq-ref persona
+                  ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
                                                             'titles)
                                                   'driver-license) locale))
               ,(render-driver-licenses #:locale locale
