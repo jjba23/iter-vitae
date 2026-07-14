@@ -18,6 +18,9 @@
 (define-module (iter-vitae persona)
   #:declarative? #t)
 
+(define document-theme
+  'fatum)
+
 (define display-name
   `((all . "Josep Bigorra")))
 
@@ -55,6 +58,8 @@
     ((en . "Active in CrossFit, furniture restoration, and home improvement projects outside of engineering.")
      (nl . "Naast engineering actief met CrossFit, meubelrestauratie en woningverbetering.")
      (es . "Práctica de CrossFit, restauración de muebles y proyectos de mejora del hogar fuera del ámbito de la ingeniería."))))
+
+;; ====== Languages ======
 
 (define language-proficiency
   `((en (1 . "Elementary Proficiency")
@@ -102,6 +107,17 @@
                      (speaking . 4)
                      (writing . 4)))))
 
+(define short-intro
+  `(((en . "Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
+     (nl . "Senior Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
+     (es . "Ingeniero de Software Sénior con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
+    ((en . "Delivering robust software solutions using diverse technologies, including Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme, and Lisp.")
+     (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme en Lisp.")
+     (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme y Lisp."))))
+
+;; ====== Education ======
+
+
 (define joe-internship-liderlink
   `((name (all . "Liderlink Business Solutions"))
     (location (all . "Parchal, Portugal"))
@@ -141,18 +157,12 @@
      (time (en . "September 2017 => September 2019")
            (nl . "September 2017 => September 2019")
            (es . "Septiembre 2017 => Septiembre 2019"))
-     (experience ((en . "Graduated with an outstanding score of 190/200, achieving the highest possible grade for the final software engineering internship.")
+     (experience ((en . "Graduated with a score of 190/200, achieving the highest possible grade for the final software engineering internship.")
                   (nl . "Afgestudeerd met een score van 190/200 en de maximale beoordeling behaald voor de software-engineeringstage.")
                   (es . "Graduación con calificación sobresaliente de 190/200, obteniendo la nota máxima en las prácticas de ingeniería de software."))
                  ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))))
 
-(define short-intro
-  `(((en . "Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
-     (nl . "Senior Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
-     (es . "Ingeniero de Software Sénior con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
-    ((en . "Delivering robust software solutions using diverse technologies, including Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme, and Lisp.")
-     (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme en Lisp.")
-     (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme y Lisp."))))
+;; ====== Jobs ======
 
 (define joe-job-pro-warehouse
   `((name (all . "Pro Warehouse B.V."))
@@ -171,9 +181,6 @@
                 ((en . "Built and deployed scalable services using Go (standard library & Gin), Vue.js, and PHP (Laravel).")
                  (nl . "Bouwde en implementeerde schaalbare services met Go (standaard & Gin), Vue.js en PHP (Laravel).")
                  (es . "Desarrollo y despliegue de servicios escalables utilizando Go (standard y Gin), Vue.js y PHP (Laravel)."))
-                ((en . "Introduced and spearheaded the adoption of Agile working methodologies and Extreme Programming (XP) practices.")
-                 (nl . "Introduceerde en leidde Agile-werkmethodologieën en Extreme Programming (XP) binnen het team.")
-                 (es . "Introducción y liderazgo en la adopción de metodologías de trabajo Agile y prácticas de Extreme Programming (XP)."))
                 ((en . "Managed full database lifecycles, executing database design, normalization, migrations, maintenance, and backup strategies.")
                  (nl . "Beheerde de volledige database-levenscyclus, inclusief ontwerp, normalisatie, migratie, onderhoud en back-upstrategieën.")
                  (es . "Gestión del ciclo de vida completo de bases de datos, incluyendo el diseño, normalización, migración, mantenimiento y estrategias de respaldo."))
@@ -249,6 +256,9 @@
     (experience ((en . "Architected and delivered a high-performance, real-time energy calculation service ('greenest moment of the day') meeting strict sub-50ms latency SLAs to optimize green energy consumption for thousands of active users.")
                  (nl . "Ontwierp en implementeerde een hoogwaardige, realtime energieberekeningsservice ('het groenste moment van de dag') die voldoet aan strikte SLA's met een latentie van minder dan 50 ms om het groene energieverbruik voor duizenden actieve gebruikers te optimaliseren.")
                  (es . "Diseño e implementación de un servicio de cálculo de energía de alto rendimiento y en tiempo real ('el momento más ecológico del día') que cumple con estrictos acuerdos de nivel de servicio (SLA) de latencia inferior a 50 ms para optimizar el consumo de energía verde para miles de usuarios activos."))
+                ((en . "Improved monthly customer energy reporting, boosting speed, UI/UX and reducing error rate to 1 in 100k processes.")
+                 (nl . "Verbeterde maandelijkse rapportage over het energieverbruik van klanten, hogere snelheid, betere gebruikersinterface en -ervaring, en een foutpercentage van 1 op 100.000 processen.")
+                 (es . "Mejora de los informes mensuales de consumo energético de los clientes, aumentando la velocidad, la UI/UX, y reduciendo la tasa de errores hasta 1 en cada 100.000 procesos."))
                 ((en . "Designed asynchronous, event-driven microservices using Scala (ZIO), Kotlin, GraphQL, and Kafka to process high-frequency data streams.")
                  (nl . "Ontwierp asynchrone, gebeurtenisgestuurde microservices met behulp van Scala (ZIO), Kotlin, GraphQL en Kafka om datastromen met een hoge frequentie te verwerken.")
                  (es . "Diseño de microservicios asíncronos y basados en eventos utilizando Scala (ZIO), Kotlin, GraphQL y Kafka para gestionar flujos de datos de alta frecuencia."))
@@ -259,6 +269,3 @@
 (define jobs
   (list joe-job-vandebron joe-job-zorgdomein joe-job-ikea
         joe-job-pro-warehouse))
-
-(define document-theme
-  'fatum)
