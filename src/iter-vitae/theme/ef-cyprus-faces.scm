@@ -161,7 +161,7 @@
   (mk-class '(my-4 font-sans
                    text-md
                    md:text-lg
-                   text-black-900
+                   text-onyx-500
                    w-full
                    max-w-prose
                    leading-7)))
