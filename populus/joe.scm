@@ -117,7 +117,6 @@
 
 ;; ====== Education ======
 
-
 (define joe-internship-liderlink
   `((name (all . "Liderlink Business Solutions"))
     (location (all . "Parchal, Portugal"))
@@ -127,12 +126,9 @@
     (time (en . "February 2019 => July 2019")
           (nl . "Februari 2019 => Juli 2019")
           (es . "Febrero 2019 => Julio 2019"))
-    (experience ((en . "Developed full-stack PHP and MySQL CRUD operations for corporate real-estate, hospitality, and HR management platforms.")
-                 (nl . "Ontwikkelde full-stack PHP en MySQL CRUD-functionaliteiten voor systemen in vastgoed-, hotel- en personeelsbeheer.")
-                 (es . "Desarrollo de operaciones CRUD con PHP y MySQL en plataformas empresariales de gestión inmobiliaria, hotelera y de personal."))
-                ((en . "Implemented interactive client-side scripting using JavaScript and jQuery integrated with server-side templates.")
-                 (nl . "Implementeerde interactieve client-side scripting met JavaScript en jQuery in combinatie met server-side templates.")
-                 (es . "Implementación de scripts interactivos en el lado del cliente con JavaScript y jQuery en integración con plantillas del lado del servidor.")))))
+    (experience ((en . "Developed full-stack PHP, JavaScript, jQuery and MySQL CRUD operations for corporate real-estate, hospitality, and HR management platforms.")
+                 (nl . "Ontwikkelde full-stack PHP, JavaScript, jQuery en MySQL CRUD-functionaliteiten voor systemen in vastgoed-, hotel- en personeelsbeheer.")
+                 (es . "Desarrollo de operaciones CRUD con PHP, JavaScript, jQuery y MySQL en plataformas empresariales de gestión inmobiliaria, hotelera y de personal.")))))
 
 (define education
   `(((name (all . "Leading Self"))

@@ -398,11 +398,9 @@
                                           items-center))))
               (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
               (h4 (@ (class ,h4-face))
-                  ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref
-                                                                   persona
-                                                                   'titles)
-                                                                  'driver-license)
-                                                        locale) ":"))
+                  (assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                            'titles)
+                                                  'driver-license) locale))
               ,(render-driver-licenses #:locale locale
                                        #:persona persona))))
 
