@@ -49,9 +49,9 @@
      (es . "Permiso de conducir B, vehículos hasta 3,5t"))))
 
 (define interests-hobbies
-  `(((en . "Building and configuring custom computers, publishing technical insights via a personal blog, and playing tactical strategy games.")
-     (nl . "Bouwen en configureren van computers, publiceren van technische inzichten op een blog en het spelen van strategische spellen.")
-     (es . "Montaje y configuración de ordenadores personalizados, publicación de análisis tecnológicos en blog propio y juegos de estrategia táctica."))
+  `(((en . "Building and configuring custom computers, publishing technical insights via a personal blog, and playing tactical strategy games. Programming Lisp, and using Emacs.")
+     (nl . "Bouwen en configureren van computers, publiceren van technische inzichten op een blog en het spelen van strategische spellen. Lisp programmeren, en Emacs gebruiken.")
+     (es . "Montaje y configuración de ordenadores personalizados, publicación de análisis tecnológicos en blog propio y juegos de estrategia táctica. Programando Lisp, y usando Emacs."))
     ((en . "Playing classical and electric guitar 🎸.")
      (nl . "Spelen van klassieke en elektrische gitaar 🎸.")
      (es . "Interpretación de guitarra clásica y eléctrica 🎸."))
@@ -111,9 +111,9 @@
   `(((en . "Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
      (nl . "Senior Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
      (es . "Ingeniero de Software Sénior con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
-    ((en . "Delivering robust software solutions using diverse technologies, including Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme, and Lisp.")
-     (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme en Lisp.")
-     (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Java, Kotlin, Scala, Haskell, JavaScript, TypeScript, Python, Rust, Bash, SQL, Scheme y Lisp."))))
+    ((en . "Delivering robust software solutions using diverse technologies, including Scala, Kotlin, Java, Kotlin, Go and more.")
+     (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Scala, Kotlin, Java, Go en meer.")
+     (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Scala, Kotlin, Java, Go y mas."))))
 
 ;; ====== Education ======
 
