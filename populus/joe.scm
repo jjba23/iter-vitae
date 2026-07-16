@@ -111,7 +111,7 @@
   `(((en . "Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
      (nl . "Senior Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
      (es . "Ingeniero de Software Sénior con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
-    ((en . "Delivering robust software solutions using diverse technologies, including Scala, Kotlin, Java, Kotlin, Go and more.")
+    ((en . "Delivering robust software solutions using diverse technologies, including Scala, Kotlin, Java, Go and more.")
      (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Scala, Kotlin, Java, Go en meer.")
      (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Scala, Kotlin, Java, Go y mas."))))
 
