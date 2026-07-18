@@ -13,6 +13,10 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *[Released]*
 
+** v1.0.0 (2026-07-18)
+
+✨ Stable API for iter-vitae and finished themes
+
 ** v0.8.0 (2026-05-12)
 
 *** Added
