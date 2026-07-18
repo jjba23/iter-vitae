@@ -75,12 +75,24 @@
   (mv "./index" "./doc/api-dist"))
 
 (define (deploy)
+  "Deploy Iter Vitae."
+  ;; english
   (run-joe-en)
   (docs)
-  ;; Deploy Iter Vitae
   (delete-file-recursively (~ "~a/joe-cv" deploy-dir))
   (mv "dist"
       (~ "~a/joe-cv" deploy-dir))
+
+  ;; dutch
+  (run-joe-nl)
+  (mv "dist"
+      (~ "~a/joe-cv/nl" deploy-dir))
+
+  ;; spanish
+  (run-joe-es)
+  (mv "dist"
+      (~ "~a/joe-cv/es" deploy-dir))
+
   ;; Deploy API docs
   (remkdir-p (~ "~a/api-docs/~a" deploy-dir project-name))
   (mv "doc/api-dist/*"
