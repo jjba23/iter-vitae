@@ -234,3 +234,26 @@ The following variables are read by Iter Vitae to construct a CV:
 - ~education~ is a ~list~ of ~alist~ data structures detailing your academic background, courses, and educational internships. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you learned or achieved).
 - ~short-intro~ is a ~list~ of ~translation-alist~ that acts as your personal summary, biography, or cover letter excerpt.
 - ~jobs~ is a ~list~ of ~alist~ data structures detailing your professional experience. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you did or achieved).
+
+-------
+
+* On Reproducibility, and Why GNU Guix? 🐂️
+
+A build should never fail because "it works on my machine." Software must aim to be transparent, fluid, powerful, and extensible, and for this, reproducibility is essential.
+
+With [[https://guix.gnu.org/][GNU Guix]], you get:
+
+- 🧠 *Infinite Expressiveness:* [[https://www.gnu.org/software/guile/][Guile Scheme]] provides total, unconstrained control over packages and build definitions.
+- 🎯 *Bit-Identical Environments:* Every dependency graph is declarative, immutable, and functionally derived.
+- ⏳ *Time Travel:* Recreate the exact system state from months or years ago using ~guix time-machine~.
+- ✨ *No Hidden State:* Build artifacts are pure functions of their inputs—zero implicit system dependencies.
+- 🔍 *Total Inspectability:* Easily inspect, modify, and patch any point in the build graph.
+
+Far from rigid, absolute reproducibility empowers fearless experimentation:
+
+- *Declarative Shells:* Instantly spin up isolated environments:
+  #+BEGIN_SRC sh
+  guix shell -m manifest.scm
+  #+END_SRC
+- 🔄 *Transactional Upgrades & Rollbacks:* Experiment freely. If an update breaks, rollbacks are atomic and instantaneous.
+- *Unified Tooling:* One tool seamlessly handles dev shells, containers, system configs, and package builds.
