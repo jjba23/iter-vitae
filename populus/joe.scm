@@ -108,9 +108,9 @@
                      (writing . 4)))))
 
 (define short-intro
-  `(((en . "Senior Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
-     (nl . "Senior Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
-     (es . "Ingeniero de Software Sénior con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
+  `(((en . "Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
+     (nl . "Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
+     (es . "Ingeniero de Software con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
     ((en . "Delivering robust software solutions using diverse technologies, including Scala, Kotlin, Java, Go and more.")
      (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Scala, Kotlin, Java, Go en meer.")
      (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Scala, Kotlin, Java, Go y mas."))))
@@ -240,8 +240,8 @@
     (location (en . "Amsterdam, The Netherlands")
               (nl . "Amsterdam, Nederland")
               (es . "Ámsterdam, Países Bajos"))
-    (position (en . "Senior Software Engineer")
-              (nl . "Senior Software Engineer")
+    (position (en . "Software Engineer")
+              (nl . "Software Engineer")
               (es . "Ingeniero de Software Sénior"))
     (time (en . "August 2024 => present")
           (nl . "Augustus 2024 => heden")
