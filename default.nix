@@ -4,12 +4,13 @@
 , guile ? pkgs.guile
 , coreutils ? pkgs.coreutils
 , util-linux ? pkgs.util-linux
+, bash ? pkgs.bash
 , makeWrapper ? pkgs.makeWrapper
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "iter-vitae";
-  version = "0.1.0";
+  version = "1.0.0";
 
   src = ./.;
 
@@ -22,6 +23,7 @@ stdenv.mkDerivation rec {
     guile
     coreutils
     util-linux
+    bash
   ];
 
   buildPhase = ''
@@ -89,7 +91,7 @@ stdenv.mkDerivation rec {
 
     # Wrap application binary with GUILE_LOAD_PATH & GUILE_LOAD_COMPILED_PATH
     wrapProgram $out/bin/iter-vitae \
-      --prefix PATH : ${lib.makeBinPath [ guile coreutils util-linux ]} \
+      --prefix PATH : ${lib.makeBinPath [ guile coreutils util-linux bash ]} \
       --prefix GUILE_LOAD_PATH : "$out/share/guile/site/3.0" \
       --prefix GUILE_LOAD_COMPILED_PATH : "$out/lib/guile/3.0/site-ccache"
 
