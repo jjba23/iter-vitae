@@ -112,10 +112,10 @@
                    text-onyx-500)))
 
 (define h5-face
-  (mk-class '(text-md md:text-lg font-light text-onyx-700)))
+  (mk-class '(text-md md:text-lg font-semibold text-onyx-700)))
 
 (define h5-strong-face
-  (mk-class '(text-md md:text-lg font-medium text-onyx-700)))
+  (mk-class '(text-md md:text-lg font-semibold text-onyx-700)))
 
 (define h5-em-face
   (mk-class '(text-sm md:text-md font-light text-onyx-300)))

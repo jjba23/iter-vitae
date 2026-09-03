@@ -282,14 +282,14 @@
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center
                                                           align-center))))
-                              (h5 (@ (class ,h5-face))
-                                  ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'name)
-                                                         locale))
-                              (span "-")
                               (h5 (@ (class ,h5-strong-face))
                                   ,(assq-ref-all-or-lang (assq-ref job
                                                                    'position)
+                                                         locale))
+                              (span "@")
+                              (h5 (@ (class ,h5-face))
+                                  ,(assq-ref-all-or-lang (assq-ref job
+                                                                   'name)
                                                          locale))
                               (em (@ (class ,h5-em-face))
                                   ,(format #f "(~a)"
@@ -423,7 +423,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-    
+
     (div (@ (class ,(mk-class '(mt-8))))
          (h4 (@ (class ,h4-face))
              ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
