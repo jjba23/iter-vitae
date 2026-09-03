@@ -33,10 +33,10 @@ ol, ul {list-style:none;}
 /*
   Load Olive CSS Hygge Style Sheets
 */
-.font-sans {font-family:'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
+.font-sans {font-family:'Lucida Sans', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
 .font-mono {font-family:'Intel One Mono', monospace;}
 .font-serif {font-family:'DejaVu Serif', ui-serif, serif, 'Times New Roman';}
-.hover\:font-sans {&:hover {font-family:'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}}
+.hover\:font-sans {&:hover {font-family:'Lucida Sans', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}}
 .hover\:font-mono {&:hover {font-family:'Intel One Mono', monospace;}}
 .hover\:font-serif {&:hover {font-family:'DejaVu Serif', ui-serif, serif, 'Times New Roman';}}
 .aspect-square {aspect-ratio:1 / 1;}
@@ -6878,7 +6878,7 @@ ol, ul {list-style:none;}
 */
 &:where([data-theme=dark], [data-theme=dark] *)
  {
-.dark\:font-sans {font-family:'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
+.dark\:font-sans {font-family:'Lucida Sans', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
 .dark\:font-mono {font-family:'Intel One Mono', monospace;}
 .dark\:font-serif {font-family:'DejaVu Serif', ui-serif, serif, 'Times New Roman';}
 .dark\:bg-inherit {background:inherit;}
@@ -15625,7 +15625,7 @@ ol, ul {list-style:none;}
 .sm\:decoration-asparagus-500 {text-decoration-color:oklch(0.6012 0.0882 137.17 / 1);}
 .sm\:decoration-asparagus-700 {text-decoration-color:oklch(0.5512 0.0882 137.17 / 1);}
 .sm\:decoration-asparagus-900 {text-decoration-color:oklch(0.5012 0.0882 137.17 / 1);}
-.sm\:font-sans {font-family:'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
+.sm\:font-sans {font-family:'Lucida Sans', 'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
 .sm\:font-mono {font-family:'Intel One Mono', 'IBM Plex Mono', monospace;}
 .sm\:font-serif {font-family:'DejaVu Serif', 'IBM Plex Serif', ui-serif, serif, 'Times New Roman';}
 }
@@ -20332,7 +20332,7 @@ ol, ul {list-style:none;}
 .md\:decoration-asparagus-500 {text-decoration-color:oklch(0.6012 0.0882 137.17 / 1);}
 .md\:decoration-asparagus-700 {text-decoration-color:oklch(0.5512 0.0882 137.17 / 1);}
 .md\:decoration-asparagus-900 {text-decoration-color:oklch(0.5012 0.0882 137.17 / 1);}
-.md\:font-sans {font-family:'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
+.md\:font-sans {font-family:'Lucida Sans', 'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
 .md\:font-mono {font-family:'Intel One Mono', 'IBM Plex Mono', monospace;}
 .md\:font-serif {font-family:'DejaVu Serif', 'IBM Plex Serif', ui-serif, serif, 'Times New Roman';}
 }
@@ -25039,7 +25039,7 @@ ol, ul {list-style:none;}
 .lg\:decoration-asparagus-500 {text-decoration-color:oklch(0.6012 0.0882 137.17 / 1);}
 .lg\:decoration-asparagus-700 {text-decoration-color:oklch(0.5512 0.0882 137.17 / 1);}
 .lg\:decoration-asparagus-900 {text-decoration-color:oklch(0.5012 0.0882 137.17 / 1);}
-.lg\:font-sans {font-family:'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
+.lg\:font-sans {font-family:'Lucida Sans', 'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
 .lg\:font-mono {font-family:'Intel One Mono', 'IBM Plex Mono', monospace;}
 .lg\:font-serif {font-family:'DejaVu Serif', 'IBM Plex Serif', ui-serif, serif, 'Times New Roman';}
 }
@@ -29746,7 +29746,7 @@ ol, ul {list-style:none;}
 .xl\:decoration-asparagus-500 {text-decoration-color:oklch(0.6012 0.0882 137.17 / 1);}
 .xl\:decoration-asparagus-700 {text-decoration-color:oklch(0.5512 0.0882 137.17 / 1);}
 .xl\:decoration-asparagus-900 {text-decoration-color:oklch(0.5012 0.0882 137.17 / 1);}
-.xl\:font-sans {font-family:'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
+.xl\:font-sans {font-family:'Lucida Sans', 'Plus Jakarta Sans', 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';}
 .xl\:font-mono {font-family:'Intel One Mono', 'IBM Plex Mono', monospace;}
 .xl\:font-serif {font-family:'DejaVu Serif', 'IBM Plex Serif', ui-serif, serif, 'Times New Roman';}
 }

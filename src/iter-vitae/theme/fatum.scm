@@ -49,6 +49,79 @@
                                            (type text/css)
                                            (href
                                             "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
+                                  (style
+                                   "
+/* --- Lucida Sans --- */
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANS.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSI.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSD.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSDI.woff') format('woff');
+}
+
+
+/* --- Lucida Sans Typewriter --- */
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPE.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: oblique;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEO.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEB.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Lucida Sans Typewriter';
+  font-style: oblique;
+  font-weight: 700;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEBO.woff') format('woff');
+}
+
+
+/* --- Lucida Sans Unicode --- */
+
+@font-face {
+  font-family: 'Lucida Sans Unicode';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://jointhefreeworld.org/static-assets/fonts/l_10646.woff') format('woff');
+}
+")
                                   (meta (@ (name "viewport")
                                            (content
                                             "width=device-width, initial-scale=1.0")))
@@ -350,7 +423,7 @@
                                     #:persona persona)
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
-
+    
     (div (@ (class ,(mk-class '(mt-8))))
          (h4 (@ (class ,h4-face))
              ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
@@ -399,8 +472,8 @@
               (i (@ (class ,(mk-class '(ph ph-car text-onyx-500 text-xl)))) "")
               (h4 (@ (class ,h4-face))
                   ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                            'titles)
-                                                  'driver-license) locale))
+                                                             'titles)
+                                                   'driver-license) locale))
               ,(render-driver-licenses #:locale locale
                                        #:persona persona))))
 
