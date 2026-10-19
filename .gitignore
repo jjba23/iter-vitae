@@ -2,4 +2,4 @@ dist/
 .nrepl-port
 doc/
 result
-result/
+reports/

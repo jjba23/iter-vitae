@@ -59,6 +59,13 @@
   ($ '("find . -maxdepth 8 -name '*.scm'" "-type f -exec guix style -f {} \\;")
      #:verbose? #t))
 
+(define (test)
+  "Run the Veritas unit test suite."
+  (manifest-shell '("env VERITAS_TEST_TYPE=unit VERITAS_RUN_BENCHMARKS=false"
+                    "guile --fresh-auto-compile -L ./src -L ./test"
+                    "-c '((@ (veritas runner) run-tests))'")
+                  #:verbose? #t))
+
 (define (repl)
   "Development REPL."
   (manifest-shell '("guile -L ./src"

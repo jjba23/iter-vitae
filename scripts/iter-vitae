@@ -65,8 +65,8 @@ show_help() {
   cat "${resources_dir}/help.txt"
 }
 
-parsed_options=$(getopt -n "iter-vitae" -o l:d:f:r:h \
-  --long locale:,destination:,file:,resources:,help -- "$@")
+parsed_options=$(getopt -n "iter-vitae" -o l:d:f:r:F:h \
+  --long locale:,destination:,file:,resources:,format:,help -- "$@")
 
 eval set -- "${parsed_options}"
 
@@ -74,6 +74,7 @@ locale_arg=""
 destination_arg=""
 file_arg=""
 resources_arg="${resources_dir}"
+format_arg=""
 
 guile_cmd_args=(
   "-L" "${scheme_sources_dir}"
@@ -103,6 +104,11 @@ while true; do
       resources_arg="${resources}"
       shift 2
     fi
+    ;;
+  -F | --format)
+    format_arg="${2}"
+    [[ -n "${format_arg}" ]] && guile_cmd_args+=("--format" "${format_arg}")
+    shift 2
     ;;
   -h | --help)
     show_help

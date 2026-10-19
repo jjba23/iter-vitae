@@ -9,6 +9,12 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *[Unreleased]*
 
+*** Added
+
+- `ats` theme: a single-column, plain-text-first resume for US applicant tracking systems and automated screeners, with conventional section headings, Arial/Helvetica typography and no tables, images, icons or external assets.
+- `skills` persona field, rendered as a comma-separated keyword line by the `ats` theme.
+- `--format text`: a plain-text output mode that writes `resume.txt` for employers that only accept text uploads. It shares the ATS section order and cleanup, and ignores the visual theme.
+
 ---------
 
 *[Released]*

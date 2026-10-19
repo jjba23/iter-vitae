@@ -39,8 +39,9 @@
   #:use-module (iter-vitae theme ef-cyprus)
   #:use-module (iter-vitae theme fatum)
   #:use-module (iter-vitae theme fundamental)
+  #:use-module (iter-vitae theme ats)
   #:use-module (ice-9 threads)
-  #:export (iter-vitae-curriculum-page))
+  #:export (iter-vitae-curriculum-page sxml->xml))
 
 ;; ====== Serialize (SXML) ======
 
@@ -101,7 +102,7 @@
   (attribute-value->xml value port)
   (display #\" port))
 
-(define (element->xml tag attrs body port)
+(define (element->xml tag attrs body port escape?)
   (check-name tag)
   (display #\< port)
   (display tag port)
@@ -121,17 +122,23 @@
   (if (pair? body)
       (begin
         (display #\> port)
-        (let lp
-          ((body body))
-          (cond
-            ((pair? body)
-             (sxml->xml (car body) port)
-             (lp (cdr body)))
-            ((null? body)
-             (display "</" port)
-             (display tag port)
-             (display ">" port))
-            (else (error "bad element body" tag body)))))
+        ;; Text is escaped so persona content can contain &, < and >.  `style'
+        ;; and `script' are raw-text elements in HTML: escaping their contents
+        ;; would turn CSS child selectors such as `a > b' into `a &gt; b'.
+        (let ((text-escape? (if (memq tag '(style script))
+                                #f
+                                escape?)))
+          (let lp
+            ((body body))
+            (cond
+              ((pair? body)
+               (sxml->xml (car body) port text-escape?)
+               (lp (cdr body)))
+              ((null? body)
+               (display "</" port)
+               (display tag port)
+               (display ">" port))
+              (else (error "bad element body" tag body))))))
       (display " />" port)))
 
 ;; FIXME: ensure name is valid
@@ -148,9 +155,60 @@
   (display str port)
   (display "?>" port))
 
+;; Persona fields may contain the small amount of inline HTML documented in
+;; the README.  This mode escapes ordinary text (including stray ampersands)
+;; while keeping well-formed tags intact: `<em class="italic">x & y</em>' is
+;; written as `<em class="italic">x &amp; y</em>'.  It is deliberately a
+;; tokenizer rather than a full parser; anything that does not look like a tag
+;; is treated as text.
+(define (tag-start? str index)
+  (let ((length (string-length str)))
+    (and (< (+ index 1) length)
+         (let ((next (string-ref str (+ index 1))))
+           (or (char-alphabetic? next)
+               (and (char=? next #\/)
+                    (< (+ index 2) length)
+                    (char-alphabetic? (string-ref str (+ index 2)))))))))
+
+(define (find-tag-end str start)
+  (let ((length (string-length str)))
+    (let loop ((index (+ start 1)) (quote #f))
+      (if (>= index length)
+          #f
+          (let ((char (string-ref str index)))
+            (cond
+              (quote (loop (1+ index) (if (char=? char quote) #f quote)))
+              ((or (char=? char #\") (char=? char #\'))
+               (loop (1+ index) char))
+              ((char=? char #\>) index)
+              (else (loop (1+ index) #f))))))))
+
+(define (write-inline-text text port)
+  (string->escaped-xml (decode-html-entities text) port))
+
+(define (string->inline-html str port)
+  (let ((length (string-length str)))
+    (let loop ((start 0))
+      (let ((lt (string-index str #\< start)))
+        (cond
+          ((not lt) (write-inline-text (substring str start length) port))
+          ((tag-start? str lt)
+           (let ((end (find-tag-end str lt)))
+             (if end
+                 (begin
+                   (write-inline-text (substring str start lt) port)
+                   (display (substring str lt (+ end 1)) port)
+                   (loop (+ end 1)))
+                 (begin
+                   (write-inline-text (substring str start (+ lt 1)) port)
+                   (loop (+ lt 1))))))
+          (else
+           (write-inline-text (substring str start (+ lt 1)) port)
+           (loop (+ lt 1))))))))
+
 (define* (sxml->xml tree
                     #:optional (port (current-output-port))
-                    (escape? #f))
+                    (escape? #t))
   "Serialize the sxml tree @var{tree} as XML. The output will be written
 to the current output port, unless the optional argument @var{port} is
 present."
@@ -183,14 +241,19 @@ present."
                                       (cdar elems))))
                      (element->xml tag attrs
                                    (if attrs
-                                       (cdr elems) elems) port)))))
+                                       (cdr elems) elems) port escape?)))))
          ;; A nodelist.
          (for-each (lambda (x)
-                     (sxml->xml x port)) tree)))
+                     (sxml->xml x port escape?)) tree)))
     ((string? tree)
-     (if escape?
-         (string->escaped-xml tree port)
-         (display tree port)))
+     (cond
+       ;; The doctype is deliberately a raw top-level string in every template.
+       ;; Escaping it would turn the document into text when a theme asks for
+       ;; escaped element content (as the plain-text ATS theme does).
+       ((string-prefix? "<!DOCTYPE" tree) (display tree port))
+       ((eq? escape? 'inline-html) (string->inline-html tree port))
+       (escape? (string->escaped-xml tree port))
+       (else (display tree port))))
     ((null? tree)
      *unspecified*)
     ((not tree)
@@ -264,27 +327,42 @@ formatting."
 
 ;; ================================
 
-(define* (iter-vitae-curriculum-page #:key locale persona)
-  (let* ((theme (assq-ref persona
-                          'document-theme))
+(define* (iter-vitae-curriculum-page #:key locale persona (resources "resources"))
+  (let* ((requested-theme (assq-ref persona
+                                    'document-theme))
+         ;; 1. Resolve unknown themes to the default before deciding how the
+         ;; page is serialized.  Almost every theme keeps the documented inline
+         ;; HTML support, so only the plain-text ATS theme escapes persona text.
+         (theme (case requested-theme
+                  ((fundamental) 'fundamental)
+                  ((fatum) 'fatum)
+                  ((ats) 'ats)
+                  (else 'ef-cyprus)))
+         (escape? (if (eq? theme 'ats) #t 'inline-html))
          (title (assq-ref-all-or-lang (assq-ref persona
                                                 'display-name) locale))
-         ;; 1. Determine the correct template and body procedures based on the theme
+         ;; 2. Determine the correct template and body procedures based on the theme
          (procs (case theme
                   ((fundamental)
                    (cons fundamental-html-template fundamental-main-body))
                   ((fatum)
                    (cons fatum-html-template fatum-main-body))
+                  ((ats)
+                   (cons ats-html-template ats-main-body))
                   (else (cons ef-cyprus-html-template ef-cyprus-main-body))))
          (template-fn (car procs))
          (body-fn (cdr procs)))
     
-    ;; 2. Execute the SXML generation and string conversion once
-    (with-output-to-string (lambda ()
-                             (sxml->xml (template-fn #:title title
-                                                     #:persona persona
-                                                     #:locale locale
-                                                     #:body (body-fn #:locale
-                                                                     locale
-                                                                     #:persona
-                                                                     persona)))))))
+    ;; 3. Execute the SXML generation and string conversion once
+    (with-output-to-string
+     (lambda ()
+       (sxml->xml (template-fn #:title title
+                               #:persona persona
+                               #:locale locale
+                               #:resources resources
+                               #:body (body-fn #:locale
+                                               locale
+                                               #:persona
+                                               persona))
+                  (current-output-port)
+                  escape?)))))

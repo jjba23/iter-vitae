@@ -17,6 +17,10 @@ OPTIONS:
     -d, --destination DIRECTORY
         Specify the output directory for the generated CV. Defaults to "./dist".
         
+    -F, --format FORMAT
+        Select the output format: 'html' (default, writes index.html)
+        or 'text' (writes resume.txt for text-only uploads).
+
     -h, --help
         Display this help message and exit.
 
@@ -27,5 +31,9 @@ EXAMPLES:
     iter-vitae --locale en \
         --file ~/Documents/my-cv.scm \
         --destination ~/Documents
+
+    iter-vitae --format text \
+        --file ~/Documents/my-cv.scm \
+        --destination ~/Documents/dist
 
 +----------------------------------------------------------------------------+

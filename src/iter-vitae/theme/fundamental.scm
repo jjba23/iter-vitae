@@ -115,7 +115,7 @@
 
 ;; --- Templates ---
 
-(define* (fundamental-html-template #:key title body locale persona)
+(define* (fundamental-html-template #:key title body locale persona resources)
   `("<!DOCTYPE html>" (html (head (title ,title)
                                   (meta (@ (name "viewport")
                                            (content
@@ -129,12 +129,15 @@
 (define* (page-footer #:key locale persona)
   `(div (@ (style ,footer-container-style))
         (div (@ (style ,footer-flex-style))
-             ,(render-blog-link #:locale locale
-                                #:persona persona)
-             ,(render-code-link #:locale locale
-                                #:persona persona)
-             ,(render-linked-in-link #:locale locale
+             ,(and (personal-link persona 'blog)
+                   (render-blog-link #:locale locale
                                      #:persona persona))
+             ,(and (personal-link persona 'code)
+                   (render-code-link #:locale locale
+                                     #:persona persona))
+             ,(and (personal-link persona 'linked-in)
+                   (render-linked-in-link #:locale locale
+                                          #:persona persona)))
         (div (small "Rendered with "
                     (a (@ (style ,link-style)
                           (href "https://www.gnu.org/software/guile/"))
@@ -160,43 +163,42 @@
                                                    'job-title) locale))))))
 
 (define* (render-email #:key locale persona)
-  `(div (a (@ (style ,email-link-style)
-              (href ,(string-append "mailto:"
-                                    (assq-ref (assq-ref persona
-                                                        'personal-contact)
-                                              'emails))))
-           ,(assq-ref (assq-ref persona
-                                'personal-contact)
-                      'emails))))
+  (let ((email (personal-contact-value persona 'emails)))
+    (and email
+         `(div (a (@ (style ,email-link-style)
+                     (href ,(string-append "mailto:" email)))
+                  ,email)))))
 
 (define* (render-phone-number #:key locale persona)
-  `(div ,(assq-ref (assq-ref persona
-                             'personal-contact)
-                   'phone-numbers)))
+  (let ((phone (personal-contact-value persona 'phone-numbers)))
+    (and phone
+         `(div (a (@ (style ,email-link-style)
+                     (href ,(tel-url phone)))
+                  ,phone)))))
 
 (define* (render-blog-link #:key locale persona)
-  `(div (a (@ (style ,link-style)
-              (target "_blank")
-              (href ,(format #f "https://~a"
-                             (assq-ref (assq-ref persona
-                                                 'personal-links)
-                                       'blog)))) "Blog")))
+  (let ((blog (personal-link persona 'blog)))
+    (and blog
+         `(div (a (@ (style ,link-style)
+                     (target "_blank")
+                     (href ,(external-url blog)))
+                  "Blog")))))
 
 (define* (render-code-link #:key locale persona)
-  `(div (a (@ (style ,link-style)
-              (target "_blank")
-              (href ,(format #f "https://~a"
-                             (assq-ref (assq-ref persona
-                                                 'personal-links)
-                                       'code)))) "Code")))
+  (let ((code (personal-link persona 'code)))
+    (and code
+         `(div (a (@ (style ,link-style)
+                     (target "_blank")
+                     (href ,(external-url code)))
+                  "Code")))))
 
 (define* (render-linked-in-link #:key locale persona)
-  `(div (a (@ (style ,link-style)
-              (target "_blank")
-              (href ,(format #f "https://~a"
-                             (assq-ref (assq-ref persona
-                                                 'personal-links)
-                                       'linked-in)))) "LinkedIn")))
+  (let ((linked-in (personal-link persona 'linked-in)))
+    (and linked-in
+         `(div (a (@ (style ,link-style)
+                     (target "_blank")
+                     (href ,(external-url linked-in)))
+                  "LinkedIn")))))
 
 (define* (render-address-lines #:key locale persona)
   `(div ,(string-join (map (lambda (address-line)

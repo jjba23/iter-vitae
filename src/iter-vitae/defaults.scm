@@ -17,7 +17,7 @@
 
 (define-module (iter-vitae defaults)
   #:declarative? #t
-  #:export (display-name job-title
+  #:export (display-name job-title job-title-link
                          personal-contact
                          personal-links
                          address-lines
@@ -26,6 +26,7 @@
                          languages
                          education
                          titles
+                         skills
                          short-intro
                          jobs
                          document-theme))
@@ -48,6 +49,15 @@
 (define job-title
   `())
 
+;; Optional link that turns the job title into an anchor.
+;;
+;; example:
+;;
+;; `((all . "https://en.wikipedia.org/wiki/Software_engineering"))
+;;
+(define job-title-link
+  `())
+
 ;; Contact details of persona
 ;;
 ;; example:
@@ -62,9 +72,9 @@
 ;;
 ;; example:
 ;;
-;; `((blogs . ("jointhefreeworld.org"))
-;;   (code . ("codeberg.org/jjba23"))
-;;   (linkedin . ("linkedin.com/in/josepjba")))
+;; `((blog . "jointhefreeworld.org")
+;;   (code . "codeberg.org/jjba23")
+;;   (linked-in . "linkedin.com/in/josepjba"))
 ;;
 (define personal-links
   `())
@@ -185,9 +195,31 @@
     (short-intro (en . "Who am I ?")
                  (nl . "Wie ben ik ?")
                  (es . "¿Quién soy yo?"))
-    (work-experience (en . "Work experience")
+    (professional-summary (en . "Professional Summary")
+                          (nl . "Professioneel Profiel")
+                          (es . "Resumen Profesional"))
+    (skills (en . "Skills")
+            (nl . "Vaardigheden")
+            (es . "Habilidades"))
+    (additional-information (en . "Additional Information")
+                            (nl . "Aanvullende Informatie")
+                            (es . "Información Adicional"))
+    (work-experience (en . "Work Experience")
                      (nl . "Werkervaring")
                      (es . "Experiencia Laboral"))))
+
+;; Skills that should be easy for an ATS to find.  The `ats' theme renders
+;; these as one comma-separated line, so spell out the terms a recruiter or a
+;; job posting is likely to use.
+;;
+;; example:
+;;
+;; `(((all . "Scala"))
+;;   ((all . "Kubernetes"))
+;;   ((all . "PostgreSQL")))
+;;
+(define skills
+  `())
 
 ;; Short introduction about persona
 ;;
@@ -222,5 +254,6 @@
 ;; - ef-cyprus: a light colored and green accent theme
 ;; - fundamental: a no-frills vanilla HTML, simple, effective
 ;; - fatum: a hacker inspired visual for engineers, computer scientists and techies
+;; - ats: a single-column, plain-text-first theme for US applicant tracking systems
 (define document-theme
   'ef-cyprus)

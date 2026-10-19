@@ -24,17 +24,14 @@
   #:export (main))
 
 (define* (main #:key (args (command-line)))
-  
-  (let* ((_ (begin
-              (newline)
-              (write args)
-              (newline)))
-         (option-spec '((locale (single-char #\l)
+  (let* ((option-spec '((locale (single-char #\l)
                                 (value #t))
                         (destination (single-char #\o)
                                      (value #t))
                         (resources (single-char #\r)
                                    (value #t))
+                        (format (single-char #\F)
+                                (value #t))
                         (file (single-char #\p)
                               (value #t)
                               (required? #t))))
@@ -46,6 +43,8 @@
                                   'destination "./dist"))
          (resources (option-ref options
                                 'resources #f))
+         (format (option-ref options
+                             'format "html"))
          (locale (option-ref options
                              'locale "en")))
     (log-info
@@ -53,4 +52,5 @@
     (render-curriculum #:locale (string->symbol locale)
                        #:destination destination
                        #:resources resources
+                       #:format format
                        #:file file)))

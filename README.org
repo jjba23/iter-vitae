@@ -67,6 +67,18 @@ Simple, clean, light and green tones with advanced typography with varying font 
 
 [[https://jointhefreeworld.org/static-assets/iter-vitae/ef-cyprus.png]]
 
+*** ats
+
+An Applicant Tracking System first theme, designed for American job applications and automated resume screeners. It uses one column, Arial at a normal 11pt body size, plain block elements, selectable contact text, and the conventional headings recruiters and parsers expect: *Professional Summary*, *Skills*, *Work Experience*, *Education*, *Languages* and *Additional Information*.
+
+There are no tables, images, icon fonts, web fonts, headers, footers or external assets. Inline HTML in persona fields is stripped so parsers receive plain text, and work and education entries are ordinary headings with bullet lists. The page prints cleanly to US Letter paper, so it can be exported to a text-based PDF from the browser.
+
+#+begin_src scheme
+(define document-theme 'ats)
+#+end_src
+
+ATS vendors configure parsing and ranking differently, so no theme can guarantee a pass. This theme removes the formatting causes of failed parses; still tailor the keywords to each posting, keep dates consistent, spell out acronyms once, and follow the employer's file-format instructions. Use the ~skills~ field to list the terms a posting asks for.
+
 ---------------
 
 * Help
@@ -79,8 +91,35 @@ https://jointhefreeworld.org/api-docs/iter-vitae/API.html
 
 You can see the program's help by invoking it with the ~--help~ argument or looking at ~resources/help.txt~.
 
-* Installing
+* Testing
 
+The test suite uses [[https://codeberg.org/jjba23/veritas][Veritas]], the Guile testing framework that is already part of the development environment defined by ~manifest.scm~.  Tests live beside the source, under ~test/veritas/unit/~, and are discovered automatically by the Veritas runner.
+
+The simplest way to run everything is through Maak:
+
+#+begin_src shell
+maak test
+#+end_src
+
+Or invoke the runner directly from a Guix shell:
+
+#+begin_src shell
+VERITAS_TEST_TYPE=unit \
+    guix shell -m manifest.scm -- \
+    guile --fresh-auto-compile -L ./src -L ./test \
+    -c '((@ (veritas runner) run-tests))'
+#+end_src
+
+The suite covers the pure helpers in ~(iter-vitae prelude)~, the SXML serializer, every bundled theme, the renderer and the command-line entrypoint.  Renderer and CLI tests run the program in a subprocess against a temporary destination, so they exercise argument parsing, file generation and escaping exactly as a user would.
+
+Useful Veritas environment variables while iterating:
+
+- ~VERITAS_ONLY_SUITE="renderer"~ runs one suite.
+- ~VERITAS_ONLY_TEST="spaces"~ runs matching test cases only.
+- ~VERITAS_ONLY_FAILED=true~ reruns the cases that failed last time.
+- ~VERITAS_SEED=<seed>~ replays the order printed by a shuffled run.
+
+* Installing
 iter-vitae is officially distributed via:
 - Guix package manager
 - Podman/Docker images.
@@ -109,13 +148,23 @@ guix time-machine --channels=channels.scm -- \
      shell -f guix.scm -- iter-vitae --help
 #+end_src
 
-In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice.
+In order to view the output this tool generates, we recommend you use a free web browser such as GNU IceCat or Firefox, and after running the tool, open the file at ~./dist/index.html~ or alternately upload and serve it from the web server of your choice. With ~--format text~, open ~./dist/resume.txt~ instead.
 
 iter-vitae offers a ~--help~ / ~-h~ flag which will explain all options (also visible in ~resources/help.txt~). You should point iter-vitae to the path to  your configuration file:
 
 #+begin_src shell
 iter-vitae --locale nl --file /home/me/documents/my-cv.scm --destination /home/me/documents/dist
 #+end_src
+
+** Plain-text output
+
+By default Iter Vitae writes ~index.html~. Some employers only accept plain-text uploads, so ~--format text~ writes ~resume.txt~ instead:
+
+#+begin_src shell
+iter-vitae --format text --file /home/me/documents/my-cv.scm --destination /home/me/documents/dist
+#+end_src
+
+The text renderer ignores the visual ~document-theme~ because plain text has no styling. It uses the same ATS-friendly section order and the same cleanup as the ~ats~ theme: conventional headings, one item per line, ~-~ bullets, visible contact details, and no HTML tags, entities, emoji or smart punctuation. Use it for text-only application forms; use the HTML output when a browser preview or PDF export is wanted.
 
 ** On Podman/Docker
 
@@ -233,10 +282,12 @@ HTML is directly supported in most localized fields, for example:
 (en . "Architected and delivered a high-performance, real-time energy calculation service (<em class=\"italic\">“greenest moment of the day”</em>).")
 #+end_src
 
+The ~ats~ theme is the exception: it strips HTML tags and decodes entities so automated parsers only see plain text.
+
 The following variables are read by Iter Vitae to construct a CV:
 
 - ~titles~ is a list of ~translation-alist~ with content for each section's header, in different languages.
-- ~document-theme~ is a symbol (e.g., ~'ef-cyprus~) that specifies the visual theme, color scheme, or styling to be applied when the document is ultimately generated. See supported themes section above.
+- ~document-theme~ is a symbol (e.g., ~'ef-cyprus~, ~'fatum~, ~'fundamental~ or ~'ats~) that specifies the visual theme, color scheme, or styling to be applied when the document is ultimately generated. See supported themes section above.
 - ~display-name~ is a *required* ~translation-alist~ that represents the person's name.
 - ~job-title~ is a *required* ~translation-alist~ that represents the job title to be displayed.
 - ~job-title-link~ is an optional ~translation-alist~ that represents the URL to visit when clicking the job title header.
@@ -249,6 +300,7 @@ The following variables are read by Iter Vitae to construct a CV:
 - ~languages~ is an ~alist~ detailing the languages you actually speak. Each key is a language code mapped to an ~alist~ containing a ~name~ (a ~translation-alist~ with the language's display name and optional emoji) and a ~proficiency~ field. The ~proficiency~ field is itself an ~alist~ mapping ~reading~, ~speaking~, and ~writing~ to the integer levels you defined in ~language-proficiency~.
 - ~education~ is a ~list~ of ~alist~ data structures detailing your academic background, courses, and educational internships. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you learned or achieved).
 - ~short-intro~ is a ~list~ of ~translation-alist~ that acts as your personal summary, biography, or cover letter excerpt.
+- ~skills~ is an optional ~list~ of ~translation-alist~ naming the skills and tools you want a scanner to find. The ~ats~ theme renders them as one comma-separated line, while other themes currently ignore this field. For example: ~(((all . "Scala")) ((all . "Kubernetes")) ((all . "PostgreSQL")))~.
 - ~jobs~ is a ~list~ of ~alist~ data structures detailing your professional experience. Each entry expects ~name~ (the institution), ~location~, ~position~ (the degree or course name), ~time~, and ~experience~ (a ~list~ of ~translation-alist~ outlining what you did or achieved).
 
 -------

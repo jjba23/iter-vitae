@@ -34,7 +34,7 @@
   #:use-module (ice-9 threads)
   #:export (ef-cyprus-html-template ef-cyprus-main-body))
 
-(define* (ef-cyprus-html-template #:key title body locale persona)
+(define* (ef-cyprus-html-template #:key title body locale persona resources)
   `("<!DOCTYPE html>" (html (head (title ,title)
                                   (link (@ (rel preconnect)
                                            (href
@@ -53,8 +53,8 @@
                                            (content
                                             "width=device-width, initial-scale=1.0")))
                                   (meta (@ (charset "UTF-8")))
-                                  (style ,(assoc-ref my-asset-library
-                                           "resources/css/iter-vitae.olive.min.css")))
+                                  (style ,(asset-css "iter-vitae.olive.min.css"
+                                                     resources)))
                             (body (@ (class ,(mk-class '(break-words flex
                                                          md:justify-center))))
                                   (div (@ (class ,(mk-class '(px-4 sm:px-8
@@ -70,12 +70,15 @@
 (define* (page-footer #:key locale persona)
   `((hr (@ (class ,hr-face)))
     (div (@ (class ,(mk-class '(flex flex-row flex-wrap gap-2 justify-evenly))))
-         ,(render-blog-link #:locale locale
-                            #:persona persona)
-         ,(render-code-link #:locale locale
-                            #:persona persona)
-         ,(render-linked-in-link #:locale locale
+         ,(and (personal-link persona 'blog)
+               (render-blog-link #:locale locale
                                  #:persona persona))
+         ,(and (personal-link persona 'code)
+               (render-code-link #:locale locale
+                                 #:persona persona))
+         ,(and (personal-link persona 'linked-in)
+               (render-linked-in-link #:locale locale
+                                      #:persona persona)))
     (div (@ (class ,(mk-class '(my-2 block text-center font-sans))))
          (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
                                           justify-center))))
@@ -106,59 +109,54 @@
   )
 
 (define* (render-email #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl)))) "")
-         (a (@ (class ,small-a-face))
-            ,(assq-ref (assq-ref persona
-                                 'personal-contact)
-                       'emails)))))
+  (let ((email (personal-contact-value persona 'emails)))
+    (and email
+         `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
+                (i (@ (class ,(mk-class '(ph ph-envelope text-onyx-500 text-xl))))
+                   "")
+                (a (@ (class ,small-a-face)
+                      (href ,(string-append "mailto:" email)))
+                   ,email))))))
 
 (define* (render-phone-number #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-phone text-onyx-500 text-xl)))) "")
-         (small (@ (class ,address-face))
-                ,(assq-ref (assq-ref persona
-                                     'personal-contact)
-                           'phone-numbers)))))
+  (let ((phone (personal-contact-value persona 'phone-numbers)))
+    (and phone
+         `((div (@ (class ,(mk-class '(flex gap-1 items-center))))
+                (i (@ (class ,(mk-class '(ph ph-phone text-onyx-500 text-xl))))
+                   "")
+                (a (@ (class ,small-a-face)
+                      (href ,(tel-url phone)))
+                   (small (@ (class ,address-face)) ,phone)))))))
 
 (define* (render-blog-link #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-rss text-onyx-500 xl)))) "")
-         (a (@ (class ,small-a-face)
-               (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'blog))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'blog)))))
+  (let ((blog (personal-link persona 'blog)))
+    (and blog
+         `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
+                (i (@ (class ,(mk-class '(ph ph-rss text-onyx-500 xl)))) "")
+                (a (@ (class ,small-a-face)
+                      (target "_blank")
+                      (href ,(external-url blog)))
+                   ,blog))))))
 
 (define* (render-code-link #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-code text-onyx-500 text-xl)))) "")
-         (a (@ (class ,small-a-face)
-               (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'code))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'code)))))
+  (let ((code (personal-link persona 'code)))
+    (and code
+         `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
+                (i (@ (class ,(mk-class '(ph ph-code text-onyx-500 text-xl)))) "")
+                (a (@ (class ,small-a-face)
+                      (target "_blank")
+                      (href ,(external-url code)))
+                   ,code))))))
 
 (define* (render-linked-in-link #:key locale persona)
-  `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
-         (i (@ (class ,(mk-class '(ph ph-link text-onyx-500 text-xl)))) "")
-         (a (@ (class ,small-a-face)
-               (target "_blank")
-               (href ,(format #f "https://~a"
-                              (assq-ref (assq-ref persona
-                                                  'personal-links)
-                                        'linked-in))))
-            ,(assq-ref (assq-ref persona
-                                 'personal-links)
-                       'linked-in)))))
+  (let ((linked-in (personal-link persona 'linked-in)))
+    (and linked-in
+         `((div (@ (class ,(mk-class '(flex flex-row gap-1 items-center))))
+                (i (@ (class ,(mk-class '(ph ph-link text-onyx-500 text-xl)))) "")
+                (a (@ (class ,small-a-face)
+                      (target "_blank")
+                      (href ,(external-url linked-in)))
+                   ,linked-in))))))
 
 (define* (render-address-lines #:key locale persona)
   `(small (@ (class ,(mk-class '(flex flex-col))))

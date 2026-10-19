@@ -20,21 +20,35 @@
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae html)
   #:use-module (iter-vitae prelude)
+  #:use-module (iter-vitae text)
   #:export (render-curriculum))
 
-(define* (render-curriculum #:key locale destination resources file)
-  (log-info "Start rendering curriculum with settings:")
-  (log-info "\tlocale: ~a" locale)
-  (log-info "\tfile: ~a" file)
-  (log-info "\tresources: ~a" resources)
-  (log-info "\tdestination: ~a" destination)
+(define* (render-curriculum #:key locale (destination "./dist")
+                            (resources "resources") file (format "html"))
+  (let* ((resources (or resources "resources"))
+         (destination (or destination "./dist"))
+         (output-format (cond
+                           ((symbol? format) (symbol->string format))
+                           ((string? format) format)
+                           (else (error "Invalid output format" format))))
+         (output-format (string-downcase output-format))
+         (text? (member output-format '("text" "txt")))
+         (html? (member output-format '("html" "htm"))))
+    ;; Validate before touching the destination, so a typo cannot delete an
+    ;; existing resume and then fail.
+    (unless (or text? html?)
+      (error "Unknown output format; expected 'html' or 'text':" format))
+    (log-info "Start rendering curriculum with settings:")
+    (log-info "\tlocale: ~a" locale)
+    (log-info "\tfile: ~a" file)
+    (log-info "\tresources: ~a" resources)
+    (log-info "\tdestination: ~a" destination)
+    (log-info "\tformat: ~a" output-format)
 
-  ;; choose person to generate curriculum vitae for
-  (load file)
+    ;; choose person to generate curriculum vitae for
+    (load file)
 
-  (let* ((clean-dist-cmd (format #f "rm -rfv ~a" destination))
-         (mkdir-dist-cmd (format #f "mkdir -p ~a" destination))
-         ;; build a persona by blending defaults and user settings
+    (let* (;; build a persona by blending defaults and user settings
          (persona `((display-name unquote
                                   (get-setting 'display-name))
                     (job-title unquote
@@ -61,18 +75,28 @@
                             (get-setting 'titles))
                     (short-intro unquote
                                  (get-setting 'short-intro))
+                    (skills unquote
+                            (get-setting 'skills))
                     (jobs unquote
                           (get-setting 'jobs))
                     (document-theme unquote
                                     (get-setting 'document-theme)))))
-    (log-info "executing: ~a" clean-dist-cmd)
-    (syscall clean-dist-cmd)
+      ;; The destination is a filesystem path, never a shell command line, so
+      ;; names containing spaces or metacharacters are safe.
+      (log-info "removing: ~a" destination)
+      (delete-file-tree destination)
 
-    (log-info "executing: ~a" mkdir-dist-cmd)
-    (syscall mkdir-dist-cmd)
+      (log-info "creating: ~a" destination)
+      (make-directories destination)
 
-    (with-output-to-file (format #f "~a/index.html" destination)
-      (lambda ()
-        (display (iter-vitae-curriculum-page #:locale locale
-                                             #:persona persona))))
-    (log-info "Completed rendering of Curriculum Vitae/Resume")))
+      (if text?
+          (with-output-to-file (in-vicinity destination "resume.txt")
+            (lambda ()
+              (display (render-plain-text #:locale locale
+                                          #:persona persona))))
+          (with-output-to-file (in-vicinity destination "index.html")
+            (lambda ()
+              (display (iter-vitae-curriculum-page #:locale locale
+                                                   #:persona persona
+                                                   #:resources resources)))))
+      (log-info "Completed rendering of Curriculum Vitae/Resume"))))
