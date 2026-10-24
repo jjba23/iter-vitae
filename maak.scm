@@ -17,6 +17,9 @@
 
 (define-module (maak)
   #:use-module (maak maak)
+  ;; The container helpers are imported under a prefix because the tasks
+  ;; below are named the way maak exposes them on the command line.
+  #:use-module ((maak container) #:prefix ct:)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 popen)
   #:declarative? #t)
@@ -121,7 +124,7 @@
 
 (define (push-docker-tag)
   "Push the locally generated Docker image to Dockerhub."
-  ($ '("git fetch --all"))
+  (git-fetch "--all")
   (let* ((latest-tag (syscall-with-output "git describe --tags --abbrev=0")))
     ($ (list (~ "podman push localhost/~a:latest" project-name)
              (~ "docker.io/jjba23/~a:~a" project-name latest-tag))
@@ -204,8 +207,8 @@
 
 (define (container-build)
   "Build the container image for iter-vitae."
-  ($ '("podman build -t iter-vitae .")))
+  (ct:container-build "." #:tag "iter-vitae:latest" #:verbose? #t))
 
 (define (container-run)
   "Run the container image for iter-vitae."
-  ($ '("podman run --rm -it iter-vitae:latest")))
+  (ct:container-run "iter-vitae" #:interactive? #t #:tty? #t #:verbose? #t))
