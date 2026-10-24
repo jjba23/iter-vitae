@@ -6,9 +6,6 @@
 #+options: toc:nil num:nil
 #+html_head: <meta name="description" content="Iter Vitae generates an attractive, modern, multilingual CV or resume from a Guile Scheme file: HTML for humans, plain text for applicant tracking systems." />
 
-#+attr_html: :width 190px :alt Iter Vitae logo: a laurel wreath around a stone road built from lambda signs
-[[https://jointhefreeworld.org/static-assets/iter-vitae/iter-vitae-small-logo.png]]
-
 [[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]] [[https://jointhefreeworld.org/ggg/dist/maak.svg]] [[https://jointhefreeworld.org/ggg/dist/veritas.svg]] [[https://jointhefreeworld.org/ggg/dist/codeberg.svg]]
 [[https://img.shields.io/badge/release-1.0.2-blue.svg]] [[https://img.shields.io/badge/Guix-channel-6f4e9c.svg]] [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]] [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]
 
