@@ -199,3 +199,13 @@
        "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/iter-vitae.olive.min.css\""))
   ($ '("curl --verbose --output \"./resources/css/fatum.olive.min.css\""
        "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/fatum.olive.min.css\"")))
+
+;; ====== Container tasks ======
+
+(define (container-build)
+  "Build the container image for iter-vitae."
+  ($ '("podman build -t iter-vitae .")))
+
+(define (container-run)
+  "Run the container image for iter-vitae."
+  ($ '("podman run --rm -it iter-vitae:latest")))

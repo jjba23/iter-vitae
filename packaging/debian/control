@@ -1,0 +1,31 @@
+Source: iter-vitae
+Section: utils
+Priority: optional
+Maintainer: Josep Bigorra <jjbigorra@gmail.com>
+# veritas is produced by the same packaging batch; build it first.
+Build-Depends:
+ debhelper-compat (= 13),
+ guile-3.0,
+ guile-3.0-dev,
+ pkg-config,
+ guile-library,
+ veritas
+Standards-Version: 4.6.2
+Homepage: https://codeberg.org/jjba23/iter-vitae
+Vcs-Git: https://codeberg.org/jjba23/iter-vitae.git
+Vcs-Browser: https://codeberg.org/jjba23/iter-vitae
+Rules-Requires-Root: no
+
+Package: iter-vitae
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+ guile-3.0,
+ guile-library,
+ bash,
+ coreutils
+Description: Resume and curriculum vitae generator written in Guile Scheme
+ Iter Vitae generates a resume or curriculum vitae from a CV described in
+ Guile Scheme. It follows a model-view-controller split, renders HTML with
+ themes and emits a printable document.

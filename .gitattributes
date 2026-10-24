@@ -1,2 +1,3 @@
 *.scm     linguist-language=Scheme
 scripts/iter-vitae linguist-language=Bash
+packaging/ export-ignore
