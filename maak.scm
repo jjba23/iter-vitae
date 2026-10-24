@@ -18,10 +18,9 @@
 (define-module (maak)
   #:use-module (maak maak)
   ;; The container helpers are imported under a prefix because the tasks
-  ;; below are named the way maak exposes them on the command line.
+  ;; below are named the way maak exposes them on the command line, and a
+  ;; task may not shadow the helper it calls.
   #:use-module ((maak container) #:prefix ct:)
-  #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 popen)
   #:declarative? #t)
 
 ;; ====== Maak constants ======
@@ -40,18 +39,11 @@
 (define hot-reload-file-types
   '(scm))
 
-;; ====== Maak abstractions ======
-
-(define (syscall-with-output cmd)
-  (let* ((process (open-input-pipe cmd))
-         (process-output (get-string-all process)))
-    (close-pipe process) process-output))
-
 ;; ====== Maak tasks ======
 
 (define (help)
   "Display program help screen."
-  (time-machine-program-shell '("iter-vitae --help")))
+  (time-machine-program-shell (list "iter-vitae" "--help")))
 
 (define (default)
   "Default task to run, call program's help."
@@ -59,28 +51,33 @@
 
 (define (fmt)
   "Format Scheme source code files according to the Guix style guide."
-  ($ '("find . -maxdepth 8 -name '*.scm'" "-type f -exec guix style -f {} \\;")
-     #:verbose? #t))
+  ;; The task named `run' below shadows the helper of the same name, so the
+  ;; module that defines it is named here.
+  ((@ (maak maak) run)
+   (list "find" "." "-maxdepth" "8" "-name" "*.scm"
+         "-type" "f" "-exec" "guix" "style" "-f" "{}" ";")
+   #:verbose? #t))
 
 (define (test)
   "Run the Veritas unit test suite."
-  (manifest-shell '("env VERITAS_TEST_TYPE=unit VERITAS_RUN_BENCHMARKS=false"
-                    "guile --fresh-auto-compile -L ./src -L ./test"
-                    "-c '((@ (veritas runner) run-tests))'")
+  (manifest-shell (list "guile" "--fresh-auto-compile" "-L" "./src" "-L" "./test"
+                        "-c" "'((@ (veritas runner) run-tests))'")
+                  #:env '("VERITAS_TEST_TYPE=unit"
+                          "VERITAS_RUN_BENCHMARKS=false")
                   #:verbose? #t))
 
 (define (repl)
   "Development REPL."
-  (manifest-shell '("guile -L ./src"
-                    "-c '((@ (ares server) run-nrepl-server))'")))
+  (manifest-shell (list "guile" "-L" "./src"
+                        "-c" "'((@ (ares server) run-nrepl-server))'")))
 
 (define (docs)
   "Generate technical API documentation for Maak."
   (delete-file-recursively "doc")
-  (time-machine-manifest-shell (list (~ "documenta api ./src/~a && "
-                                        project-name)
-                                     (~ "texi2any -v --html --css-ref=~a"
-                                        api-docs-css-url)
+  (time-machine-manifest-shell (list "documenta" "api"
+                                     (~ "./src/~a" project-name)))
+  (time-machine-manifest-shell (list "texi2any" "-v" "--html"
+                                     (~ "--css-ref=~a" api-docs-css-url)
                                      "./doc/api/index.texi"))
   (mv "./index" "./doc/api-dist"))
 
@@ -106,44 +103,53 @@
   ;; Deploy API docs
   (remkdir-p (~ "~a/api-docs/~a" deploy-dir project-name))
   (mv "doc/api-dist/*"
-      (~ "~a/api-docs/~a" deploy-dir project-name))
+      (~ "~a/api-docs/~a" deploy-dir project-name)
+      #:expand? #t)
   (delete-file-recursively "doc"))
 
 (define (package-docker)
-  "Create a Docker image for Iter Vitae."
-  (time-machine-manifest-shell '("guix pack --file=./guix.scm"
-                                 "--format=docker" "--image-tag=iter-vitae"
-                                 "-S /bin=bin"
-                                 "bash coreutils util-linux-with-udev guile")))
+  "Build the container image for Iter Vitae."
+  ;; `guix-pack' would run the ambient Guix; this project builds its image at
+  ;; the revision channels.scm pins, inside the manifest shell, as before.
+  (time-machine-manifest-shell
+   (list "guix" "pack" "--file=./guix.scm" "--format=docker"
+         "--image-tag=iter-vitae" "-S" "/bin=bin"
+         "bash" "coreutils" "util-linux-with-udev" "guile")))
 
 (define (push-docker-latest)
   "Push the latest locally generated Docker image to Dockerhub."
-  ($ (list (~ "podman push localhost/~a:latest" project-name)
-           (~ "docker.io/jjba23/~a:latest" project-name))
-     #:verbose? #t))
+  (ct:container (list "push"
+                      (~ "localhost/~a:latest" project-name)
+                      (~ "docker.io/jjba23/~a:latest" project-name))
+                #:verbose? #t))
 
 (define (push-docker-tag)
   "Push the locally generated Docker image to Dockerhub."
   (git-fetch "--all")
-  (let* ((latest-tag (syscall-with-output "git describe --tags --abbrev=0")))
-    ($ (list (~ "podman push localhost/~a:latest" project-name)
-             (~ "docker.io/jjba23/~a:~a" project-name latest-tag))
-       #:verbose? #t)))
+  ;; A dry run asks git nothing, so the tag read here comes back empty and the
+  ;; command below is printed without one; a real run reads the tag first and
+  ;; raises if there is none.
+  (let ((latest-tag (git-describe-tag)))
+    (ct:container (list "push"
+                        (~ "localhost/~a:latest" project-name)
+                        (~ "docker.io/jjba23/~a:~a" project-name latest-tag))
+                  #:verbose? #t)))
 
 (define (dev-run* persona locale)
-  (time-machine-manifest-shell (list
-                                "guile -L ./src -c '((@(iter-vitae main) main))'"
-                                (~
-                                 "--file /home/joe/Hacking/iter-vitae/populus/~a.scm"
-                                 persona) "--destination ./dist"
-                                (~ "--locale ~a" locale)
-                                "--resources ./resources")
-                               #:verbose? #t))
+  (time-machine-manifest-shell
+   (list "guile" "-L" "./src"
+         "-c" "'((@(iter-vitae main) main))'"
+         (~ "--file /home/joe/Hacking/iter-vitae/populus/~a.scm" persona)
+         "--destination" "./dist"
+         (~ "--locale ~a" locale)
+         "--resources" "./resources")
+   #:verbose? #t))
 
 (define (run* persona locale)
-  (time-machine-program-shell (list (~ "iter-vitae --file ./populus/~a.scm"
-                                       persona) "--destination ./dist"
-                                    (~ "--locale ~a" locale))))
+  (time-machine-program-shell
+   (list "iter-vitae" (~ "--file ./populus/~a.scm" persona)
+         "--destination" "./dist"
+         (~ "--locale ~a" locale))))
 
 (define (run)
   (run* 'joe
@@ -178,16 +184,17 @@
 
 (define (hot-reload)
   "Hot-reloading developer's setup."
-  (time-machine-manifest-shell (list "watchexec"
-                                     "--clear"
-                                     (~ "--exts ~a"
-                                        (string-join (map symbol->string
-                                                      hot-reload-file-types)
-                                                     ","))
-                                     "--on-busy-update=restart"
-                                     "--shell bash"
-                                     "--watch . --"
-                                     "maak dev-run-joe-en")))
+  (time-machine-manifest-shell
+   (list "watchexec"
+         "--clear"
+         (~ "--exts ~a"
+            (string-join (map symbol->string
+                              hot-reload-file-types)
+                         ","))
+         "--on-busy-update=restart"
+         "--shell" "bash"
+         "--watch" "." "--"
+         "maak" "dev-run-joe-en")))
 
 (define (hr)
   "Alias to hot-reloading."
@@ -198,10 +205,14 @@
   (hot-reload))
 
 (define (olive-css)
-  ($ '("curl --verbose --output \"./resources/css/iter-vitae.olive.min.css\""
-       "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/iter-vitae.olive.min.css\""))
-  ($ '("curl --verbose --output \"./resources/css/fatum.olive.min.css\""
-       "\"https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/fatum.olive.min.css\"")))
+  (curl-download
+   "https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/iter-vitae.olive.min.css"
+   #:output "./resources/css/iter-vitae.olive.min.css"
+   #:verbose? #t)
+  (curl-download
+   "https://codeberg.org/jjba23/olive-css/raw/branch/trunk/resources/css/fatum.olive.min.css"
+   #:output "./resources/css/fatum.olive.min.css"
+   #:verbose? #t))
 
 ;; ====== Container tasks ======
 
