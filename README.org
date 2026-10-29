@@ -13,7 +13,6 @@
   <a href="#from-the-guix-channel"><img src="https://img.shields.io/badge/Guix-channel-6f4e9c.svg?style=flat-square" alt="GNU Guix channel" /></a>
   <a href="#from-the-nix-flake"><img src="https://img.shields.io/badge/Nix-flake-5277C3.svg?style=flat-square" alt="Nix flake" /></a>
   <a href="#what-gets-written"><img src="https://img.shields.io/badge/output-HTML%20%2B%20plain%20text-0f766e.svg?style=flat-square" alt="HTML and plain-text output" /></a>
-  <a href="#features"><img src="https://img.shields.io/badge/output-no%20JavaScript-111827.svg?style=flat-square" alt="No JavaScript in the output" /></a>
 </p>
 #+end_export
 
