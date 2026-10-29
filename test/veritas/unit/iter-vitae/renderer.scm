@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 ;; Rendering is exercised in a child Guile process.  That keeps the loaded
 ;; `(iter-vitae persona)' module out of the test process, so the unit tests for
@@ -29,13 +17,15 @@
   #:export (spec))
 
 (define* (render-expression file destination resources
-                            #:key (locale 'en) (output-format "html"))
+                            #:key (locale 'en) (output-format "html")
+                            (all-locales? #f))
   (format #f
-          "((@(iter-vitae renderer) render-curriculum) #:locale '~a #:destination ~s #:resources ~s #:format ~s #:file ~s)"
+          "((@(iter-vitae renderer) render-curriculum) #:locale '~a #:destination ~s #:resources ~s #:format ~s #:all-locales? ~a #:file ~s)"
           locale
           destination
           resources
           output-format
+          (if all-locales? "#t" "#f")
           file))
 
 (define* (render #:key (root (make-temp-dir))
@@ -44,7 +34,8 @@
                  (destination-name "dist")
                  (resources-name "resources")
                  (locale 'en)
-                 (output-format "html"))
+                 (output-format "html")
+                 (all-locales? #f))
   "Prepare a persona and resource tree under @var{root}, then render it."
   (let* ((file (in-vicinity root "persona.scm"))
          (resources (make-resources (in-vicinity root resources-name)))
@@ -57,7 +48,9 @@
                                                 resources
                                                 #:locale locale
                                                 #:output-format
-                                                output-format))))
+                                                output-format
+                                                #:all-locales?
+                                                all-locales?))))
       (values status output file resources destination))))
 
 (define (index-path destination)
@@ -99,6 +92,88 @@
                          (expect-contains (read-index destination)
                                           "mailto:ada@example.org"
                                           "contact details"))))))))
+         (test "renders one directory per persona locale"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (let-values (((status output file resources destination)
+                                   (render #:root root
+                                           #:persona bilingual-persona
+                                           #:all-locales? #t)))
+                       (expect-equal 0 status "renderer exit status")
+                       (expect-true
+                        (file-exists? (index-path
+                                       (in-vicinity destination "en")))
+                        "English index.html")
+                       (expect-true
+                        (file-exists? (index-path
+                                       (in-vicinity destination "nl")))
+                        "Dutch index.html")
+                       (expect-true (not (file-exists? (index-path destination)))
+                                    "no root index.html")
+                       (let ((english (read-index (in-vicinity destination "en")))
+                             (dutch (read-index (in-vicinity destination "nl"))))
+                         (expect-contains english "Ada Example" "English name")
+                         (expect-contains english "Built things"
+                                          "English bullet")
+                         (expect-contains dutch "Ada Voorbeeld" "Dutch name")
+                         (expect-contains dutch "Bouwde dingen"
+                                          "Dutch bullet")
+                         (expect-not-contains english "Ada Voorbeeld"
+                                              "Dutch text in English CV")
+                         (expect-not-contains dutch "Ada Example"
+                                              "English text in Dutch CV"))
+                       (expect-contains output "rendering locale en"
+                                        "English render log")
+                       (expect-contains output "rendering locale nl"
+                                        "Dutch render log")))))))
+         (test "renders one text resume per persona locale"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (let-values (((status output file resources destination)
+                                   (render #:root root
+                                           #:persona bilingual-persona
+                                           #:all-locales? #t
+                                           #:output-format "text")))
+                       (expect-equal 0 status "renderer exit status")
+                       (expect-true
+                        (file-exists? (text-path
+                                       (in-vicinity destination "en")))
+                        "English resume.txt")
+                       (expect-true
+                        (file-exists? (text-path
+                                       (in-vicinity destination "nl")))
+                        "Dutch resume.txt")
+                       (expect-true (not (file-exists? (text-path destination)))
+                                    "no root resume.txt")
+                       (expect-contains (read-text (in-vicinity destination "nl"))
+                                        "Bouwde dingen"
+                                        "Dutch resume text")))))))
+         (test "all-locales falls back to the requested locale"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (let-values (((status output file resources destination)
+                                   (render #:root root
+                                           #:persona
+                                           `((display-name . ((all . "Ada")))
+                                             (job-title . ((all . "Engineer")))
+                                             (document-theme . ef-cyprus))
+                                           #:locale 'nl
+                                           #:all-locales? #t)))
+                       (expect-equal 0 status "renderer exit status")
+                       (expect-true
+                        (file-exists? (index-path
+                                       (in-vicinity destination "nl")))
+                        "fallback locale directory")
+                       (expect-true
+                        (not (file-exists?
+                              (index-path (in-vicinity destination "all"))))
+                        "all is not a locale directory")))))))
          (test "escapes persona text in the generated file"
                (assert-no-error
                 (lambda ()

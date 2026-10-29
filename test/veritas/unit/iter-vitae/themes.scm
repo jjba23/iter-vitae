@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (define-module (veritas unit iter-vitae themes)
   #:declarative? #t
@@ -381,6 +369,84 @@
                                         "attribution link")
                     (expect-not-contains html "<footer" "footer element")))))))
 
+;; ---------------------------------------------------------------------------
+;; Contract shared by every theme
+;; ---------------------------------------------------------------------------
+
+(define (index-of needle haystack label)
+  (let ((index (string-contains haystack needle)))
+    (expect-true index label)
+    index))
+
+(define shared-suite
+  (suite "shared theme contract"
+         #:concurrent? #f
+         (test "every theme declares the document language"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (expect-contains (page rich-persona theme)
+                                      "<html lang=\"en\">"
+                                      "English lang attribute")
+                     (expect-contains (page rich-persona theme #:locale 'nl)
+                                      "<html lang=\"nl\">"
+                                      "Dutch lang attribute"))
+                   '(ef-cyprus fatum fundamental ats)))))
+         (test "every theme normalizes the job-title link"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (expect-contains
+                      (page rich-persona theme)
+                      "href=\"https://example.org/job\""
+                      "absolute job-title link"))
+                   '(ef-cyprus fatum fundamental ats)))))
+         (test "every theme renders all address lines and languages"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (let ((html (page rich-persona theme)))
+                       (expect-contains html "Main Street 1" "first address line")
+                       (expect-contains html "Testville" "second address line")
+                       (expect-contains html "English" "first language")
+                       (expect-contains html "Dutch" "second language")))
+                   '(ef-cyprus fatum fundamental ats)))))
+         (test "language tables read reading, speaking, writing"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (let ((html (page rich-persona theme)))
+                       (expect-true
+                        (< (index-of ">Reading<" html "reading heading")
+                           (index-of ">Speaking<" html "speaking heading"))
+                        "reading before speaking")
+                       (expect-true
+                        (< (index-of ">Speaking<" html "speaking heading")
+                           (index-of ">Writing<" html "writing heading"))
+                        "speaking before writing")))
+                   '(ef-cyprus fatum fundamental)))))
+         (test "ats tidies punctuation left by removed emoji"
+               (assert-no-error
+                (lambda ()
+                  (let* ((persona
+                          (with-theme
+                           (acons 'interests-hobbies
+                                  '(((all . "Music 🎻."))
+                                    ((all . "Reading.")))
+                                  rich-persona)
+                           'ats))
+                         (html (page persona 'ats)))
+                    (expect-contains html "Music. Reading."
+                                     "sentence-style interests")
+                    (expect-not-contains html "Music ."
+                                        "space before punctuation")
+                    (expect-not-contains html "Music.,"
+                                        "comma after a full stop")))))))
+
 (define (spec)
   (dynamic-wind
     (lambda () #t)
@@ -388,7 +454,8 @@
       (veritas-run ef-cyprus-suite
                    fatum-suite
                    fundamental-suite
-                   ats-suite))
+                   ats-suite
+                   shared-suite))
     (lambda ()
       (catch #t
              (lambda () (delete-file-tree test-resources))

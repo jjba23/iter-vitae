@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (use-modules (guix gexp)
              (guix packages)
@@ -92,6 +80,6 @@ This tool creates a web-site version of your CV (using SXML and Olive CSS),
 and is designed for long-term use, so you can update and evolve your CV over the years.
 The program supports multilingual content and is fully extensible.")
     (home-page "https://codeberg.org/jjba23/iter-vitae")
-    (license license:agpl3+)))
+    (license license:expat)))
 
 iter-vitae

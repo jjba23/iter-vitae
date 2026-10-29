@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (define-module (iter-vitae prelude)
   #:declarative? #t
@@ -35,8 +23,10 @@
                         mk-class
                         external-url
                         tel-url
+                        locale-code
                         personal-link
                         personal-contact-value
+                        job-title-link
                         build-asset-library
                         load-asset-library
                         asset-css
@@ -94,6 +84,13 @@
     (else (string-join (sort (map symbol->string
                                   (delete-duplicates xs)) string<?) " "))))
 
+;; The language tag used for the HTML `lang' attribute: symbols become their
+;; name, and anything else is printed as a string.
+(define (locale-code locale)
+  (if (symbol? locale)
+      (symbol->string locale)
+      (format #f "~a" locale)))
+
 ;; Normalise a personal link into an absolute URL.  Values that already carry a
 ;; scheme (for example "https://example.org" or "mailto:") are kept as they
 ;; are; bare hosts get an https scheme.  Empty and non-string values are #f.
@@ -120,6 +117,13 @@
                                       value)))
            (and (not (string-null? number))
                 (string-append "tel:" number))))))
+
+;; Read the optional link behind the job title, normalized to an absolute URL.
+;; Returns #f when the persona has no link, so themes can emit a plain title.
+(define (job-title-link persona locale)
+  (let ((links (assq-ref persona 'job-title-link)))
+    (and (list? links)
+         (external-url (assq-ref-all-or-lang links locale)))))
 
 ;; Read one entry of the persona's personal-links alist, or #f when absent or
 ;; empty.  Keeping the emptiness check here means callers never emit

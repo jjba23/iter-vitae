@@ -4,16 +4,30 @@ Iter Vitae:
     Generate an attractive, modern and customizable Curriculum Vitae / Resume.
     
     See more at: https://codeberg.org/jjba23/iter-vitae
-    Software licensed under the GNU AGPL v3 or newer.
+    Software licensed under the MIT License.
     
 USAGE: iter-vitae [OPTIONS]
 OPTIONS:
     -f, --file FILE
-        Specify the path to Scheme config file (required).
-        
+        Specify the path to Scheme config file (required, unless --init).
+
+    -i, --init
+        Start an interactive wizard that asks about your CV and writes a
+        persona file. Combined with --file, that path is created; without
+        it, ./my-cv.scm is written.
+
     -l, --locale LOCALE
         Specify the locale (e.g., 'en', 'nl'). Defaults to 'en'.
-        
+
+    --locales CODES
+        Comma-separated languages for the --init wizard, e.g. en,nl,es.
+        The first code is the main language used for the questions. When
+        omitted, the wizard asks for the languages and defaults to --locale.
+
+    --all-locales
+        Render one CV for every locale defined in the persona. Each output
+        goes into its own directory, e.g. ./dist/en/ and ./dist/nl/.
+
     -d, --destination DIRECTORY
         Specify the output directory for the generated CV. Defaults to "./dist".
         
@@ -26,6 +40,12 @@ OPTIONS:
 
 +----------------------------------------------------------------------------+
 EXAMPLES:
+    iter-vitae --init --file ~/documents/my-cv.scm
+
+    iter-vitae --init --locales en,nl,es --file ~/documents/my-cv.scm
+
+    iter-vitae --all-locales -f ~/documents/my-cv.scm -d ~/documents/dist
+
     iter-vitae -l nl -f ~/documents/my-cv.scm -d ~/documents/dist
     
     iter-vitae --locale en \

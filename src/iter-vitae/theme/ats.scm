@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 ;;; An ATS-first theme.
 ;;
@@ -38,6 +26,7 @@
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-13)
   #:use-module (ice-9 format)
+  #:use-module (ice-9 regex)
   #:use-module (ice-9 string-fun)
   #:use-module (iter-vitae prelude)
   #:export (ats-html-template ats-main-body))
@@ -133,11 +122,6 @@ a {
 
 ;; --- Helpers ---
 
-(define (locale-code locale)
-  (if (symbol? locale)
-      (symbol->string locale)
-      (format #f "~a" locale)))
-
 ;; Emoji, arrows and other pictographs are meaningful to a person but noise to
 ;; a parser.  Keep letters (including accented ones) and ordinary punctuation,
 ;; and drop the symbol blocks that resume text tends to pick up from job-title
@@ -175,8 +159,15 @@ a {
   (let* ((text (plain-text value))
          (text (string-replace-substring text "=>" " - "))
          (text (string-map ats-normalize-char text))
-         (text (string-filter ats-safe-char? text)))
-    (string-join (string-tokenize text) " ")))
+         (text (string-filter ats-safe-char? text))
+         (text (string-join (string-tokenize text) " ")))
+    ;; Removing an emoji can leave the space that surrounded it in front of a
+    ;; full stop.  Tidy that, and the space that sometimes follows `('.
+    (let* ((text (regexp-substitute/global #f " +([.,;:!?])" text
+                                           'pre 1 'post))
+           (text (regexp-substitute/global #f "\\( +" text
+                                           'pre "(" 'post)))
+      text)))
 
 ;; Persona fields are translation alists, but they may also contain inline
 ;; HTML.  Everything that reaches the page goes through this, so the theme
@@ -218,13 +209,13 @@ a {
 
 (define* (render-job-title #:key locale persona)
   (let* ((title (ats-text (assq-ref persona 'job-title) locale))
-         (link (ats-text (assq-ref persona 'job-title-link) locale)))
+         (link (job-title-link persona locale)))
     (if (string-null? title)
         '()
         `((p (@ (class "job-title"))
-             ,(if (string-null? link)
-                  title
-                  `(a (@ (href ,(external-url link))) ,title)))))))
+             ,(if link
+                  `(a (@ (href ,link)) ,title)
+                  title))))))
 
 (define* (render-contact #:key locale persona)
   (let* ((email (personal-contact-value persona 'emails))
@@ -362,6 +353,18 @@ a {
         '()
         `((ul ,@items)))))
 
+;; Two interests written as sentences read badly when joined with a comma
+;; ("... Org mode., Playing bass ...").  Use a space when an item already
+;; ends its sentence, and commas for short keyword-style interests.
+(define (join-sentences items)
+  (if (any (lambda (item)
+             (or (string-suffix? "." item)
+                 (string-suffix? "!" item)
+                 (string-suffix? "?" item)))
+           items)
+      (string-join items " ")
+      (string-join items ", ")))
+
 (define* (render-additional #:key locale persona)
   (let* ((licenses (filter-map (lambda (license)
                                  (let ((text (ats-text license locale)))
@@ -386,7 +389,7 @@ a {
      (if (null? interests)
          '()
          `((p (strong ,(string-append interests-label ": "))
-                      ,(string-join interests ", ")))))))
+                      ,(join-sentences interests)))))))
 
 ;; --- Templates ---
 

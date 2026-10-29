@@ -7,7 +7,7 @@
 #+html_head: <meta name="description" content="Iter Vitae generates an attractive, modern, multilingual CV or resume from a Guile Scheme file: HTML for humans, plain text for applicant tracking systems." />
 
 [[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]] [[https://jointhefreeworld.org/ggg/dist/maak.svg]] [[https://jointhefreeworld.org/ggg/dist/veritas.svg]] [[https://jointhefreeworld.org/ggg/dist/codeberg.svg]]
-[[https://img.shields.io/badge/release-1.0.2-blue.svg]] [[https://img.shields.io/badge/Guix-channel-6f4e9c.svg]] [[https://jointhefreeworld.org/ggg/dist/license-agpl3+.svg]] [[https://jointhefreeworld.org/ggg/dist/license-fdl13+.svg]]
+[[https://img.shields.io/badge/release-1.0.2-blue.svg]] [[https://img.shields.io/badge/Guix-channel-6f4e9c.svg]] [[https://img.shields.io/badge/license-MIT-blue.svg]]
 
 *Iter Vitae* — Latin for “the journey of a life” — turns a single Guile Scheme
 file into a modern, multilingual /Curriculum Vitae/: ~index.html~ for humans,
@@ -19,7 +19,7 @@ in the language you ask for, and writes a document you can print, host or
 e-mail. No word processor, no dragging of text boxes, no proprietary file
 format: just a text file you can put in git and diff like the rest of your work.
 
-It is free software (AGPL-3.0-or-later), it runs offline, and it is built to
+It is free software (MIT), it runs offline, and it is built to
 serve you for the next forty years.
 
 #+begin_quote
@@ -81,7 +81,7 @@ And here is a real one, published straight from the repository:
   same sources and the same result, with the ability to roll back a bad
   upgrade. The build never fails with “it worked on my machine”.
 - *Free software, no strings.* No account, no telemetry, no network call from
-  the program itself. The AGPL keeps the tool free for everyone who uses it.
+  the program itself. The MIT licence keeps the tool free for everyone who uses it.
 - *Warm and welcoming.* Themes, translations, documentation and bug reports are
   all contributions. See [[#iter-vitae-project][Contributing]]; you are invited.
 
@@ -156,6 +156,37 @@ as the module ~(iter-vitae persona)~.
 Only ~display-name~ and ~job-title~ are required. Leave a field out and it is
 simply empty.
 
+If you would rather answer questions than write Scheme by hand, let the wizard
+draft the file for you:
+
+#+begin_src shell
+iter-vitae --init --file my-cv.scm
+#+end_src
+
+It asks for your name, job title, contact details, links, address, summary,
+skills, jobs, education, languages, interests and driving licences. You also
+pick one of the four themes, and an optional advanced step lets you rename
+section headings in every language. Press Enter to skip an optional question;
+the wizard shows a review before writing, then you get the same Scheme file
+shown above, ready to edit. Without ~--file~, it writes ~./my-cv.scm~, and it
+asks before replacing a file that already exists. The questions use colours and
+emoji when the terminal supports them; set ~NO_COLOR=1~ to turn the styling
+off.
+
+By default the wizard asks which languages the CV should have. Enter one code,
+or several separated by commas, and the first one is used for the questions.
+Every translatable answer is then asked once per language; press Enter on a
+translation to reuse the first language. To pre-answer the question, pass the
+codes directly:
+
+#+begin_src shell
+iter-vitae --init --locales en,nl,es --file my-cv.scm
+#+end_src
+
+The generated file stores real translation alists, for example
+~((en . "Software Engineer") (nl . "Softwareontwikkelaar"))~, instead of an
+~(all . "...")~ fallback. Render the language you need with ~--locale~.
+
 ** 3. Render it
 
 #+begin_src shell
@@ -168,6 +199,17 @@ Want it in Dutch? Ask for the Dutch locale:
 #+begin_src shell
 iter-vitae --locale nl --file my-cv.scm --destination dist
 #+end_src
+
+If the persona defines several languages, render all of them in one run:
+
+#+begin_src shell
+iter-vitae --all-locales --file my-cv.scm --destination dist
+#+end_src
+
+That writes ~dist/en/index.html~, ~dist/nl/index.html~ and so on, one
+directory per locale found in the persona. With ~--format text~ the files are
+~dist/en/resume.txt~ and ~dist/nl/resume.txt~. A persona that only uses the
+~(all . "...")~ fallback gets one directory named after ~--locale~.
 
 Want plain text for an application form?
 
@@ -185,7 +227,7 @@ That is the whole loop: edit Scheme, re-render, look at the browser, commit.
 
 Iter Vitae is officially distributed through the Guix package manager and as
 container images, but you are welcome to use it however you like, within the
-terms of the GNU Affero General Public License v3 or newer.
+terms of the MIT License.
 
 /Four routes lead to the same 1.0.2, from the most automated to the most
 manual. They all build the release tag this README documents./
@@ -431,7 +473,10 @@ iter-vitae [OPTIONS]
 | Option                    | Default  | Meaning                                                         |
 |---------------------------+----------+-----------------------------------------------------------------|
 | ~-f~, ~--file~ FILE       | required | The Scheme file that describes your CV.                         |
+| ~-i~, ~--init~            |          | Interactive wizard that writes a persona instead of rendering.  |
 | ~-l~, ~--locale~ CODE     | ~en~     | Language to render (~en~, ~nl~, ~es~, …).                        |
+| ~--locales~ CODES         |          | Languages for the wizard, e.g. ~en,nl,es~; first is primary.      |
+| ~--all-locales~           |          | Render one CV per persona locale under ~DEST/LOCALE/~.            |
 | ~-d~, ~--destination~ DIR | ~./dist~ | Output directory. It is emptied before each run.                |
 | ~-F~, ~--format~ FORMAT   | ~html~   | ~html~ writes ~index.html~; ~text~ writes ~resume.txt~.          |
 | ~-r~, ~--resources~ DIR   | bundled  | Where the theme stylesheets live; source runs only.             |
@@ -448,8 +493,12 @@ The same help text ships with the program, in ~resources/help.txt~.
 # English CV into ./dist/index.html
 iter-vitae --file ~/documents/my-cv.scm
 
-# Dutch CV into a dedicated directory
+# A bilingual persona, then a Dutch CV into a dedicated directory
+iter-vitae --init --locales en,nl --file ~/documents/my-cv.scm
 iter-vitae --locale nl --file ~/documents/my-cv.scm --destination ~/documents/dist
+
+# Render every language the persona defines
+iter-vitae --all-locales --file ~/documents/my-cv.scm --destination ~/documents/dist
 
 # Plain text for an online application form
 iter-vitae --format text --file ~/documents/my-cv.scm --destination ~/documents/dist
@@ -468,6 +517,10 @@ With ~--format html~ (the default) you get a single ~index.html~: all styles
 are inlined, there is no JavaScript, and the page opens correctly from
 ~file://~. With ~--format text~ you get a plain ~resume.txt~ instead, and the
 visual theme is ignored, because plain text has no styling.
+
+With ~--all-locales~ those files live one level deeper: ~dist/en/index.html~
+and ~dist/nl/index.html~, or ~dist/en/resume.txt~ and ~dist/nl/resume.txt~ for
+text output.
 
 #+begin_quote
 *Careful:* the destination directory is deleted and recreated on every run, so
@@ -695,9 +748,10 @@ The following variables are read by Iter Vitae to construct a CV:
   describe your hobbies and personal interests. The section is hidden when
   empty.
 - ~language-proficiency~ :: an ~alist~ that defines the grading scale for your
-  language skills. It maps a language code (like ~en~ or ~nl~) to an ~alist~ of
-  integer levels (1 to 4) alongside their localized descriptions (for example
-  ~"Elementary Proficiency"~ or ~"Native / Bilingual"~).
+  language skills. It maps a document locale (like ~en~ or ~nl~) to an ~alist~
+  of integer levels (1 to 4) alongside their localized descriptions (for
+  example ~"Elementary Proficiency"~ or ~"Native / Bilingual"~). The wizard
+  generates this table for the locales you select.
 - ~languages~ :: an ~alist~ detailing the languages you actually speak. Each
   key is a language code mapped to an ~alist~ containing a ~name~ (a
   ~translation-alist~ with the language's display name and optional emoji) and
@@ -1067,21 +1121,19 @@ respect is essential to creating excellent free software.
 :CUSTOM_ID: licensing
 :END:
 
-iter-vitae and all of its source code are free software, licensed under the GNU
-Affero General Public License v3 (or newer at your convenience).
+iter-vitae, including its source code, documentation and examples, is free
+software licensed under the MIT License.
 
-https://www.gnu.org/licenses/agpl-3.0.html
+https://opensource.org/license/mit
 
-The documentation and examples, including this document, which are provided
-with iter-vitae, are all licensed under the GNU Free Documentation License v1.3
-(or newer at your convenience).
+The full text lives in [[file:COPYING][COPYING]]. In short: you may use, copy, modify,
+merge, publish, distribute, sublicense and sell copies of Iter Vitae, provided
+the copyright notice and this permission notice travel with it. The software
+comes with no warranty. Contributions are accepted under the same licence.
 
-https://www.gnu.org/licenses/fdl-1.3.html
-
-The full text of the AGPL lives in [[file:COPYING][COPYING]]. In short: you may use, study,
-share and modify Iter Vitae; if you run a modified version as a network
-service, you must offer its source to the people who use it. Contributions are
-accepted under the same licence.
+The bundled Olive CSS stylesheets in ~resources/css/~ come from the
+[[https://codeberg.org/jjba23/olive-css][olive-css]] project and remain under the GNU Lesser General Public License v3
+or later, as their own file headers state.
 
 ** On Lucida fonts
 :PROPERTIES:

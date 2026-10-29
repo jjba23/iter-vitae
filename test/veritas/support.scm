@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 ;; Test support: fixtures, temporary directories and a subprocess runner.  This
 ;; module lives beside the unit tests rather than inside them, so the Veritas
@@ -36,6 +24,7 @@
             make-resources
             sample-persona
             rich-persona
+            bilingual-persona
             with-theme
             persona-file
             expect-true
@@ -129,7 +118,8 @@
 (define sample-persona
   `((display-name . ((all . "Ada Lovelace")))
     (job-title . ((en . "Engineer") (nl . "Ingenieur")))
-    (job-title-link . ((all . "https://example.org/job")))
+    ;; A bare host: themes must normalize it to an absolute URL.
+    (job-title-link . ((all . "example.org/job")))
     (personal-contact . ((emails . "ada@example.org")
                          (phone-numbers . "+31 6 1234 5678")))
     (personal-links . ((blog . "blog.example.org")
@@ -146,10 +136,25 @@
     (jobs . ())
     (document-theme . ef-cyprus)))
 
+(define bilingual-persona
+  `((display-name . ((en . "Ada Example") (nl . "Ada Voorbeeld")))
+    (job-title . ((en . "Engineer") (nl . "Ingenieur")))
+    (personal-contact . ((emails . "ada@example.org")))
+    (address-lines . (((en . "Main Street 1") (nl . "Hoofdstraat 1"))))
+    (short-intro . (((en . "I write software.")
+                     (nl . "Ik schrijf software."))))
+    (jobs . (((name . ((en . "Acme") (nl . "Acme")))
+              (location . ((en . "Amsterdam") (nl . "Amsterdam")))
+              (position . ((en . "Engineer") (nl . "Ingenieur")))
+              (time . ((en . "2020 - now") (nl . "2020 - nu")))
+              (experience . (((en . "Built things") (nl . "Bouwde dingen")))))))
+    (document-theme . ef-cyprus)))
+
 (define rich-persona
   `((display-name . ((all . "Ada &amp; Bob &lt;CEO&gt;")))
     (job-title . ((all . "Engineer")))
-    (job-title-link . ((all . "https://example.org/job")))
+    ;; A bare host: themes must normalize it to an absolute URL.
+    (job-title-link . ((all . "example.org/job")))
     (personal-contact . ((emails . "ada@example.org")
                          (phone-numbers . "+31 6 1234 5678")))
     (personal-links . ((blog . "blog.example.org")
@@ -165,11 +170,20 @@
                             (nl . "Engels"))
                       (proficiency (reading . 4)
                                    (speaking . 3)
-                                   (writing . 4)))))
+                                   (writing . 4)))
+                  (nl (name (en . "Dutch")
+                            (nl . "Nederlands"))
+                      (proficiency (reading . 3)
+                                   (speaking . 3)
+                                   (writing . 2)))))
     (language-proficiency . ((en (1 . "Elementary")
                                  (2 . "Basic")
                                  (3 . "Professional")
-                                 (4 . "Native"))))
+                                 (4 . "Native"))
+                             (nl (1 . "Elementair")
+                                 (2 . "Beperkt")
+                                 (3 . "Professioneel")
+                                 (4 . "Moedertaal"))))
     (education . (((name . ((all . "Test University")))
                    (location . ((all . "Testville")))
                    (position . ((all . "BSc")))

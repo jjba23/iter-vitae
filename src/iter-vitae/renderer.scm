@@ -1,30 +1,140 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (define-module (iter-vitae renderer)
   #:declarative? #f
+  #:use-module (ice-9 regex)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-13)
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae html)
   #:use-module (iter-vitae prelude)
   #:use-module (iter-vitae text)
-  #:export (render-curriculum))
+  #:export (render-curriculum persona-locales))
+
+;; Collect the keys of one translation-alist, ignoring the language-independent
+;; `all' fallback.
+(define (translation-locales alist)
+  (if (list? alist)
+      (filter-map (lambda (entry)
+                    (and (pair? entry)
+                         (symbol? (car entry))
+                         (not (eq? (car entry) 'all))
+                         (car entry)))
+                  alist)
+      '()))
+
+;; Collect locales from a list of translation-alists (bullets, address lines,
+;; paragraphs, skills, ...).
+(define (translation-list-locales values)
+  (if (list? values)
+      (append-map translation-locales values)
+      '()))
+
+;; A job or education entry has several translated fields plus a translated
+;; bullet list.
+(define (entry-locales entry)
+  (if (list? entry)
+      (append (translation-locales (assq-ref entry 'name))
+              (translation-locales (assq-ref entry 'location))
+              (translation-locales (assq-ref entry 'position))
+              (translation-locales (assq-ref entry 'time))
+              (translation-list-locales (assq-ref entry 'experience)))
+      '()))
+
+;; Each language row is (code . ((name . translation-alist) ...)).
+(define (language-locales languages)
+  (if (list? languages)
+      (append-map
+       (lambda (entry)
+         (let ((profile (and (pair? entry) (cdr entry))))
+           (translation-locales (and profile (assq-ref profile 'name)))))
+       languages)
+      '()))
+
+;; The locales a persona actually uses.  The default titles contain en/nl/es
+;; headings for fallback, so they are deliberately not counted as content.
+(define* (persona-locales persona #:key (fallback 'en))
+  (let* ((keys
+          (append
+           (translation-locales (assq-ref persona 'display-name))
+           (translation-locales (assq-ref persona 'job-title))
+           (translation-locales (assq-ref persona 'job-title-link))
+           (translation-list-locales (assq-ref persona 'address-lines))
+           (translation-list-locales (assq-ref persona 'driver-licenses))
+           (translation-list-locales (assq-ref persona 'interests-hobbies))
+           (translation-list-locales (assq-ref persona 'short-intro))
+           (translation-list-locales (assq-ref persona 'skills))
+           (append-map entry-locales (or (assq-ref persona 'jobs) '()))
+           (append-map entry-locales (or (assq-ref persona 'education) '()))
+           (language-locales (assq-ref persona 'languages))))
+         (keys (sort (delete-duplicates keys eq?)
+                     (lambda (left right)
+                       (string<? (locale-code left) (locale-code right))))))
+    (if (null? keys)
+        (list fallback)
+        keys)))
+
+;; A locale code is also a directory name.  Reject anything that could escape
+;; the destination instead of trusting a symbol from a persona file.
+(define (locale-directory locale)
+  (let ((code (locale-code locale)))
+    (unless (and (not (string=? code "all"))
+                 (string-match "^[A-Za-z][A-Za-z0-9-]*$" code))
+      (error "Invalid locale for --all-locales:" code))
+    code))
+
+;; Write one document.  The caller owns the destination lifecycle, because the
+;; all-locales mode writes several documents below one freshly-cleared root.
+(define* (write-curriculum #:key persona locale destination resources text?)
+  (make-directories destination)
+  (if text?
+      (with-output-to-file (in-vicinity destination "resume.txt")
+        (lambda ()
+          (display (render-plain-text #:locale locale
+                                      #:persona persona))))
+      (with-output-to-file (in-vicinity destination "index.html")
+        (lambda ()
+          (display (iter-vitae-curriculum-page #:locale locale
+                                               #:persona persona
+                                               #:resources resources))))))
+
+(define* (render-all-locales #:key persona locale destination resources text?)
+  (let* ((locales (persona-locales persona #:fallback (or locale 'en)))
+         ;; Validate every directory name before deleting the destination, so
+         ;; a bad locale cannot destroy existing output and then fail.
+         (targets (map (lambda (current-locale)
+                         (cons current-locale
+                               (locale-directory current-locale)))
+                       locales)))
+    (log-info "\tlocales: ~a"
+              (string-join (map locale-code locales) ", "))
+    ;; The destination is a filesystem path, never a shell command line, so
+    ;; names containing spaces or metacharacters are safe.
+    (log-info "removing: ~a" destination)
+    (delete-file-tree destination)
+
+    (log-info "creating: ~a" destination)
+    (make-directories destination)
+
+    (for-each
+     (lambda (target)
+       (let ((current-locale (car target))
+             (directory (in-vicinity destination (cdr target))))
+         (log-info "rendering locale ~a into ~a" current-locale directory)
+         (write-curriculum #:persona persona
+                           #:locale current-locale
+                           #:destination directory
+                           #:resources resources
+                           #:text? text?)))
+     targets)
+    (log-info "Completed rendering of Curriculum Vitae/Resume")))
 
 (define* (render-curriculum #:key locale (destination "./dist")
-                            (resources "resources") file (format "html"))
+                            (resources "resources") file (format "html")
+                            (all-locales? #f))
   (let* ((resources (or resources "resources"))
          (destination (or destination "./dist"))
          (output-format (cond
@@ -44,6 +154,7 @@
     (log-info "\tresources: ~a" resources)
     (log-info "\tdestination: ~a" destination)
     (log-info "\tformat: ~a" output-format)
+    (log-info "\tall locales: ~a" (if all-locales? "yes" "no"))
 
     ;; choose person to generate curriculum vitae for
     (load file)
@@ -81,22 +192,24 @@
                           (get-setting 'jobs))
                     (document-theme unquote
                                     (get-setting 'document-theme)))))
-      ;; The destination is a filesystem path, never a shell command line, so
-      ;; names containing spaces or metacharacters are safe.
-      (log-info "removing: ~a" destination)
-      (delete-file-tree destination)
+      (if all-locales?
+          (render-all-locales #:persona persona
+                              #:locale locale
+                              #:destination destination
+                              #:resources resources
+                              #:text? text?)
+          (begin
+            ;; The destination is a filesystem path, never a shell command line,
+            ;; so names containing spaces or metacharacters are safe.
+            (log-info "removing: ~a" destination)
+            (delete-file-tree destination)
 
-      (log-info "creating: ~a" destination)
-      (make-directories destination)
+            (log-info "creating: ~a" destination)
+            (make-directories destination)
 
-      (if text?
-          (with-output-to-file (in-vicinity destination "resume.txt")
-            (lambda ()
-              (display (render-plain-text #:locale locale
-                                          #:persona persona))))
-          (with-output-to-file (in-vicinity destination "index.html")
-            (lambda ()
-              (display (iter-vitae-curriculum-page #:locale locale
-                                                   #:persona persona
-                                                   #:resources resources)))))
-      (log-info "Completed rendering of Curriculum Vitae/Resume"))))
+            (write-curriculum #:persona persona
+                              #:locale locale
+                              #:destination destination
+                              #:resources resources
+                              #:text? text?)
+            (log-info "Completed rendering of Curriculum Vitae/Resume"))))))

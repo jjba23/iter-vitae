@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (define-module (iter-vitae theme fatum)
   #:declarative? #t
@@ -35,7 +23,8 @@
   #:export (fatum-html-template fatum-main-body))
 
 (define* (fatum-html-template #:key title body locale persona resources)
-  `("<!DOCTYPE html>" (html (head (title ,title)
+  `("<!DOCTYPE html>" (html (@ (lang ,(locale-code locale)))
+                            (head (title ,title)
                                   (link (@ (rel preconnect)
                                            (href
                                             "https://fonts.googleapis.com")))
@@ -81,7 +70,6 @@
   src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSDI.woff') format('woff');
 }
 
-
 /* --- Lucida Sans Typewriter --- */
 
 @font-face {
@@ -111,7 +99,6 @@
   font-weight: 700;
   src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEBO.woff') format('woff');
 }
-
 
 /* --- Lucida Sans Unicode --- */
 
@@ -176,19 +163,15 @@
                                         'display-name) locale)))
 
 (define* (render-job-title #:key locale persona)
-  (let* ((jt (assq-ref persona
-                       'job-title-link)))
-    (cond
-      ((list? jt)
-       `(a (@ (class ,h2-special-face)
-              (href ,(assq-ref-all-or-lang jt locale)))
-           ,(assq-ref-all-or-lang (assq-ref persona
-                                            'job-title) locale)))
-      (else `(p (@ (class ,h2-special-face))
-                ,(assq-ref-all-or-lang (assq-ref persona
-                                                 'job-title) locale)))))
-
-  )
+  (let ((link (job-title-link persona locale)))
+    (if link
+        `(a (@ (class ,h2-special-face)
+               (href ,link))
+            ,(assq-ref-all-or-lang (assq-ref persona
+                                             'job-title) locale))
+        `(p (@ (class ,h2-special-face))
+             ,(assq-ref-all-or-lang (assq-ref persona
+                                              'job-title) locale)))))
 
 (define* (render-email #:key locale persona)
   (let ((email (personal-contact-value persona 'emails)))
@@ -217,6 +200,7 @@
                 (i (@ (class ,(mk-class '(ph ph-rss text-onyx-500 xl)))) "")
                 (a (@ (class ,small-a-face)
                       (target "_blank")
+                      (rel "noopener noreferrer")
                       (href ,(external-url blog)))
                    ,blog))))))
 
@@ -227,6 +211,7 @@
                 (i (@ (class ,(mk-class '(ph ph-code text-onyx-500 text-xl)))) "")
                 (a (@ (class ,small-a-face)
                       (target "_blank")
+                      (rel "noopener noreferrer")
                       (href ,(external-url code)))
                    ,code))))))
 
@@ -237,6 +222,7 @@
                 (i (@ (class ,(mk-class '(ph ph-link text-onyx-500 text-xl)))) "")
                 (a (@ (class ,small-a-face)
                       (target "_blank")
+                      (rel "noopener noreferrer")
                       (href ,(external-url linked-in)))
                    ,linked-in))))))
 
@@ -362,13 +348,13 @@
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
-                                                               'speaking)
+                                                               'reading)
                                                      locale))
                           (th (@ (class ,th-face))
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
-                                                               'reading)
+                                                               'speaking)
                                                      locale))
                           (th (@ (class ,th-face))
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
@@ -387,14 +373,14 @@
                                           #:locale locale
                                           #:level (assq-ref (assq-ref l
                                                                       'proficiency)
-                                                            'speaking)))
+                                                            'reading)))
                                     (td (@ (class ,td-face))
                                         ,(language-proficiency->string
                                           #:persona persona
                                           #:locale locale
                                           #:level (assq-ref (assq-ref l
                                                                       'proficiency)
-                                                            'reading)))
+                                                            'speaking)))
                                     (td (@ (class ,td-face))
                                         ,(language-proficiency->string
                                           #:persona persona

@@ -23,7 +23,7 @@ Name:           iter-vitae
 Version:        1.0.4
 Release:        0
 Summary:        Resume and curriculum vitae generator written in Guile Scheme
-License:        AGPL-3.0-or-later
+License:        MIT
 URL:            https://codeberg.org/jjba23/iter-vitae
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  pkgconfig(guile-3.0)

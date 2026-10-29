@@ -1,36 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
-
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (define-module (iter-vitae theme fundamental)
   #:declarative? #t
@@ -116,7 +87,8 @@
 ;; --- Templates ---
 
 (define* (fundamental-html-template #:key title body locale persona resources)
-  `("<!DOCTYPE html>" (html (head (title ,title)
+  `("<!DOCTYPE html>" (html (@ (lang ,(locale-code locale)))
+                            (head (title ,title)
                                   (meta (@ (name "viewport")
                                            (content
                                             "width=device-width, initial-scale=1.0")))
@@ -149,18 +121,15 @@
                                         'display-name) locale)))
 
 (define* (render-job-title #:key locale persona)
-  (let* ((jt (assq-ref persona
-                       'job-title-link)))
-    (cond
-      ((list? jt)
-       `(div (@ (style ,subtitle-style))
-             (a (@ (style ,link-style)
-                   (href ,(assq-ref-all-or-lang jt locale)))
-                ,(assq-ref-all-or-lang (assq-ref persona
-                                                 'job-title) locale))))
-      (else `(div (@ (style ,subtitle-style))
-                  ,(assq-ref-all-or-lang (assq-ref persona
-                                                   'job-title) locale))))))
+  (let ((link (job-title-link persona locale)))
+    `(div (@ (style ,subtitle-style))
+          ,(if link
+               `(a (@ (style ,link-style)
+                      (href ,link))
+                   ,(assq-ref-all-or-lang (assq-ref persona
+                                                    'job-title) locale))
+               (assq-ref-all-or-lang (assq-ref persona
+                                               'job-title) locale)))))
 
 (define* (render-email #:key locale persona)
   (let ((email (personal-contact-value persona 'emails)))
@@ -181,6 +150,7 @@
     (and blog
          `(div (a (@ (style ,link-style)
                      (target "_blank")
+                     (rel "noopener noreferrer")
                      (href ,(external-url blog)))
                   "Blog")))))
 
@@ -189,6 +159,7 @@
     (and code
          `(div (a (@ (style ,link-style)
                      (target "_blank")
+                     (rel "noopener noreferrer")
                      (href ,(external-url code)))
                   "Code")))))
 
@@ -197,6 +168,7 @@
     (and linked-in
          `(div (a (@ (style ,link-style)
                      (target "_blank")
+                     (rel "noopener noreferrer")
                      (href ,(external-url linked-in)))
                   "LinkedIn")))))
 
@@ -287,19 +259,20 @@
     (assoc-ref ll level)))
 
 (define* (render-languages #:key locale persona)
-  `(div (table (@ (style ,table-style))
+  `(div (@ (style "overflow-x: auto;"))
+        (table (@ (style ,table-style))
                (thead (tr (th (@ (style ,th-style)) "")
                           (th (@ (style ,th-style))
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
-                                                               'speaking)
+                                                               'reading)
                                                      locale))
                           (th (@ (style ,th-style))
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
                                                                 'titles)
-                                                               'reading)
+                                                               'speaking)
                                                      locale))
                           (th (@ (style ,th-style))
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
@@ -323,7 +296,7 @@
                                                                                (assq-ref
                                                                                 l
                                                                                 'proficiency)
-                                                                               'speaking)))
+                                                                               'reading)))
                                    (td (@ (style ,td-style))
                                        ,(language-proficiency->string
                                                                       #:persona
@@ -334,7 +307,7 @@
                                                                                (assq-ref
                                                                                 l
                                                                                 'proficiency)
-                                                                               'reading)))
+                                                                               'speaking)))
                                    (td (@ (style ,td-style))
                                        ,(language-proficiency->string
                                                                       #:persona

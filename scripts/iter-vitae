@@ -1,19 +1,9 @@
 #!/usr/bin/env bash
 
+# iter-vitae
+#
+# SPDX-License-Identifier: MIT
 # Copyright © Josep Bigorra <jjbigorra@gmail.com>
-
-# iter-vitae is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-
-# iter-vitae is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-
-# You should have received a copy of the GNU Affero General Public License
-# along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
 
 # Commentary:
 #
@@ -65,16 +55,18 @@ show_help() {
   cat "${resources_dir}/help.txt"
 }
 
-parsed_options=$(getopt -n "iter-vitae" -o l:d:f:r:F:h \
-  --long locale:,destination:,file:,resources:,format:,help -- "$@")
+parsed_options=$(getopt -n "iter-vitae" -o l:d:f:r:F:ih \
+  --long locale:,locales:,destination:,file:,resources:,format:,init,all-locales,help -- "$@")
 
 eval set -- "${parsed_options}"
 
 locale_arg=""
+locales_arg=""
 destination_arg=""
 file_arg=""
 resources_arg="${resources_dir}"
 format_arg=""
+init_arg=""
 
 guile_cmd_args=(
   "-L" "${scheme_sources_dir}"
@@ -88,6 +80,11 @@ while true; do
     [[ -n "${locale_arg}" ]] && guile_cmd_args+=("--locale" "${locale_arg}")
     shift 2
     ;;
+  --locales)
+    locales_arg="${2}"
+    [[ -n "${locales_arg}" ]] && guile_cmd_args+=("--locales" "${locales_arg}")
+    shift 2
+    ;;
   -d | --destination)
     destination_arg="${2}"
     [[ -n "${destination_arg}" ]] && guile_cmd_args+=("--destination" "${destination_arg}")
@@ -95,7 +92,6 @@ while true; do
     ;;
   -f | --file)
     file_arg="${2}"
-    guile_cmd_args+=("--file" "$(realpath "${file_arg}")")
     shift 2
     ;;
   -r | --resources)
@@ -109,6 +105,15 @@ while true; do
     format_arg="${2}"
     [[ -n "${format_arg}" ]] && guile_cmd_args+=("--format" "${format_arg}")
     shift 2
+    ;;
+  -i | --init)
+    init_arg="1"
+    guile_cmd_args+=("--init")
+    shift
+    ;;
+  --all-locales)
+    guile_cmd_args+=("--all-locales")
+    shift
     ;;
   -h | --help)
     show_help
@@ -129,8 +134,15 @@ done
 # The resources
 guile_cmd_args+=("--resources" "${resources_arg}")
 
-# The Curriculum Vitae file
-if [[ -z "${file_arg}" ]]; then
+# The Curriculum Vitae file.  The wizard may create it, so it is not required
+# there and its parent directory need not exist yet.
+if [[ -n "${file_arg}" ]]; then
+  if [[ -n "${init_arg}" ]]; then
+    guile_cmd_args+=("--file" "$(realpath -m "${file_arg}")")
+  else
+    guile_cmd_args+=("--file" "$(realpath "${file_arg}")")
+  fi
+elif [[ -z "${init_arg}" ]]; then
   log_error "Error: The file argument is required. Use -f or --file." >&2
   show_help
   exit 1

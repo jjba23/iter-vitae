@@ -1,19 +1,7 @@
 # iter-vitae
-
-# Copyright © 2026 Josep Bigorra <jjbigorra@gmail.com>
-
-# iter-vitae is free software: you can redistribute it and/or modify it under
-# the terms of the GNU Affero General Public License as published by the Free
-# Software Foundation, either version 3 of the License, or (at your
-# option) any later version.
 #
-# iter-vitae is distributed in the hope that it will be useful, but WITHOUT
-# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-# FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
-# for more details.
-#
-# You should have received a copy of the GNU Affero General Public License along
-# with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+# SPDX-License-Identifier: MIT
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 # Maintainer: Josep Bigorra <jjbigorra@gmail.com>
 pkgname=iter-vitae
@@ -22,7 +10,7 @@ pkgrel=1
 pkgdesc="Resume and curriculum vitae generator written in Guile Scheme"
 arch=('any')
 url="https://codeberg.org/jjba23/iter-vitae"
-license=('AGPL-3.0-or-later')
+license=('MIT')
 
 depends=(
   'guile'

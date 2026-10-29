@@ -1,19 +1,7 @@
-;;; Iter Vitae
-
-;; Copyright © Josep Jesus Bigorra Algaba
-
-;; iter-vitae is free software: you can redistribute it and/or modify
-;; it under the terms of the GNU Affero General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; iter-vitae is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU Affero General Public License for more details.
-
-;; You should have received a copy of the GNU Affero General Public License
-;; along with iter-vitae. If not, see <https://www.gnu.org/licenses/>.
+;;; iter-vitae
+;;
+;; SPDX-License-Identifier: MIT
+;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 (define-module (veritas unit iter-vitae main)
   #:declarative? #t
@@ -90,6 +78,44 @@
                          vc)
                         ((assert-not-contains #:expect (read-index destination)
                                               #:got ">Engineer<")
+                         vc)))))))
+         (test "renders every persona locale with --all-locales"
+               (lambda (vc)
+                 (call-with-temp-dir
+                  (lambda (root)
+                    (let* ((file (in-vicinity root "persona.scm"))
+                           (resources (make-resources
+                                       (in-vicinity root "resources")))
+                           (destination (in-vicinity root "dist")))
+                      (persona-file file (with-theme bilingual-persona 'ef-cyprus))
+                      (let-values (((status output)
+                                    (run-guile "-c"
+                                               "((@(iter-vitae main) main))"
+                                               "--file" file
+                                               "--destination" destination
+                                               "--resources" resources
+                                               "--all-locales")))
+                        ((assert-equal #:expect 0 #:got status) vc)
+                        ((assert-true
+                          (file-exists?
+                           (in-vicinity (in-vicinity destination "en")
+                                        "index.html")))
+                         vc)
+                        ((assert-true
+                          (file-exists?
+                           (in-vicinity (in-vicinity destination "nl")
+                                        "index.html")))
+                         vc)
+                        ((assert-false
+                          (file-exists?
+                           (in-vicinity destination "index.html")))
+                         vc)
+                        ((assert-contains
+                          #:expect (read-index (in-vicinity destination "nl"))
+                          #:got "Ada Voorbeeld")
+                         vc)
+                        ((assert-contains #:expect output
+                                          #:got "rendering locale nl")
                          vc)))))))
          (test "writes a text resume with --format text"
                (lambda (vc)
