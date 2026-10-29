@@ -1,17 +1,10 @@
+# iter-vitae
+#
+# SPDX-License-Identifier: MIT
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
 #
 # spec file for package iter-vitae
 #
-# Copyright (c) 2026 SUSE LLC and contributors
-#
-# All modifications and additions to the file contributed by third parties
-# remain the property of their copyright owners, unless otherwise agreed
-# upon. The license for this file, and modifications and additions to the
-# file, is the same license as for the pristine package itself (unless the
-# license for the pristine package is not an Open Source License, in which
-# case the license is the MIT License). An "Open Source License" is a
-# license that conforms to the Open Source Definition (Version 1.9)
-# published by the Open Source Initiative.
-
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
@@ -87,7 +80,7 @@ cp -r resources/. "%{buildroot}%{_datadir}/iter-vitae/resources/"
 VERITAS_TEST_TYPE=unit VERITAS_RUN_BENCHMARKS=false guile --fresh-auto-compile -L ./src -L ./test -c '((@ (veritas runner) run-tests))'
 
 %files
-%license COPYING
+%license LICENSE
 %doc README.org NEWS.org
 %{_bindir}/iter-vitae
 %dir %{_datadir}/guile

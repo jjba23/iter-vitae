@@ -19,7 +19,8 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *** Modified
 
-- The project is now licensed under the MIT License, including its documentation and examples. Sources and build files carry a short `SPDX-License-Identifier: MIT` header instead of the full licence boilerplate.
+- The README was reorganized around a generated four-theme demo, with a reproducible `scripts/generate-demo` workflow and no legacy remote screenshots or logos. Installation, usage, theme and field-reference material was preserved and expanded.
+- The project is now licensed under the MIT License, including its documentation and examples. Sources and build files carry the consistent `SPDX-License-Identifier: MIT` header (`;; iter-vitae` in Scheme, `# iter-vitae` elsewhere) instead of the full licence boilerplate, and the Arch and openSUSE recipes install the top-level `LICENSE` file (`debian/copyright` remains the Debian licence record).
 
 *** Fixed
 

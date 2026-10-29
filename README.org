@@ -1,26 +1,48 @@
 #+title: Iter Vitae
-#+subtitle: Write your CV as Scheme code, publish it as a document you are proud of
+#+subtitle: Write your CV as Scheme. Publish it as a document you are proud of.
 #+author: Josep Bigorra
 #+email: jjbigorra@gmail.com
 #+language: en
 #+options: toc:nil num:nil
-#+html_head: <meta name="description" content="Iter Vitae generates an attractive, modern, multilingual CV or resume from a Guile Scheme file: HTML for humans, plain text for applicant tracking systems." />
+#+html_head: <meta name="description" content="Iter Vitae turns one Guile Scheme file into a modern, multilingual CV: a self-contained HTML page for humans and plain text for applicant tracking systems." />
 
-[[https://jointhefreeworld.org/ggg/dist/scheme-guile.svg]] [[https://jointhefreeworld.org/ggg/dist/gnu-guix.svg]] [[https://jointhefreeworld.org/ggg/dist/maak.svg]] [[https://jointhefreeworld.org/ggg/dist/veritas.svg]] [[https://jointhefreeworld.org/ggg/dist/codeberg.svg]]
-[[https://img.shields.io/badge/release-1.0.2-blue.svg]] [[https://img.shields.io/badge/Guix-channel-6f4e9c.svg]] [[https://img.shields.io/badge/license-MIT-blue.svg]]
+#+begin_export html
+<p style="text-align: center">
+  <a href="https://opensource.org/license/mit"><img src="https://img.shields.io/badge/license-MIT-2ea44f.svg?style=flat-square" alt="MIT License" /></a>
+  <a href="https://www.gnu.org/software/guile/"><img src="https://img.shields.io/badge/Guile-3.0-f0c040.svg?style=flat-square" alt="Guile 3.0" /></a>
+  <a href="#from-the-guix-channel"><img src="https://img.shields.io/badge/Guix-channel-6f4e9c.svg?style=flat-square" alt="GNU Guix channel" /></a>
+  <a href="#from-the-nix-flake"><img src="https://img.shields.io/badge/Nix-flake-5277C3.svg?style=flat-square" alt="Nix flake" /></a>
+  <a href="#what-gets-written"><img src="https://img.shields.io/badge/output-HTML%20%2B%20plain%20text-0f766e.svg?style=flat-square" alt="HTML and plain-text output" /></a>
+  <a href="#features"><img src="https://img.shields.io/badge/output-no%20JavaScript-111827.svg?style=flat-square" alt="No JavaScript in the output" /></a>
+</p>
+#+end_export
 
 *Iter Vitae* — Latin for “the journey of a life” — turns a single Guile Scheme
-file into a modern, multilingual /Curriculum Vitae/: ~index.html~ for humans,
-~resume.txt~ for the robots.
+file into a modern, multilingual /Curriculum Vitae/: a polished HTML page for
+humans, a clean plain-text resume for robots, and one document for every
+language you speak.
 
-You describe your jobs, your studies, your languages and your interests as
-ordinary Scheme data. Iter Vitae renders that data through the theme you pick,
-in the language you ask for, and writes a document you can print, host or
-e-mail. No word processor, no dragging of text boxes, no proprietary file
-format: just a text file you can put in git and diff like the rest of your work.
+You describe your jobs, studies, skills and languages as ordinary Scheme data.
+Iter Vitae renders that data through the theme you choose, in the language you
+ask for, and writes a document you can print, host or e-mail. There is no word
+processor, no dragging of text boxes and no proprietary file format: just a
+text file you can put in git and diff like the rest of your work.
 
-It is free software (MIT), it runs offline, and it is built to
-serve you for the next forty years.
+It is for anyone who wants their CV to live in git, speak more than one
+language, and survive a decade of job changes. It is also for anyone who just
+wants a good-looking CV without fighting a word processor. You do not have to
+be a programmer: the wizard writes the Scheme for you.
+
+#+begin_quote
+**Write once. Render for every reader.**
+
+Your CV is not a document you fight with every spring. It is a small,
+version-controlled source file that can become a beautiful web page, a
+US-Letter-ready PDF, or a plain-text attachment for an application form.
+#+end_quote
+
+It is free software (MIT), it runs without an account, and it is built to serve
+you for the next forty years.
 
 #+begin_quote
 Everyone has the right to create a professional-looking CV with free software —
@@ -37,51 +59,67 @@ I can keep going with a lot of motivation. Changelog and release notes live in
 :CUSTOM_ID: demo
 :END:
 
-#+attr_html: :width 760px :alt Animated tour: the same CV rendered in the fatum, ef-cyprus, fundamental and ats themes
+#+attr_html: :width 860px :alt Animated tour: the same CV rendered in the fatum, ef-cyprus, fundamental and ats themes
 [[file:assets/iter-vitae-demo.gif]]
 
-/Four themes, one persona. The same Scheme file (~populus/vega.scm~) rendered
-with =fatum=, =ef-cyprus=, =fundamental= and =ats=; only the =document-theme=
-symbol changes./
+/Four themes, one persona. The same file — [[file:populus/vega.scm][populus/vega.scm]] — rendered with
+=fatum=, =ef-cyprus=, =fundamental= and =ats=; only the =document-theme= symbol
+changes. Every frame is a real screenshot of the generated HTML./
 
-And here is a real one, published straight from the repository:
-[[https://jointhefreeworld.org/joe-cv/][the author's CV, generated with Iter Vitae]] (also in
-[[https://jointhefreeworld.org/joe-cv/nl/][Dutch]] and [[https://jointhefreeworld.org/joe-cv/es/][Spanish]]).
+The demo is not a mockup. [[file:scripts/generate-demo][=scripts/generate-demo=]] renders the persona once
+per theme, captures each page in headless Chromium, and composes the GIF. Run
+it inside the pinned environment:
+
+#+begin_src shell
+guix shell -m manifest.scm ungoogled-chromium imagemagick font-dejavu \
+    -- ./scripts/generate-demo
+#+end_src
+
+Prefer the real thing? Here is the author's CV, published straight from the
+repository:
+
+- [[https://jointhefreeworld.org/joe-cv/][English]]
+- [[https://jointhefreeworld.org/joe-cv/nl/][Dutch]]
+- [[https://jointhefreeworld.org/joe-cv/es/][Spanish]]
 
 * Why you will like it
 :PROPERTIES:
 :CUSTOM_ID: features
 :END:
 
-- *Your CV is data, not a document.* Iter Vitae follows a
-  model–view–controller split: your persona file is the model, the theme is the
-  view. Change your job without touching a single style; change your style
-  without touching a single line of content.
-- *One source, several themes.* Switch =document-theme= from ='fatum= to
-  ='ef-cyprus= to ='fundamental= to ='ats= and re-render. The content stays;
-  the presentation changes completely.
+- *Your CV is data, not a document.* Iter Vitae follows a model–view–controller
+  split: your persona file is the model, the theme is the view. Change your job
+  without touching a single style; change your style without touching a single
+  line of content.
+- *One source, four themes.* Switch =document-theme= from ='fatum= to
+  ='ef-cyprus=, ='fundamental= or ='ats= and re-render. The content stays; the
+  presentation changes completely.
 - *Multilingual by design.* Every piece of prose is a translation alist, so one
   file holds all your languages: ~en~, ~nl~, ~es~, ~de~, ~ca~, whatever you
-  speak. Render one document per locale from the same source.
-- *Beautiful, modern output.* Static HTML with inlined CSS, bundled
-  [[https://codeberg.org/jjba23/olive-css][Olive CSS]], real typography and no JavaScript. Open it from disk, print it to
-  PDF, or serve it anywhere.
+  speak. Render one locale at a time, or ask for every locale in one command.
+- *HTML for humans.* Static HTML with inlined CSS, bundled
+  [[https://codeberg.org/jjba23/olive-css][Olive CSS]], real typography and no
+  JavaScript. Open it from disk, print it to PDF, or serve it anywhere.
 - *Plain text for applicant tracking systems.* ~--format text~ writes a
   ~resume.txt~ with conventional headings, one item per line, ~-~ bullets and no
   markup — for employers that only accept a text box. The =ats= theme does the
   same clean-up in HTML.
+- *A wizard for the first draft.* Do not want to write Scheme by hand? Run
+  ~iter-vitae --init~ and answer questions in plain language. The wizard writes
+  the persona for you, including translations and section headings.
 - *Designed for the long run.* Forty years of career means forty years of
   edits. Version-control your CV, branch it for a specific application, and
   keep the history of who you were when.
 - *Lisp all the way down.* Everything is extensible: define helpers that build
-  job entries, loop over a list of talks, compute dates, generate bullets from
-  an Org file. Guile Scheme is the configuration language, so the configuration
-  language is a programming language.
+  job entries, loop over a list of talks, compute dates, or generate bullets
+  from an Org file. Guile Scheme is the configuration language, so the
+  configuration language is a programming language.
 - *Reproducible toolchain.* Guix, Nix, a container or a distro package — the
   same sources and the same result, with the ability to roll back a bad
   upgrade. The build never fails with “it worked on my machine”.
 - *Free software, no strings.* No account, no telemetry, no network call from
-  the program itself. The MIT licence keeps the tool free for everyone who uses it.
+  the program itself. The MIT licence keeps the tool free for everyone who uses
+  it.
 - *Warm and welcoming.* Themes, translations, documentation and bug reports are
   all contributions. See [[#iter-vitae-project][Contributing]]; you are invited.
 
@@ -90,7 +128,7 @@ And here is a real one, published straight from the repository:
 :CUSTOM_ID: quick-start
 :END:
 
-/From nothing to a CV in your browser in about a minute./
+/From an empty directory to a CV you can open in your browser./
 
 ** 1. Install it
 
@@ -110,13 +148,13 @@ nix run git+https://codeberg.org/jjba23/nix-jointhefreeworld#iter-vitae -- --hel
 
 Every other route is documented in [[#installing][Installation]].
 
-** 2. Write your CV
+** 2. Write the smallest useful CV
 
 Save this as ~my-cv.scm~. The module name matters: Iter Vitae loads your file
 as the module ~(iter-vitae persona)~.
 
 #+begin_src scheme
-;;; my-cv.scm — a minimal Iter Vitae persona
+;;; my-cv.scm
 (define-module (iter-vitae persona)
   #:declarative? #t)
 
@@ -137,24 +175,21 @@ as the module ~(iter-vitae persona)~.
   `(((en . "I build small tools that respect their users.")
      (nl . "Ik bouw kleine tools die hun gebruikers respecteren."))))
 
-(define education
-  `(((name (all . "University of Example"))
-     (location (all . "Leiden, The Netherlands"))
-     (position (en . "MSc Computer Science"))
-     (time (en . "September 2018 => August 2020"))
-     (experience ((en . "Thesis on reproducible builds and boring infrastructure."))))))
-
 (define jobs
   `(((name (all . "Example B.V."))
-     (location (all . "Amsterdam, The Netherlands"))
-     (position (en . "Software Engineer"))
-     (time (en . "September 2020 => present"))
-     (experience ((en . "Shipped software that people actually use."))
-                 ((en . "Deletes more code than writes."))))))
+     (location (en . "Amsterdam, The Netherlands")
+               (nl . "Amsterdam, Nederland"))
+     (position (en . "Software Engineer")
+               (nl . "Softwareontwikkelaar"))
+     (time (en . "2020 => present")
+           (nl . "2020 => heden"))
+     (experience ((en . "Shipped software that people actually use.")
+                  (nl . "Leverde software die mensen echt gebruiken."))))))
 #+end_src
 
 Only ~display-name~ and ~job-title~ are required. Leave a field out and it is
-simply empty.
+simply empty. The ~(all . "…")~ key means “use this in every language”; the
+other keys are locale codes.
 
 If you would rather answer questions than write Scheme by hand, let the wizard
 draft the file for you:
@@ -167,25 +202,8 @@ It asks for your name, job title, contact details, links, address, summary,
 skills, jobs, education, languages, interests and driving licences. You also
 pick one of the four themes, and an optional advanced step lets you rename
 section headings in every language. Press Enter to skip an optional question;
-the wizard shows a review before writing, then you get the same Scheme file
-shown above, ready to edit. Without ~--file~, it writes ~./my-cv.scm~, and it
-asks before replacing a file that already exists. The questions use colours and
-emoji when the terminal supports them; set ~NO_COLOR=1~ to turn the styling
-off.
-
-By default the wizard asks which languages the CV should have. Enter one code,
-or several separated by commas, and the first one is used for the questions.
-Every translatable answer is then asked once per language; press Enter on a
-translation to reuse the first language. To pre-answer the question, pass the
-codes directly:
-
-#+begin_src shell
-iter-vitae --init --locales en,nl,es --file my-cv.scm
-#+end_src
-
-The generated file stores real translation alists, for example
-~((en . "Software Engineer") (nl . "Softwareontwikkelaar"))~, instead of an
-~(all . "...")~ fallback. Render the language you need with ~--locale~.
+the wizard shows a review before writing. Without ~--file~, it writes
+~./my-cv.scm~, and it asks before replacing a file that already exists.
 
 ** 3. Render it
 
@@ -206,10 +224,10 @@ If the persona defines several languages, render all of them in one run:
 iter-vitae --all-locales --file my-cv.scm --destination dist
 #+end_src
 
-That writes ~dist/en/index.html~, ~dist/nl/index.html~ and so on, one
-directory per locale found in the persona. With ~--format text~ the files are
+That writes ~dist/en/index.html~, ~dist/nl/index.html~ and so on, one directory
+per locale found in the persona. With ~--format text~ the files are
 ~dist/en/resume.txt~ and ~dist/nl/resume.txt~. A persona that only uses the
-~(all . "...")~ fallback gets one directory named after ~--locale~.
+~(all . "…")~ fallback gets one directory named after ~--locale~.
 
 Want plain text for an application form?
 
@@ -220,6 +238,13 @@ cat dist/resume.txt
 
 That is the whole loop: edit Scheme, re-render, look at the browser, commit.
 
+** 4. Make it yours
+
+The examples are deliberately small. The real field list is in
+[[#field-reference][Field reference]], and [[file:populus/joe.scm][populus/joe.scm]] uses nearly every
+feature at once. Keep your persona in the same git repository as the rest of
+your life, or in a repository of its own.
+
 * Installation
 :PROPERTIES:
 :CUSTOM_ID: installing
@@ -229,8 +254,8 @@ Iter Vitae is officially distributed through the Guix package manager and as
 container images, but you are welcome to use it however you like, within the
 terms of the MIT License.
 
-/Four routes lead to the same 1.0.2, from the most automated to the most
-manual. They all build the release tag this README documents./
+/These routes all build the same sources. Pick the one that matches the way you
+already manage software./
 
 ** What you need
 :PROPERTIES:
@@ -252,9 +277,14 @@ To run Iter Vitae:
   opened/, so use =fundamental= or =ats= on an air-gapped machine, or host
   those fonts yourself.
 
-To hack on Iter Vitae you additionally want [[https://codeberg.org/jjba23/maak][Maak]] (the task runner), [[https://codeberg.org/jjba23/veritas][Veritas]] (the test
-framework) and ~guile-documenta~ (the API documentation generator). All of them
-are in ~manifest.scm~. See [[#testing][Testing and development]].
+To hack on Iter Vitae you additionally want [[https://codeberg.org/jjba23/maak][Maak]] (the task runner),
+[[https://codeberg.org/jjba23/veritas][Veritas]] (the test framework) and ~guile-documenta~ (the API documentation
+generator). All of them are in ~manifest.scm~. See
+[[#testing][Testing and development]].
+
+To regenerate the README demo you need [[file:scripts/generate-demo][=scripts/generate-demo=]], plus
+ImageMagick, a Chromium build and the DejaVu fonts. The demo section shows the
+pinned Guix command.
 
 ** From the Guix channel
 :PROPERTIES:
@@ -265,8 +295,8 @@ are in ~manifest.scm~. See [[#testing][Testing and development]].
 build is a pure function of its inputs, so the same recipe gives the same
 result everywhere, and an upgrade that goes wrong can be rolled back.
 
-The jointhefreeworld channel carries ~iter-vitae~ at 1.0.2, so a checkout of
-the channel is enough — no package definition to write:
+The jointhefreeworld channel carries ~iter-vitae~, so a checkout of the channel
+is enough — no package definition to write:
 
 #+begin_src shell
 git clone https://codeberg.org/jjba23/guix-jointhefreeworld.git
@@ -550,9 +580,10 @@ iterate:
 darkhttpd dist --port 8080
 #+end_src
 
-Because the output is one self-contained file, deploying is a copy — the
-author's own site rebuilds and publishes his CV in three languages with a
-single ~maak deploy~.
+Because the output is one HTML file, deploying is a copy — the author's own
+site rebuilds and publishes his CV in three languages with a single ~maak
+deploy~. For an output that makes no network requests at all, use =fundamental=
+or =ats=.
 
 * Supported document themes
 :PROPERTIES:
@@ -567,12 +598,14 @@ single ~maak deploy~.
 | ~ats~         | One column, Arial 11pt, no tables, no icons, no assets   | US applicant tracking systems       |
 
 Pick one in your persona file:
+
 #+begin_src scheme
 (define document-theme 'ef-cyprus)
 #+end_src
 
 An unknown symbol falls back to =ef-cyprus=, so a typo never leaves you without
-a document.
+a document. The animated tour at the top of this README shows all four themes
+side by side in time.
 
 ** fatum
 :PROPERTIES:
@@ -581,9 +614,6 @@ a document.
 
 Joe's (jjbigorra@gmail.com / jjba23) custom theme, showcasing the hacker nature
 and tailored for engineers, computer scientists and techies.
-
-#+attr_html: :width 620px :alt The fatum theme
-[[https://jointhefreeworld.org/static-assets/iter-vitae/fatum.png]]
 
 It uses the bundled Olive CSS, Phosphor icons, and Lucida fonts served from the
 project's own site. See [[#on-lucida-fonts][On Lucida fonts]] for the licensing
@@ -598,9 +628,6 @@ Simple, clean, light and green tones with advanced typography with varying font
 families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex
 fonts. Inspired by Protesilaos ef-themes for Emacs.
 
-#+attr_html: :width 620px :alt The ef-cyprus theme
-[[https://jointhefreeworld.org/static-assets/iter-vitae/ef-cyprus.png]]
-
 ** fundamental
 :PROPERTIES:
 :CUSTOM_ID: fundamental
@@ -608,9 +635,6 @@ fonts. Inspired by Protesilaos ef-themes for Emacs.
 
 Minimalistic light and simple theme, with simple sans-serif font for everything
 and basic styles. Minimal dependencies.
-
-#+attr_html: :width 620px :alt The fundamental theme
-[[https://jointhefreeworld.org/static-assets/iter-vitae/fundamental.png]]
 
 ** ats
 :PROPERTIES:
@@ -629,8 +653,7 @@ There are no tables, images, icon fonts, web fonts, headers, footers or
 external assets. Inline HTML in persona fields is stripped so parsers receive
 plain text, and work and education entries are ordinary headings with bullet
 lists. The page prints cleanly to US Letter paper, so it can be exported to a
-text-based PDF from the browser. You can see it in the animated tour at the top
-of this document, in the last frame.
+text-based PDF from the browser.
 
 #+begin_src scheme
 (define document-theme 'ats)
@@ -774,6 +797,22 @@ The following variables are read by Iter Vitae to construct a CV:
   ~position~, ~time~, and ~experience~ (a ~list~ of ~translation-alist~
   outlining what you did or achieved, one bullet each).
 
+Inside a job or education entry, write each translated field as
+~(name (all . "…"))~, not as a bare string. That small extra pair is what lets
+the same entry hold several translations:
+
+#+begin_src scheme
+`(((name (all . "Example B.V."))
+   (location (en . "Amsterdam, The Netherlands")
+             (nl . "Amsterdam, Nederland"))
+   (position (en . "Software Engineer")
+             (nl . "Softwareontwikkelaar"))
+   (time (en . "2020 => present")
+         (nl . "2020 => heden"))
+   (experience ((en . "Shipped software that people actually use.")
+                (nl . "Leverde software die mensen echt gebruiken.")))))
+#+end_src
+
 For a "real-world" example, see [[file:populus/joe.scm][populus/joe.scm]]; for a small fictional one,
 see [[file:populus/vega.scm][populus/vega.scm]].
 
@@ -807,6 +846,53 @@ bullets:
 The same trick works for anything: read a list of talks from a file, compute
 years of experience, generate one document per locale, or build entries from an
 Org table. It is Lisp; there is no plugin API to wait for.
+
+* The wizard: a CV through questions
+:PROPERTIES:
+:CUSTOM_ID: wizard
+:END:
+
+The wizard is for the days when you want a CV, not a Scheme exercise. It asks
+plain-language questions, shows a review, and writes a persona file you can
+edit afterwards.
+
+#+begin_src shell
+iter-vitae --init --file my-cv.scm
+#+end_src
+
+It covers the whole content model: name, job title, contact details, links,
+address, short introduction, skills, jobs, education, languages, interests and
+driving licences. You choose a theme, and an optional advanced step lets you
+rename section headings. Press Enter to skip an optional question; press
+Ctrl-C at any point to leave without writing anything. The wizard never
+overwrites an existing file without asking.
+
+** Several languages from the start
+
+By default the wizard asks which languages the CV should have. Enter one code,
+or several separated by commas, and the first one is used for the questions.
+Every translatable answer is then asked once per language; press Enter on a
+translation to reuse the first language. To pre-answer the question, pass the
+codes directly:
+
+#+begin_src shell
+iter-vitae --init --locales en,nl,es --file my-cv.scm
+#+end_src
+
+The generated file stores real translation alists, for example
+~((en . "Software Engineer") (nl . "Softwareontwikkelaar"))~, instead of an
+~(all . "…")~ fallback. That means editing one language does not disturb the
+others. After saving a multi-language persona, the wizard also suggests:
+
+#+begin_src shell
+iter-vitae --all-locales --file my-cv.scm --destination dist
+#+end_src
+
+** Terminal manners
+
+The questions use colours and emoji when the terminal supports them. Styling
+is disabled automatically when output is redirected, and you can turn it off
+explicitly with ~NO_COLOR=1~.
 
 * Plain-text output
 :PROPERTIES:
@@ -916,10 +1002,10 @@ without worrying about formatting or styling.
 This tool isn't just about creating a one-off CV — it's designed for long-term
 use, so you can update and evolve your resume over the years. The software
 supports multilingual content and is fully extensible, allowing you to add new
-data entries, customize the design, etc.
+data entries, customize the design, and more.
 
-Also, version-control your CV code, and enjoy all the benefits. Work with a
-sane and flexible multi-lingual compatible data model.
+Version-control your CV code and enjoy all the benefits. Work with a sane and
+flexible multi-lingual compatible data model.
 
 Remember that with Guile Scheme, and the Lisp super-powers, everything is
 extensible, hackable and modifiable at any moment, giving you ultimate control
@@ -956,6 +1042,17 @@ maak
 | ~maak deploy~           | Render, publish and deploy the site.                            |
 | ~maak package-docker~   | Build a container image with ~guix pack~.                       |
 | ~maak container-build~  | Build the ~Dockerfile~ image with Podman.                       |
+
+The README demo has its own reproducible script, because it needs a browser
+and an image tool that the normal development shell does not:
+
+#+begin_src shell
+guix shell -m manifest.scm ungoogled-chromium imagemagick font-dejavu \
+    -- ./scripts/generate-demo
+#+end_src
+
+It rewrites ~assets/iter-vitae-demo.gif~ from the real rendered pages. Change
+~populus/vega.scm~, a theme, or the labels in the script, then rerun it.
 
 ** Running the test suite
 :PROPERTIES:
@@ -1034,7 +1131,7 @@ looking at ~resources/help.txt~.
   ~guile~ directly instead of the launcher, pass an absolute path to ~--file~.
   The installed ~iter-vitae~ launcher resolves relative paths for you.
 - *The page is empty, or a section is missing* :: The field is empty for that
-  locale. Add the locale key, or an ~(all . "...")~ fallback.
+  locale. Add the locale key, or an ~(all . "…")~ fallback.
 - *My contact details do not appear* :: ~emails~ and ~phone-numbers~ must be
   strings, not lists: ~((emails . "me@example.org"))~.
 - *My theme is ignored* :: An unknown ~document-theme~ symbol falls back to
@@ -1072,6 +1169,8 @@ Ways to help, in no particular order:
   more locales make the tool friendlier for everyone.
 - *Improve the documentation*, including this README — clarity fixes are real
   fixes.
+- *Regenerate the demo.* If you change a theme or the demo persona, rerun
+  [[file:scripts/generate-demo][=scripts/generate-demo=]] so the visual stays honest.
 - *Package it* for your distribution, or keep an existing recipe honest.
 - *Send a patch.* Fork the repository, branch from ~trunk~, keep one logical
   change per commit, run ~maak test~ and ~maak fmt~ before sending, and add a
@@ -1081,8 +1180,8 @@ Ways to help, in no particular order:
 Find the backlog and Kanban boards for iter-vitae here:
 https://lucidplan.jointhefreeworld.org/tickets/iter-vitae
 
-The source lives on Codeberg: https://codeberg.org/jjba23/iter-vitae —
-issues and pull requests are both welcome there.
+The source lives on Codeberg: https://codeberg.org/jjba23/iter-vitae — issues
+and pull requests are both welcome there.
 
 ** AI policy
 :PROPERTIES:
@@ -1116,20 +1215,14 @@ ideals of the GNU Project, we strive to uphold freedom, equality, and community
 as guiding principles. We believe that collaboration in a community of mutual
 respect is essential to creating excellent free software.
 
-* License
+* Licensing
 :PROPERTIES:
 :CUSTOM_ID: licensing
 :END:
 
-iter-vitae, including its source code, documentation and examples, is free
-software licensed under the MIT License.
+This project, and Git repository, and all of its source code are free and open software, licensed under the [[https://opensource.org/license/mit][MIT License]]
 
-https://opensource.org/license/mit
-
-The full text lives in [[file:COPYING][COPYING]]. In short: you may use, copy, modify,
-merge, publish, distribute, sublicense and sell copies of Iter Vitae, provided
-the copyright notice and this permission notice travel with it. The software
-comes with no warranty. Contributions are accepted under the same licence.
+The documentation and examples, including this document, which are provided, are all licensed under the [[https://creativecommons.org/licenses/by/4.0/][CC BY 4.0 (Creative Commons Attribution)]] license.
 
 The bundled Olive CSS stylesheets in ~resources/css/~ come from the
 [[https://codeberg.org/jjba23/olive-css][olive-css]] project and remain under the GNU Lesser General Public License v3
@@ -1160,12 +1253,6 @@ A build should never fail because "it worked on my machine." Reliable software
 development requires explicit, bit-for-bit reproducibility and a functional
 approach to package management and system deployment.
 
-#+BEGIN_EXPORT html
-<a href="https://guix.gnu.org/">
-  <img src="https://jointhefreeworld.org/ggg/dist/gnu-guix.svg" alt="GNU Guix logo" style="max-width: 250px; width: 100%; height: auto;" />
-</a>
-#+END_EXPORT
-
 - *Declarative Build Graphs:* Packages are pure functions of their inputs with
   no implicit system state.
 - *Programmable with Guile:* Full system and package configurations written in
@@ -1178,9 +1265,6 @@ approach to package management and system deployment.
   package builds, and full system configurations.
 
 ---------------------
-
-#+attr_html: :width 120px
-[[https://jointhefreeworld.org/static-assets/iter-vitae/iter-vitae-small-logo.png]]
 
 /Iter Vitae — your life's journey, in Scheme./ Made with free software, for
 people who intend to keep their CV for a long time.

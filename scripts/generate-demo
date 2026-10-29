@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+
+# iter-vitae
+#
+# SPDX-License-Identifier: MIT
+# Copyright © Josep Bigorra <jjbigorra@gmail.com>
+
+# Commentary:
+#
+# Generate the README demo from the real program:
+#
+#   - copy populus/vega.scm once per theme, replacing document-theme;
+#   - render each copy with the normal CLI and bundled resources;
+#   - capture each page in headless Chromium at 1200x1750;
+#   - add a small theme label and compose assets/iter-vitae-demo.gif.
+#
+# The output is intentionally not a mockup.  It is the HTML that a user gets
+# from `iter-vitae --file populus/vega.scm` after changing one symbol.
+#
+# Requirements: Guile 3.0, ImageMagick, headless Chromium (or Google Chrome),
+# and the DejaVu fonts used for the labels.
+#
+# The pinned, reproducible way to run this from a checkout is:
+#
+#   guix shell -m manifest.scm ungoogled-chromium imagemagick font-dejavu \
+#       -- ./scripts/generate-demo
+#
+# The script also works with an existing Guile/ImageMagick/Chromium setup.
+# Set ITER_VITAE_DEMO_PERSONA, ITER_VITAE_DEMO_LOCALE or
+# ITER_VITAE_DEMO_OUTPUT to override the defaults.
+
+set -euo pipefail
+
+root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+persona=${ITER_VITAE_DEMO_PERSONA:-"$root/populus/vega.scm"}
+locale=${ITER_VITAE_DEMO_LOCALE:-en}
+output=${ITER_VITAE_DEMO_OUTPUT:-"$root/assets/iter-vitae-demo.gif"}
+
+themes=(fatum ef-cyprus fundamental ats)
+accents=('#d6b25e' '#7aa88a' '#5b8ca8' '#64748b')
+blurbs=('typographic · technical'
+        'light · green · IBM Plex'
+        'minimal · offline-safe'
+        'one column · ATS-first')
+
+# The browser viewport is a little taller than the composed frame.  The
+# capture is scaled down to FRAME_WIDTH and cropped at FRAME_HEIGHT; the
+# footer then names the theme without covering the page itself.
+capture_width=1200
+capture_height=1750
+frame_width=900
+frame_height=1260
+footer_height=80
+
+die() {
+  printf 'generate-demo: %s\n' "$*" >&2
+  exit 1
+}
+
+command -v guile >/dev/null 2>&1 ||
+  die "guile not found; run the Guix command from the header"
+
+if command -v magick >/dev/null 2>&1; then
+  magick=(magick)
+elif command -v convert >/dev/null 2>&1; then
+  # ImageMagick 6 ships `convert' instead of the `magick' wrapper.
+  magick=(convert)
+else
+  die "ImageMagick not found; run the Guix command from the header"
+fi
+
+browser=
+for candidate in chromium ungoogled-chromium chromium-browser \
+                 google-chrome google-chrome-stable; do
+  if command -v "$candidate" >/dev/null 2>&1; then
+    browser=$candidate
+    break
+  fi
+done
+
+chrome_mac="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+if [[ -z "$browser" && -x "$chrome_mac" ]]; then
+  browser=$chrome_mac
+fi
+
+[[ -n "$browser" ]] ||
+  die "headless Chromium or Google Chrome not found; run the Guix command from the header"
+
+[[ -f "$persona" ]] || die "persona not found: $persona"
+
+# The demo persona carries its theme on one line below document-theme.  Read
+# that symbol so changing vega.scm later does not require editing this script.
+source_theme=$(sed -n "s/^[[:space:]]*'\([a-z][a-z-]*\))[[:space:]]*$/\1/p" \
+                   "$persona" | head -n 1)
+[[ -n "$source_theme" ]] ||
+  die "could not find document-theme in $persona"
+
+# Use the actual font files when fontconfig can tell us where they are.  This
+# works in a Guix shell where the font family names are not registered with
+# ImageMagick, and falls back to its normal family lookup elsewhere.
+font_regular='DejaVu-Sans'
+font_bold='DejaVu-Sans-Bold'
+if command -v fc-match >/dev/null 2>&1; then
+  regular_file=$(fc-match -f '%{file}' 'DejaVu Sans')
+  bold_file=$(fc-match -f '%{file}' 'DejaVu Sans:style=Bold')
+  if [[ -f "$regular_file" ]]; then font_regular=$regular_file; fi
+  if [[ -f "$bold_file" ]]; then font_bold=$bold_file; fi
+fi
+
+tmp=$(mktemp -d "${TMPDIR:-/tmp}/iter-vitae-demo.XXXXXX")
+trap 'rm -rf "$tmp"' EXIT
+mkdir -p "$tmp/html" "$tmp/shots"
+
+chrome_args=(--headless=new
+             --disable-gpu
+             --disable-dev-shm-usage
+             --no-first-run
+             --no-default-browser-check
+             --hide-scrollbars
+             --force-device-scale-factor=1
+             --virtual-time-budget=8000
+             --window-size=${capture_width},${capture_height})
+
+if [[ $(id -u) -eq 0 ]]; then
+  chrome_args+=(--no-sandbox)
+fi
+
+capture() {
+  local theme=$1
+  local html=$tmp/html/$theme/index.html
+  local shot=$tmp/shots/$theme.png
+  local log=$tmp/chrome-$theme.log
+  local url="file://$(printf '%s' "$html" | sed 's/ /%20/g')"
+
+  rm -f "$shot"
+  if ! "$browser" "${chrome_args[@]}" \
+       --user-data-dir="$tmp/chrome-$theme" \
+       --screenshot="$shot" "$url" >"$log" 2>&1; then
+    # Older Chromium forks only understand the original --headless spelling.
+    if ! "$browser" "${chrome_args[@]/--headless=new/--headless}" \
+         --user-data-dir="$tmp/chrome-$theme-old" \
+         --screenshot="$shot" "$url" >>"$log" 2>&1; then
+      cat "$log" >&2
+      die "could not capture $theme"
+    fi
+  fi
+
+  [[ -s "$shot" ]] || {
+    cat "$log" >&2
+    die "Chromium wrote no screenshot for $theme"
+  }
+}
+
+for i in "${!themes[@]}"; do
+  theme=${themes[$i]}
+  printf 'Rendering %s...\n' "$theme"
+
+  theme_persona=$tmp/persona-$theme.scm
+  sed "s/'${source_theme})/'${theme})/" "$persona" > "$theme_persona"
+
+  # A typo in the source file or a theme-name change should fail loudly rather
+  # than silently generate the same theme four times.
+  grep -Fq "'${theme})" "$theme_persona" ||
+    die "could not switch $persona to $theme"
+
+  guile -L "$root/src" -c '((@(iter-vitae main) main))' \
+    --file "$theme_persona" \
+    --destination "$tmp/html/$theme" \
+    --resources "$root/resources" \
+    --locale "$locale" >"$tmp/render-$theme.log" 2>&1 ||
+    { cat "$tmp/render-$theme.log" >&2; die "could not render $theme"; }
+
+  [[ -f "$tmp/html/$theme/index.html" ]] ||
+    { cat "$tmp/render-$theme.log" >&2; die "renderer wrote no HTML for $theme"; }
+
+  capture "$theme"
+
+  printf 'Composing %s (%s)...\n' "$theme" "${blurbs[$i]}"
+  index=$(printf '%02d' "$((i + 1))")
+  "${magick[@]}" "$tmp/shots/$theme.png" \
+    -resize ${frame_width}x${frame_height}^ \
+    -gravity north -crop ${frame_width}x${frame_height}+0+0 +repage \
+    -background '#0b1220' -gravity south -splice 0x${footer_height} \
+    -fill "${accents[$i]}" \
+    -draw "rectangle 0,${frame_height} ${frame_width},$((frame_height + 4))" \
+    -font "$font_bold" -pointsize 23 -fill '#f8fafc' \
+    -gravity southwest -annotate +40+38 "$theme" \
+    -font "$font_regular" -pointsize 14 -fill '#94a3b8' \
+    -gravity southwest -annotate +40+17 "${blurbs[$i]}" \
+    -font "$font_bold" -pointsize 18 -fill '#94a3b8' \
+    -gravity southeast -annotate +40+38 "$index / 04" \
+    +gravity "$tmp/frame-$theme.png"
+done
+
+printf 'Writing %s...\n' "$output"
+mkdir -p "$(dirname "$output")"
+"${magick[@]}" -delay 320 -loop 0 \
+  "$tmp/frame-fatum.png" \
+  "$tmp/frame-ef-cyprus.png" \
+  "$tmp/frame-fundamental.png" \
+  "$tmp/frame-ats.png" \
+  -layers optimize -strip "$tmp/iter-vitae-demo.gif"
+
+mv "$tmp/iter-vitae-demo.gif" "$output"
+chmod 0644 "$output"
+
+printf 'Done: %s (%s)\n' "$output" "$(du -h "$output" | cut -f1)"

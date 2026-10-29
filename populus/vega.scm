@@ -1,16 +1,16 @@
-;;; iter-vitae
+;; iter-vitae
 ;;
 ;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
 ;; A second, fictional persona.  Every name, employer, address and detail
 ;; below is invented: use this file as a template when you write your own CV,
-;; and as the source of the screenshots in the README and assets/.
+;; and as the source of the demo in assets/iter-vitae-demo.gif.
 ;;
-;; To reproduce those images, change ~document-theme~ to each supported theme
-;; and render once per theme, for example:
+;; Regenerate the demo with:
 ;;
-;;   iter-vitae --file "$PWD/populus/vega.scm" --destination ./dist
+;;   guix shell -m manifest.scm ungoogled-chromium imagemagick font-dejavu \
+;;       -- ./scripts/generate-demo
 ;;
 ;; See populus/joe.scm for a real, multilingual CV with three locales.
 
