@@ -265,10 +265,10 @@
   (let loop ()
     (let* ((answer (ask label #:default (number->string default)))
            (level (string->number answer)))
-      (if (and (exact-integer? level) (<= 1 level 4))
+      (if (and (exact-integer? level) (<= 1 level 5))
           level
           (begin
-            (hint "⚠ Please type a number from 1 to 4.")
+            (hint "⚠ Please type a number from 1 to 5.")
             (loop))))))
 
 ;; ---------------------------------------------------------------------------
@@ -322,7 +322,7 @@
   (let ((code (ask-language-code))
         (name (ask-translated "Language name" #:locales locales #:required? #t
                               #:help "For example: English, Dutch, Spanish.")))
-    (hint "Rate reading, speaking and writing from 1 (basic) to 4 (native).")
+    (hint "Rate reading, speaking and writing from 1 (elementary) to 5 (native or bilingual).")
     (cons code
           (list (cons 'name name)
                 (cons 'proficiency
@@ -598,18 +598,21 @@
 ;; document locale, so the generated scale follows the languages chosen in the
 ;; wizard rather than the language codes of the rows themselves.
 (define proficiency-labels
-  '((en (1 . "Elementary proficiency")
-        (2 . "Limited working proficiency")
-        (3 . "Professional proficiency")
-        (4 . "Native / bilingual"))
-    (nl (1 . "Elementaire vaardigheid")
-        (2 . "Beperkte werkvaardigheid")
-        (3 . "Professioneel vaardig")
-        (4 . "Moedertaal / tweetalig"))
-    (es (1 . "Competencia elemental")
-        (2 . "Competencia limitada")
-        (3 . "Competencia profesional")
-        (4 . "Nativo / bilingüe"))))
+  '((en (1 . "Elementary")
+        (2 . "Limited working")
+        (3 . "Professional")
+        (4 . "Full professional")
+        (5 . "Native / bilingual"))
+    (nl (1 . "Elementair")
+        (2 . "Beperkt werkzaam")
+        (3 . "Professioneel")
+        (4 . "Volledig professioneel")
+        (5 . "Moedertaal / tweetalig"))
+    (es (1 . "Elemental")
+        (2 . "Laboral limitado")
+        (3 . "Profesional")
+        (4 . "Profesional pleno")
+        (5 . "Nativo / bilingüe"))))
 
 (define (render-language-proficiency locale)
   (let ((labels (or (assq-ref proficiency-labels locale)
@@ -703,6 +706,9 @@
 (define-module (iter-vitae persona)
   #:declarative? #t)
 
+;; Optional profile picture: a path relative to this file, or an https:// URL.
+;; (define profile-picture ~s)
+
 (define document-theme '~a)
 
 (define display-name
@@ -712,8 +718,8 @@
   `~a)
 
 "
-            (locale-code (car locales))
-            (translation-value display-name (car locales)) file theme
+            (translation-value display-name (car locales))
+            (locale-code (car locales)) file "portrait.jpg" theme
             (render-translation display-name)
             (render-translation job-title))
 

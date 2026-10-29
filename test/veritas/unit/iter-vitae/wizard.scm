@@ -207,9 +207,9 @@
                                                       (nl . "Bouwde")))))))
                             (languages . ((en . ((name . ((en . "English")
                                                           (nl . "Engels")))
-                                                  (proficiency . ((reading . 4)
-                                                                  (speaking . 4)
-                                                                  (writing . 4)))))))
+                                                  (proficiency . ((reading . 5)
+                                                                  (speaking . 5)
+                                                                  (writing . 5)))))))
                             (document-theme . ats)))
                          (source (persona-source persona #:locales '(en nl))))
                     (expect-contains source "(nl . \"Bouwde\")"
@@ -218,7 +218,7 @@
                                      "(name . ((en . \"English\") (nl . \"Engels\")))"
                                      "translated language name")
                     (expect-contains source
-                                     "(nl (1 . \"Elementaire vaardigheid\")"
+                                     "(nl (1 . \"Elementair\")"
                                      "Dutch proficiency labels")
                     (expect-not-contains source "(all ."
                                         "language-independent fallback")
@@ -294,9 +294,9 @@
                             (driver-licenses . ("B"))
                             (interests-hobbies . ("Guitar" "Reading"))
                             (languages . ((en . ((name . ((all . "English")))
-                                                (proficiency . ((reading . 4)
-                                                                (speaking . 4)
-                                                                (writing . 4)))))))
+                                                (proficiency . ((reading . 5)
+                                                                (speaking . 5)
+                                                                (writing . 5)))))))
                             (education . (((name . "University of Example")
                                            (location . "Leiden")
                                            (position . "MSc Computer Science")
@@ -323,7 +323,7 @@
                     (expect-contains source "(define skills" "skills")
                     (expect-contains source "(define languages" "languages")
                     (expect-contains source
-                                     "(4 . \"Native / bilingual\")"
+                                     "(5 . \"Native / bilingual\")"
                                      "proficiency scale")
                     (expect-contains source "(define address-lines" "addresses")
                     (expect-contains source "(define driver-licenses" "driving")

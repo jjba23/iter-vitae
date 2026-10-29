@@ -15,7 +15,8 @@
 ;; - contact details and links in the body as selectable text, never icons;
 ;; - conventional headings such as "Professional Summary", "Skills" and
 ;;   "Work Experience";
-;; - no images, icon fonts, web fonts, headers, footers or external assets.
+;; - no images (including profile pictures), icon fonts, web fonts, headers,
+;;   footers or external assets.
 ;;
 ;; Persona strings may contain the inline HTML documented in the README.  For
 ;; this theme those tags are stripped (see `plain-text') so a parser never sees
@@ -105,8 +106,23 @@ a {
   margin: 4pt 0 0 0;
 }
 
+.entry {
+  margin: 0 0 10pt 0;
+  break-inside: avoid;
+}
+
+.entry:last-child {
+  margin-bottom: 0;
+}
+
 .meta {
   margin: 0 0 4pt 0;
+  break-after: avoid;
+}
+
+h2,
+h3 {
+  break-after: avoid;
 }
 
 @media print {
@@ -314,11 +330,7 @@ a {
               (or (assq-ref persona 'education) '())))
 
 (define* (proficiency-description #:key persona locale level)
-  (let* ((scale (assq-ref persona 'language-proficiency))
-         (levels (and (list? scale)
-                      (assq-ref-all-or-lang scale locale))))
-    (and (list? levels)
-         (assoc-ref levels level))))
+  (language-proficiency-label persona locale level))
 
 (define* (render-languages #:key locale persona)
   (let ((items
@@ -326,7 +338,7 @@ a {
           (lambda (language)
             (let* ((name (ats-text (assq-ref language 'name) locale))
                    (proficiency (assq-ref language 'proficiency))
-                   (details
+                   (skills
                     (filter-map
                      (lambda (skill-key)
                        (let ((level (and (list? proficiency)
@@ -340,14 +352,25 @@ a {
                                                              #:locale locale
                                                              #:level level)))
                                 (and description
-                                     (format #f "~a: ~a" label description))))))
-                     '(reading speaking writing))))
+                                     (cons label description))))))
+                     '(reading speaking writing)))
+                   (detail
+                    (cond
+                      ((null? skills) "")
+                      ((every (lambda (skill)
+                                (string=? (cdr (car skills)) (cdr skill)))
+                              skills)
+                       (string-append " - " (cdr (car skills))))
+                      (else
+                       (string-append
+                        " - "
+                        (string-join
+                         (map (lambda (skill)
+                                (format #f "~a: ~a" (car skill) (cdr skill)))
+                              skills)
+                         "; "))))))
               (and (not (string-null? name))
-                   `(li (strong ,name)
-                        ,(if (null? details)
-                             ""
-                             (string-append " - "
-                                            (string-join details "; ")))))))
+                   `(li (strong ,name) ,detail))))
           (or (assq-ref persona 'languages) '()))))
     (if (null? items)
         '()

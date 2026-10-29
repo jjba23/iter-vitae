@@ -40,7 +40,8 @@
                                      "education entry")
                     (expect-contains resume "Scala, Kubernetes, PostgreSQL"
                                      "skills line")
-                    (expect-contains resume "Driving: B, A" "driver license")
+                    (expect-contains resume "Driving licence: B, A"
+                                     "driver license")
                     (expect-contains resume "Interests & Hobbies: Testing, Lisp"
                                      "interests")))))
          (test "keeps contact details as visible text"
@@ -139,7 +140,7 @@
                                      "Dutch summary")
                     (expect-contains resume "WERKERVARING" "Dutch work")
                     (expect-contains resume "OPLEIDING" "Dutch education")
-                    (expect-contains resume "TAALVAARDIGHEID"
+                    (expect-contains resume "TALEN"
                                      "Dutch languages")))))
          (test "omits sections the persona did not configure"
                (assert-no-error

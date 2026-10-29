@@ -92,6 +92,46 @@
                          (expect-contains (read-index destination)
                                           "mailto:ada@example.org"
                                           "contact details"))))))))
+         (test "embeds a local profile picture relative to the persona"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (write-file (in-vicinity root "portrait.svg") "<svg/>")
+                     (let-values (((status output file resources destination)
+                                   (render #:root root
+                                           #:persona
+                                           (cons (cons 'profile-picture
+                                                       "portrait.svg")
+                                                 (filter
+                                                  (lambda (pair)
+                                                    (not (eq? (car pair)
+                                                              'profile-picture)))
+                                                  rich-persona)))))
+                       (expect-equal 0 status "renderer exit status")
+                       (expect-contains (read-index destination)
+                                        "data:image/svg+xml;base64,PHN2Zy8+"
+                                        "embedded profile picture")))))))
+         (test "text output ignores profile pictures"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (let-values (((status output file resources destination)
+                                   (render #:root root
+                                           #:persona
+                                           (cons (cons 'profile-picture
+                                                       "missing.png")
+                                                 (filter
+                                                  (lambda (pair)
+                                                    (not (eq? (car pair)
+                                                              'profile-picture)))
+                                                  rich-persona))
+                                           #:output-format "text")))
+                       (expect-equal 0 status "renderer exit status")
+                       (expect-not-contains (read-text destination)
+                                            "missing.png"
+                                            "text profile picture")))))))
          (test "renders one directory per persona locale"
                (assert-no-error
                 (lambda ()

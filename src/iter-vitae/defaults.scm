@@ -6,6 +6,7 @@
 (define-module (iter-vitae defaults)
   #:declarative? #t
   #:export (display-name job-title job-title-link
+                         profile-picture
                          personal-contact
                          personal-links
                          address-lines
@@ -27,6 +28,19 @@
 ;;
 (define display-name
   `())
+
+;; Optional profile picture.  Use a path relative to this persona file, an
+;; absolute path, an http(s) URL or a data:image URI.  Local PNG, JPEG, WebP,
+;; GIF, AVIF and SVG images are embedded as data URIs, so the generated CV
+;; stays self-contained.  The `ats' theme deliberately omits pictures because
+;; resume parsers cannot use them.
+;;
+;; example:
+;;
+;; (define profile-picture "../assets/portrait.jpg")
+;;
+(define profile-picture
+  #f)
 
 ;; Primary job title of persona
 ;;
@@ -100,39 +114,51 @@
 (define interests-hobbies
   `())
 
-;; Language skills of persona
+;; Language skills of persona.  Each proficiency is measured from 1 to 5,
+;; following the scale used by LinkedIn and most CV guides:
 ;;
-;; proficiency is measure from 0 to 4,
-;; 0 being basic, 4 being native
+;;   1 Elementary           2 Limited working      3 Professional working
+;;   4 Full professional    5 Native or bilingual
+;;
+;; Scores may differ per skill; the visual themes show them as a compact
+;; reading / speaking / writing table, while the ATS and text output spell
+;; every level out in words.
 ;;
 ;; example:
 ;;
 ;; `((en . ((name . ((en . "English")
 ;;                   (nl . "Engels")))
-;;          (proficiency . ((reading . 4)
-;;                          (speaking . 3)
-;;                          (writing . 4)))))
+;;          (proficiency . ((reading . 5)
+;;                          (speaking . 5)
+;;                          (writing . 5)))))
 ;;   (nl . ((name . ((en . "Dutch")
 ;;                   (nl . "Nederlands")))
-;;          (proficiency . ((reading . 3)
-;;                          (speaking . 3)
-;;                          (writing . 2))))))
+;;          (proficiency . ((reading . 4)
+;;                          (speaking . 4)
+;;                          (writing . 3))))))
 ;;
 (define languages
   `())
 
-;; Language proficiency levels
-;;
-;; `((en (1 . "Elementary Proficiency")
-;;       (2 . "Limited Working Proficiency")
-;;       (3 . "Professional Proficiency")
-;;       (4 . "Native / Bilingual"))
-;;   (nl (1 . "Elementaire Vaardigheid")
-;;       (2 . "Beperkte Werkvaardigheid")
-;;       (3 . "Professioneel Vaardig")
-;;       (4 . "Moedertaal / Tweetalig")))
+;; Language proficiency labels, keyed by document locale.  The default covers
+;; English, Dutch and Spanish; define this field only to use another scale or
+;; wording.  Keep the values short: the visual themes show them inside a table.
 (define language-proficiency
-  `())
+  '((en (1 . "Elementary")
+        (2 . "Limited working")
+        (3 . "Professional")
+        (4 . "Full professional")
+        (5 . "Native / bilingual"))
+    (nl (1 . "Elementair")
+        (2 . "Beperkt werkzaam")
+        (3 . "Professioneel")
+        (4 . "Volledig professioneel")
+        (5 . "Moedertaal / tweetalig"))
+    (es (1 . "Elemental")
+        (2 . "Laboral limitado")
+        (3 . "Profesional")
+        (4 . "Profesional pleno")
+        (5 . "Nativo / bilingüe"))))
 
 ;; Education and certifications of persona
 ;;
@@ -159,42 +185,45 @@
   `((education (en . "Education")
                (nl . "Opleiding")
                (es . "Educación"))
-    (driver-license (en . "Driving")
+    (driver-license (en . "Driving licence")
                     (nl . "Rijbewijs")
-                    (es . "Conducción"))
+                    (es . "Permiso de conducir"))
     (interests-hobbies (en . "Interests & Hobbies")
-                       (nl . "Interesses & Hobbies")
-                       (es . "Intereses & Hobbies"))
+                       (nl . "Interesses en hobby's")
+                       (es . "Intereses y aficiones"))
     (language (en . "Languages")
-              (nl . "Taalvaardigheid")
+              (nl . "Talen")
               (es . "Idiomas"))
+    (language-name (en . "Language")
+                   (nl . "Taal")
+                   (es . "Idioma"))
     (my-links (en . "Me on the Internet")
-              (nl . "Ik op Internet")
-              (es . "Yo en Internet"))
+              (nl . "Mijn links")
+              (es . "Enlaces"))
     (speaking (en . "Speaking")
               (nl . "Spreken")
-              (es . "Hablar"))
+              (es . "Expresión oral"))
     (reading (en . "Reading")
              (nl . "Lezen")
-             (es . "Leer"))
+             (es . "Lectura"))
     (writing (en . "Writing")
              (nl . "Schrijven")
-             (es . "Escribir"))
+             (es . "Expresión escrita"))
     (short-intro (en . "Who am I?")
-                 (nl . "Wie ben ik ?")
-                 (es . "¿Quién soy yo?"))
+                 (nl . "Wie ben ik?")
+                 (es . "¿Quién soy?"))
     (professional-summary (en . "Professional Summary")
-                          (nl . "Professioneel Profiel")
-                          (es . "Resumen Profesional"))
+                          (nl . "Professioneel profiel")
+                          (es . "Resumen profesional"))
     (skills (en . "Skills")
             (nl . "Vaardigheden")
             (es . "Habilidades"))
     (additional-information (en . "Additional Information")
-                            (nl . "Aanvullende Informatie")
-                            (es . "Información Adicional"))
+                            (nl . "Aanvullende informatie")
+                            (es . "Información adicional"))
     (work-experience (en . "Work Experience")
                      (nl . "Werkervaring")
-                     (es . "Experiencia Laboral"))))
+                     (es . "Experiencia profesional"))))
 
 ;; Skills that should be easy for an ATS to find.  The `ats' theme renders
 ;; these as one comma-separated line, so spell out the terms a recruiter or a

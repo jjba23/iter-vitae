@@ -3,43 +3,58 @@
 ;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
+;;; Commentary:
+;;
+;; A real, multilingual persona.  It is ordinary Scheme: change values, add
+;; jobs, or factor repeated entries into functions.  The visual themes use the
+;; translations below; the ATS and plain-text renderers flatten them.
+;;
+;;; Code:
+
 (define-module (iter-vitae persona)
   #:declarative? #t)
+
+;; Optional: a portrait makes the visual themes feel more personal.  Use a
+;; square image around 400-600 px, either a local PNG/JPEG/WebP/SVG or an
+;; https:// URL.  Local paths are relative to this file; the renderer embeds
+;; the image in the HTML so the CV remains a single, self-contained file.
+;;
+;; (define profile-picture "../assets/portrait.jpg")
 
 (define document-theme
   'fatum)
 
 (define display-name
-  `((all . "Josep Bigorra")))
+  '((all . "Josep Bigorra")))
 
 (define job-title-link
-  `((all . "https://en.wikipedia.org/wiki/Software_engineering")))
+  '((all . "https://en.wikipedia.org/wiki/Software_engineering")))
 
 (define job-title
-  `((en . "Software Engineer ⚙️") (nl . "Software Engineer ⚙️")
+  '((en . "Software Engineer ⚙️") (nl . "Software Engineer ⚙️")
     (es . "Ingeniero de Software ⚙️")))
 
 (define personal-contact
-  `((emails . "jjbigorra@gmail.com") (phone-numbers . "+31 639825138")))
+  '((emails . "jjbigorra@gmail.com") (phone-numbers . "+31 639825138")))
 
 (define personal-links
-  `((blog . "jointhefreeworld.org") (code . "codeberg.org/jjba23")
+  '((blog . "jointhefreeworld.org") (code . "codeberg.org/jjba23")
     (linked-in . "linkedin.com/in/josepjba")))
 
 (define address-lines
-  `(((all . "1441KH Purmerend"))
+  '(((all . "1441KH Purmerend"))
     ((en . "The Netherlands") (nl . "Nederland")
      (es . "Países Bajos"))))
 
 (define driver-licenses
-  `(((en . "B driver's license, vehicles up to 3.5t")
-     (nl . "Rijbewijs B, voertuigen t/m 3,5t")
-     (es . "Permiso de conducir B, vehículos hasta 3,5t"))))
+  '(((en . "Category B (vehicles up to 3.5 t)")
+     (nl . "Categorie B (voertuigen tot 3,5 t)")
+     (es . "Categoría B (vehículos hasta 3,5 t)"))))
 
 (define interests-hobbies
-  `(((en . "Building and configuring custom computers, publishing technical insights via a personal blog, and playing tactical strategy games. Programming Lisp, and using Emacs.")
-     (nl . "Bouwen en configureren van computers, publiceren van technische inzichten op een blog en het spelen van strategische spellen. Lisp programmeren, en Emacs gebruiken.")
-     (es . "Montaje y configuración de ordenadores personalizados, publicación de análisis tecnológicos en blog propio y juegos de estrategia táctica. Programando Lisp, y usando Emacs."))
+  '(((en . "Building and configuring custom computers, publishing technical insights via a personal blog, and playing tactical strategy games. Programming Lisp, and using Emacs.")
+     (nl . "Bouwen en configureren van aangepaste computers, publiceren van technische inzichten op een blog en het spelen van strategische spellen. Programmeren in Lisp en leven in Emacs.")
+     (es . "Montaje y configuración de ordenadores personalizados, publicación de análisis tecnológicos en un blog propio y juegos de estrategia táctica. Programar en Lisp y vivir en Emacs."))
     ((en . "Playing classical and electric guitar 🎸.")
      (nl . "Spelen van klassieke en elektrische gitaar 🎸.")
      (es . "Interpretación de guitarra clásica y eléctrica 🎸."))
@@ -50,44 +65,47 @@
 ;; ====== Languages ======
 
 (define language-proficiency
-  `((en (1 . "Elementary Proficiency")
-        (2 . "Basic Proficiency")
-        (3 . "Professional Proficiency")
-        (4 . "Native / Bilingual"))
-    (nl (1 . "Elementaire Vaardigheid")
-        (2 . "Basis Vaardigheid")
-        (3 . "Professioneel Vaardig")
-        (4 . "Moedertaal / Tweetalig"))
-    (es (1 . "Competencia Elemental")
-        (2 . "Competencia Básica")
-        (3 . "Competencia Profesional")
-        (4 . "Nativo / Bilingüe"))))
+  '((en (1 . "Elementary")
+        (2 . "Limited working")
+        (3 . "Professional")
+        (4 . "Full professional")
+        (5 . "Native / bilingual"))
+    (nl (1 . "Elementair")
+        (2 . "Beperkt werkzaam")
+        (3 . "Professioneel")
+        (4 . "Volledig professioneel")
+        (5 . "Moedertaal / tweetalig"))
+    (es (1 . "Elemental")
+        (2 . "Laboral limitado")
+        (3 . "Profesional")
+        (4 . "Profesional pleno")
+        (5 . "Nativo / bilingüe"))))
 
 (define languages
-  `((en (name (en . "🇬🇧 English")
+  '(    (en (name (en . "🇬🇧 English")
               (nl . "🇬🇧 Engels")
               (es . "🇬🇧 Inglés"))
-        (proficiency (reading . 4)
-                     (speaking . 4)
-                     (writing . 4)))
+        (proficiency (reading . 5)
+                     (speaking . 5)
+                     (writing . 5)))
     (nl (name (en . "🇳🇱 Dutch")
               (nl . "🇳🇱 Nederlands")
               (es . "🇳🇱 Neerlandés"))
-        (proficiency (reading . 3)
-                     (speaking . 3)
+        (proficiency (reading . 4)
+                     (speaking . 4)
                      (writing . 3)))
-    (cat (name (en . "🇪🇸 Catalan")
-               (nl . "🇪🇸 Catalaans")
-               (es . "🇪🇸 Catalán"))
-         (proficiency (reading . 4)
-                      (speaking . 4)
-                      (writing . 3)))
+    (ca (name (en . "Catalan")
+              (nl . "Catalaans")
+              (es . "Catalán"))
+        (proficiency (reading . 5)
+                     (speaking . 4)
+                     (writing . 4)))
     (es (name (en . "🇪🇸 Spanish")
               (nl . "🇪🇸 Spaans")
               (es . "🇪🇸 Español"))
-        (proficiency (reading . 4)
-                     (speaking . 4)
-                     (writing . 4)))
+        (proficiency (reading . 5)
+                     (speaking . 5)
+                     (writing . 5)))
     (pt (name (en . "🇵🇹 Portuguese")
               (nl . "🇵🇹 Portugees")
               (es . "🇵🇹 Portugués"))
@@ -96,17 +114,17 @@
                      (writing . 4)))))
 
 (define short-intro
-  `(((en . "Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
+  '(((en . "Software Engineer with extensive Full-Stack experience and a deep DevOps mindset. Proven track record of transforming complex architectural challenges into clean, maintainable, and high-impact code from requirements gathering to production optimization.")
      (nl . "Software Engineer met brede full-stack ervaring en een sterke DevOps-mentaliteit. Ervaren in het transformeren van complexe architectuuruitdagingen naar schone, onderhoudbare en impactvolle code, van requirements-analyse tot productie-optimalisatie.")
      (es . "Ingeniero de Software con experiencia Full-Stack y mentalidad DevOps. Capaz de transformar desafíos arquitectónicos complejos en código limpio, mantenible y de alto impacto, desde la definición de requisitos hasta la optimización en producción."))
-    ((en . "Delivering robust software solutions using diverse technologies, including Scala, Kotlin, Java, Go and more.")
-     (nl . "Ontwerper van robuuste software oplossingen met diverse tech-stacks, waaronder Scala, Kotlin, Java, Go en meer.")
-     (es . "Diseño y construcción de soluciones robustas utilizando una variedad de lenguajes como Scala, Kotlin, Java, Go y mas."))))
+    ((en . "Delivering robust software using diverse technologies, including Scala, Kotlin, Java, Go and more.")
+     (nl . "Levert robuuste software met uiteenlopende technologieën, waaronder Scala, Kotlin, Java, Go en meer.")
+     (es . "Entrega de soluciones de software robustas con diversas tecnologías, incluyendo Scala, Kotlin, Java, Go y más."))))
 
 ;; ====== Education ======
 
 (define joe-internship-liderlink
-  `((name (all . "Liderlink Business Solutions"))
+  '((name (all . "Liderlink Business Solutions"))
     (location (all . "Parchal, Portugal"))
     (position (en . "Back-end Developer Internship")
               (nl . "Back-end Ontwikkelaar Stage")
@@ -119,7 +137,8 @@
                  (es . "Desarrollo de operaciones CRUD con PHP, JavaScript, jQuery y MySQL en plataformas empresariales de gestión inmobiliaria, hotelera y de personal.")))))
 
 (define education
-  `(((name (all . "Leading Self"))
+  (list
+   '((name (all . "Leading Self"))
      (location (en . "Maarssen, The Netherlands")
                (nl . "Maarssen, Nederland")
                (es . "Maarssen, Países Bajos"))
@@ -132,24 +151,24 @@
      (experience ((en . "Training in leadership, interpersonal dynamics, and high-empathy professional collaboration.")
                   (nl . "Leiderschapstraining afgerond gericht op interpersoonlijke dynamiek, effectieve samenwerking en werkplaatsempathie.")
                   (es . "Formación en liderazgo enfocado en relaciones interpersonales, dinámicas de colaboración y empatía laboral."))))
-    ,joe-internship-liderlink
-    ((name (all . "Universidade do Algarve"))
+   joe-internship-liderlink
+   '((name (all . "Universidade do Algarve"))
      (location (all . "Faro, Portugal"))
-     (position (en . "IT Associate's Degree")
-               (nl . "ICT HBO")
-               (es . "Grado Superior en Informática (Associate's Degree)"))
+     (position (en . "Higher Vocational Degree in IT")
+               (nl . "HBO-ICT")
+               (es . "Grado Superior en Informática"))
      (time (en . "September 2017 => September 2019")
            (nl . "September 2017 => September 2019")
            (es . "Septiembre 2017 => Septiembre 2019"))
      (experience ((en . "Graduated with a score of 190/200, achieving the highest possible grade for the final software engineering internship.")
                   (nl . "Afgestudeerd met een score van 190/200 en de maximale beoordeling behaald voor de software-engineeringstage.")
                   (es . "Graduación con calificación sobresaliente de 190/200, obteniendo la nota máxima en las prácticas de ingeniería de software."))
-                 ((all . "Java, PHP, SQL, Javascript, GNU/Linux, Excel, Alfresco BPM"))))))
+                 ((all . "Java, PHP, SQL, JavaScript, GNU/Linux, Excel, Alfresco BPM"))))))
 
 ;; ====== Jobs ======
 
 (define joe-job-pro-warehouse
-  `((name (all . "Pro Warehouse B.V."))
+  '((name (all . "Pro Warehouse B.V."))
     (location (en . "Amsterdam, The Netherlands")
               (nl . "Amsterdam, Nederland")
               (es . "Ámsterdam, Países Bajos"))
@@ -173,7 +192,7 @@
                  (es . "Implementación de pipelines de CI/CD en Jenkins y administración de sistemas de producción en entornos FreeBSD y Linux.")))))
 
 (define joe-job-ikea
-  `((name (all . "IKEA, Ingka Digital"))
+  '((name (all . "IKEA, Ingka Digital"))
     (location (en . "Amsterdam, The Netherlands")
               (nl . "Amsterdam, Nederland")
               (es . "Ámsterdam, Países Bajos"))
@@ -194,7 +213,7 @@
                  (es . "Integración y gestión de capas de datos complejas utilizando PostgreSQL, BigTable, Elasticsearch, Redis y Firebase.")))))
 
 (define joe-job-zorgdomein
-  `((name (all . "ZorgDomein B.V."))
+  '((name (all . "ZorgDomein B.V."))
     (location (en . "Breukelen, The Netherlands")
               (nl . "Breukelen, Nederland")
               (es . "Breukelen, Países Bajos"))
@@ -224,13 +243,13 @@
                  (es . "Administración e implementación de infraestructura en la nube utilizando servicios de AWS como EC2, CloudFront y S3.")))))
 
 (define joe-job-vandebron
-  `((name (all . "Vandebron B.V."))
+  '((name (all . "Vandebron B.V."))
     (location (en . "Amsterdam, The Netherlands")
               (nl . "Amsterdam, Nederland")
               (es . "Ámsterdam, Países Bajos"))
     (position (en . "Software Engineer")
               (nl . "Software Engineer")
-              (es . "Ingeniero de Software Sénior"))
+              (es . "Ingeniero de Software"))
     (time (en . "August 2024 => September 2026")
           (nl . "Augustus 2024 => September 2026")
           (es . "Agosto 2024 => Septiembre 2026"))
@@ -250,3 +269,13 @@
 (define jobs
   (list joe-job-vandebron joe-job-zorgdomein joe-job-ikea
         joe-job-pro-warehouse))
+
+;;; Skills
+
+(define (skill name)
+  `((all . ,name)))
+
+(define skills
+  (map skill
+       '("Scala" "Kotlin" "Java" "Go" "Kubernetes" "Terraform"
+         "PostgreSQL" "Kafka" "GraphQL" "AWS" "CI/CD")))

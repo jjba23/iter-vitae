@@ -11,7 +11,7 @@
 #
 #   - copy populus/vega.scm once per theme, replacing document-theme;
 #   - render each copy with the normal CLI and bundled resources;
-#   - capture each page in headless Chromium at 1200x1750;
+#   - capture each page in headless Chromium at 1200x2400;
 #   - add a small theme label and compose assets/iter-vitae-demo.gif.
 #
 # The output is intentionally not a mockup.  It is the HTML that a user gets
@@ -36,20 +36,20 @@ persona=${ITER_VITAE_DEMO_PERSONA:-"$root/populus/vega.scm"}
 locale=${ITER_VITAE_DEMO_LOCALE:-en}
 output=${ITER_VITAE_DEMO_OUTPUT:-"$root/assets/iter-vitae-demo.gif"}
 
-themes=(fatum ef-cyprus fundamental ats)
-accents=('#d6b25e' '#7aa88a' '#5b8ca8' '#64748b')
-blurbs=('typographic · technical'
+themes=(ats fatum ef-cyprus fundamental)
+accents=('#64748b' '#d6b25e' '#7aa88a' '#5b8ca8')
+blurbs=('one column · ATS-first'
+        'typographic · technical'
         'light · green · IBM Plex'
-        'minimal · offline-safe'
-        'one column · ATS-first')
+        'minimal · offline-safe')
 
 # The browser viewport is a little taller than the composed frame.  The
 # capture is scaled down to FRAME_WIDTH and cropped at FRAME_HEIGHT; the
 # footer then names the theme without covering the page itself.
 capture_width=1200
-capture_height=1750
+capture_height=2400
 frame_width=900
-frame_height=1260
+frame_height=1600
 footer_height=80
 
 die() {
@@ -178,8 +178,9 @@ for i in "${!themes[@]}"; do
   printf 'Composing %s (%s)...\n' "$theme" "${blurbs[$i]}"
   index=$(printf '%02d' "$((i + 1))")
   "${magick[@]}" "$tmp/shots/$theme.png" \
-    -resize ${frame_width}x${frame_height}^ \
-    -gravity north -crop ${frame_width}x${frame_height}+0+0 +repage \
+    -resize ${frame_width}x \
+    -background '#ffffff' -gravity north \
+    -extent ${frame_width}x${frame_height} +repage \
     -background '#0b1220' -gravity south -splice 0x${footer_height} \
     -fill "${accents[$i]}" \
     -draw "rectangle 0,${frame_height} ${frame_width},$((frame_height + 4))" \
@@ -195,10 +196,10 @@ done
 printf 'Writing %s...\n' "$output"
 mkdir -p "$(dirname "$output")"
 "${magick[@]}" -delay 320 -loop 0 \
+  "$tmp/frame-ats.png" \
   "$tmp/frame-fatum.png" \
   "$tmp/frame-ef-cyprus.png" \
   "$tmp/frame-fundamental.png" \
-  "$tmp/frame-ats.png" \
   -layers optimize -strip "$tmp/iter-vitae-demo.gif"
 
 mv "$tmp/iter-vitae-demo.gif" "$output"

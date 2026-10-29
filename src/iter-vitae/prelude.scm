@@ -7,6 +7,8 @@
   #:declarative? #t
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-13)
+  #:use-module (ice-9 binary-ports)
+  #:use-module (rnrs bytevectors)
   #:use-module (ice-9 string-fun)
   #:use-module (ice-9 format)
   #:use-module (ice-9 match)
@@ -23,9 +25,13 @@
                         mk-class
                         external-url
                         tel-url
+                        format-date-range
                         locale-code
                         personal-link
                         personal-contact-value
+                        persona-profile-picture
+                        resolve-profile-picture
+                        language-proficiency-label
                         job-title-link
                         build-asset-library
                         load-asset-library
@@ -104,6 +110,17 @@
              value
              (string-append "https://" value)))))
 
+;; Dates in a persona are written with a readable `=>' range separator in
+;; Scheme.  Visual themes show an en dash instead; the ATS theme normalizes it
+;; further to a plain hyphen.  Empty and non-string values become an empty
+;; string, so a missing date never prints "#f".
+(define (format-date-range value)
+  (if (and (string? value) (not (string-null? value)))
+      (string-trim-both
+       (regexp-substitute/global #f "[ \t]*=>[ \t]*" value
+                                 'pre " – " 'post))
+      ""))
+
 ;; Turn a phone number into a tel: URL, keeping digits and a leading plus.
 (define (tel-url value)
   (let ((value (and value
@@ -135,6 +152,107 @@
                      (string? value)
                      (string-trim-both value))))
     (and value (not (string-null? value)) value)))
+
+;; The optional profile picture is a plain string: an http(s) URL, a data URI,
+;; or a path relative to the persona file.  Themes decide whether to show it.
+(define (persona-profile-picture persona)
+  (let ((value (assq-ref persona 'profile-picture)))
+    (and value
+         (string? value)
+         (let ((value (string-trim-both value)))
+           (and (not (string-null? value)) value)))))
+
+(define (profile-picture-mime path)
+  (let ((path (string-downcase path)))
+    (cond
+      ((string-suffix? ".png" path) "image/png")
+      ((or (string-suffix? ".jpg" path)
+           (string-suffix? ".jpeg" path)) "image/jpeg")
+      ((string-suffix? ".webp" path) "image/webp")
+      ((string-suffix? ".gif" path) "image/gif")
+      ((string-suffix? ".svg" path) "image/svg+xml")
+      ((string-suffix? ".avif" path) "image/avif")
+      (else #f))))
+
+;; Guile 3.0 does not ship SRFI-207, and the project should not depend on
+;; Guix's implementation just to inline a photograph.  This encoder is small,
+;; dependency-free, and works on the bytevectors returned by binary ports.
+(define base64-alphabet
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/")
+
+(define (base64-encode bytevector)
+  (let ((length (bytevector-length bytevector))
+        (port (open-output-string)))
+    (let loop ((index 0))
+      (when (< index length)
+        (let* ((remaining (- length index))
+               (byte-0 (bytevector-u8-ref bytevector index))
+               (byte-1 (and (> remaining 1)
+                            (bytevector-u8-ref bytevector (+ index 1))))
+               (byte-2 (and (> remaining 2)
+                            (bytevector-u8-ref bytevector (+ index 2)))))
+          (display (string-ref base64-alphabet
+                               (ash byte-0 -2))
+                   port)
+          (display (string-ref base64-alphabet
+                               (logior (ash (logand byte-0 3) 4)
+                                       (if byte-1 (ash byte-1 -4) 0)))
+                   port)
+          (if byte-1
+              (display (string-ref base64-alphabet
+                                   (logior (ash (logand byte-1 15) 2)
+                                           (if byte-2 (ash byte-2 -6) 0)))
+                       port)
+              (display "=" port))
+          (if byte-2
+              (display (string-ref base64-alphabet
+                                   (logand byte-2 63))
+                       port)
+              (display "=" port))
+          (loop (+ index 3)))))
+    (get-output-string port)))
+
+;; Turn a local image into a data URI so every rendered CV is self-contained.
+;; Remote URLs and already-inlined images pass through.  Unknown schemes and
+;; unsupported extensions fail loudly instead of producing a broken image.
+(define* (resolve-profile-picture value #:optional (base-directory "."))
+  (let ((value (and value
+                    (string? value)
+                    (string-trim-both value))))
+    (and value
+         (not (string-null? value))
+         (let* ((lower (string-downcase value))
+                (base-directory (or base-directory ".")))
+           (cond
+             ((string-prefix? "data:image/" lower) value)
+             ((or (string-prefix? "https://" lower)
+                  (string-prefix? "http://" lower)) value)
+             ((string-contains value "://")
+              (error "Profile picture must use http(s), data:image or a local path:"
+                     value))
+             (else
+              (let* ((path (if (string-prefix? "/" value)
+                               value
+                               (in-vicinity base-directory value)))
+                     (mime (profile-picture-mime path)))
+                (unless mime
+                  (error "Unsupported profile picture format; use PNG, JPEG, WebP, GIF, AVIF or SVG:"
+                         path))
+                (unless (file-exists? path)
+                  (error "Profile picture not found:" path))
+                (string-append "data:" mime ";base64,"
+                               (base64-encode
+                                (call-with-input-file path
+                                  get-bytevector-all))))))))))
+
+;; Resolve a numeric language level (1-5) to its localized label.  Returning
+;; #f for an unknown level lets themes omit a cell instead of printing "#f".
+(define* (language-proficiency-label persona locale level)
+  (let* ((scale (and persona (assq-ref persona 'language-proficiency)))
+         (labels (and (list? scale)
+                      (assq-ref-all-or-lang scale locale))))
+    (and (list? labels)
+         (assoc-ref labels level))))
 
 ;; Read one entry of the persona's personal-contact alist, or #f when absent.
 (define (personal-contact-value persona key)

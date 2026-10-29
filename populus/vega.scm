@@ -3,6 +3,8 @@
 ;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
+;;; Commentary:
+;;
 ;; A second, fictional persona.  Every name, employer, address and detail
 ;; below is invented: use this file as a template when you write your own CV,
 ;; and as the source of the demo in assets/iter-vitae-demo.gif.
@@ -13,42 +15,51 @@
 ;;       -- ./scripts/generate-demo
 ;;
 ;; See populus/joe.scm for a real, multilingual CV with three locales.
+;;
+;;; Code:
 
 (define-module (iter-vitae persona)
   #:declarative? #t)
+
+;; Optional: a portrait makes the visual themes feel more personal.  Use a
+;; square image around 400-600 px, either a local PNG/JPEG/WebP/SVG or an
+;; https:// URL.  Local paths are relative to this file; the renderer embeds
+;; the image in the HTML so the CV remains a single, self-contained file.
+;;
+;; (define profile-picture "../assets/portrait.jpg")
 
 (define document-theme
   'fatum)
 
 (define display-name
-  `((all . "Robin Vega")))
+  '((all . "Robin Vega")))
 
 (define job-title
-  `((en . "Platform Engineer 🛠️") (nl . "Platform Engineer 🛠️")
+  '((en . "Platform Engineer 🛠️") (nl . "Platform Engineer 🛠️")
     (es . "Ingeniera de Plataforma 🛠️")))
 
 (define job-title-link
-  `((all . "https://en.wikipedia.org/wiki/Platform_engineering")))
+  '((all . "https://en.wikipedia.org/wiki/Platform_engineering")))
 
 (define personal-contact
-  `((emails . "robin@example.org") (phone-numbers . "+31 612 345 678")))
+  '((emails . "robin@example.org") (phone-numbers . "+31 612 345 678")))
 
 (define personal-links
-  `((blog . "example.org/blog") (code . "codeberg.org/robinvega")
+  '((blog . "example.org/blog") (code . "codeberg.org/robinvega")
     (linked-in . "linkedin.com/in/robinvega")))
 
 (define address-lines
-  `(((all . "2311 AB Leiden"))
+  '(((all . "2311 AB Leiden"))
     ((en . "The Netherlands") (nl . "Nederland")
      (es . "Países Bajos"))))
 
 (define driver-licenses
-  `(((en . "B driver's license, vehicles up to 3.5t")
-     (nl . "Rijbewijs B, voertuigen t/m 3,5t")
-     (es . "Permiso de conducir B, vehículos hasta 3,5t"))))
+  '(((en . "Category B (vehicles up to 3.5 t)")
+     (nl . "Categorie B (voertuigen tot 3,5 t)")
+     (es . "Categoría B (vehículos hasta 3,5 t)"))))
 
 (define interests-hobbies
-  `(((en . "Restoring old bicycles, long-distance cycling and mapping every repair in Org mode.")
+  '(((en . "Restoring old bicycles, long-distance cycling and mapping every repair in Org mode.")
      (nl . "Oude fietsen restaureren, lange fietstochten maken en elke reparatie in Org mode bijhouden.")
      (es . "Restaurar bicicletas antiguas, hacer rutas largas en bicicleta y documentar cada reparación en Org mode."))
     ((en . "Playing bass in a small jazz trio 🎻.")
@@ -56,75 +67,83 @@
      (es . "Tocar el bajo en un pequeño trío de jazz 🎻."))))
 
 (define language-proficiency
-  `((en (1 . "Elementary Proficiency")
-        (2 . "Limited Working Proficiency")
-        (3 . "Professional Proficiency")
-        (4 . "Native / Bilingual"))
-    (nl (1 . "Elementaire Vaardigheid")
-        (2 . "Beperkte Werkvaardigheid")
-        (3 . "Professioneel Vaardig")
-        (4 . "Moedertaal / Tweetalig"))
-    (es (1 . "Competencia Elemental")
-        (2 . "Competencia Limitada")
-        (3 . "Competencia Profesional")
-        (4 . "Nativo / Bilingüe"))))
+  '((en (1 . "Elementary")
+        (2 . "Limited working")
+        (3 . "Professional")
+        (4 . "Full professional")
+        (5 . "Native / bilingual"))
+    (nl (1 . "Elementair")
+        (2 . "Beperkt werkzaam")
+        (3 . "Professioneel")
+        (4 . "Volledig professioneel")
+        (5 . "Moedertaal / tweetalig"))
+    (es (1 . "Elemental")
+        (2 . "Laboral limitado")
+        (3 . "Profesional")
+        (4 . "Profesional pleno")
+        (5 . "Nativo / bilingüe"))))
 
 (define languages
-  `((en (name (en . "🇬🇧 English")
+  '(    (en (name (en . "🇬🇧 English")
               (nl . "🇬🇧 Engels")
               (es . "🇬🇧 Inglés"))
-        (proficiency (reading . 4)
-                     (speaking . 4)
-                     (writing . 4)))
+        (proficiency (reading . 5)
+                     (speaking . 5)
+                     (writing . 5)))
     (nl (name (en . "🇳🇱 Dutch")
               (nl . "🇳🇱 Nederlands")
               (es . "🇳🇱 Neerlandés"))
-        (proficiency (reading . 4)
-                     (speaking . 3)
-                     (writing . 3)))
+        (proficiency (reading . 5)
+                     (speaking . 4)
+                     (writing . 4)))
     (es (name (en . "🇪🇸 Spanish")
               (nl . "🇪🇸 Spaans")
               (es . "🇪🇸 Español"))
-        (proficiency (reading . 3)
-                     (speaking . 3)
-                     (writing . 2)))))
+        (proficiency (reading . 4)
+                     (speaking . 4)
+                     (writing . 3)))))
 
 (define short-intro
-  `(((en . "Platform engineer who likes boring infrastructure: reproducible builds, small images, declarative configuration and pipelines that fail loudly instead of silently.")
+  '(((en . "Platform engineer who likes boring infrastructure: reproducible builds, small images, declarative configuration and pipelines that fail loudly instead of silently.")
      (nl . "Platform engineer met een voorkeur voor saaie infrastructuur: reproduceerbare builds, kleine images, declaratieve configuratie en pipelines die luid falen in plaats van stil.")
      (es . "Ingeniera de plataforma a la que le gusta la infraestructura aburrida: builds reproducibles, imágenes pequeñas, configuración declarativa y pipelines que fallan con claridad."))
     ((en . "I write my CV in Scheme, version it in git, and let continuous integration publish it whenever I learn something new.")
      (nl . "Ik schrijf mijn cv in Scheme, beheer het in git en laat continuous integration het publiceren zodra ik iets nieuws leer.")
      (es . "Escribo mi cv en Scheme, lo versiono en git y dejo que la integración continua lo publique cada vez que aprendo algo nuevo."))))
 
+(define vega-education-delft
+  '((name (all . "Delft University of Technology"))
+    (location (en . "Delft, The Netherlands")
+              (nl . "Delft, Nederland")
+              (es . "Delft, Países Bajos"))
+    (position (en . "MSc Computer Science")
+              (nl . "MSc Computerwetenschappen")
+              (es . "Máster en Informática"))
+    (time (en . "September 2016 => August 2018")
+          (nl . "September 2016 => Augustus 2018")
+          (es . "Septiembre 2016 => Agosto 2018"))
+    (experience ((en . "Specialised in distributed systems; thesis on incremental build graphs for declarative deployments.")
+                 (nl . "Gespecialiseerd in gedistribueerde systemen; scriptie over incrementele build-graphs voor declaratieve deployments.")
+                 (es . "Especialización en sistemas distribuidos; tesis sobre grafos de build incrementales para despliegues declarativos."))
+                ((all . "Go, Rust, distributed systems, formal verification")))))
+
+(define vega-education-leiden
+  '((name (all . "Hogeschool Leiden"))
+    (location (all . "Leiden, The Netherlands"))
+    (position (en . "BSc Information Technology")
+              (nl . "Bachelor Informatica")
+              (es . "Grado en Informática"))
+    (time (en . "September 2012 => July 2016")
+          (nl . "September 2012 => Juli 2016")
+          (es . "Septiembre 2012 => Julio 2016"))
+    (experience ((en . "Graduated with honours; built the student association's ticketing system."))
+                ((all . "Java, SQL, GNU/Linux, networking")))))
+
 (define education
-  `(((name (all . "Delft University of Technology"))
-     (location (en . "Delft, The Netherlands")
-               (nl . "Delft, Nederland")
-               (es . "Delft, Países Bajos"))
-     (position (en . "MSc Computer Science")
-               (nl . "MSc Computerwetenschappen")
-               (es . "Máster en Informática"))
-     (time (en . "September 2016 => August 2018")
-           (nl . "September 2016 => Augustus 2018")
-           (es . "Septiembre 2016 => Agosto 2018"))
-     (experience ((en . "Specialised in distributed systems; thesis on incremental build graphs for declarative deployments.")
-                  (nl . "Gespecialiseerd in gedistribueerde systemen; scriptie over incrementele build-graphs voor declaratieve deployments.")
-                  (es . "Especialización en sistemas distribuidos; tesis sobre grafos de build incrementales para despliegues declarativos."))
-                 ((all . "Go, Rust, distributed systems, formal verification"))))
-    ((name (all . "Hogeschool Leiden"))
-     (location (all . "Leiden, The Netherlands"))
-     (position (en . "BSc Information Technology")
-               (nl . "Bachelor Informatica")
-               (es . "Grado en Informática"))
-     (time (en . "September 2012 => July 2016")
-           (nl . "September 2012 => Juli 2016")
-           (es . "Septiembre 2012 => Julio 2016"))
-     (experience ((en . "Graduated with honours; built the student association's ticketing system."))
-                 ((all . "Java, SQL, GNU/Linux, networking"))))))
+  (list vega-education-delft vega-education-leiden))
 
 (define job-current
-  `((name (all . "Northwind Analytics"))
+  '((name (all . "Northwind Analytics"))
     (location (en . "Amsterdam, The Netherlands")
               (nl . "Amsterdam, Nederland")
               (es . "Ámsterdam, Países Bajos"))
@@ -141,7 +160,7 @@
                 ((en . "Wrote the internal runbook generator that turns incident retrospectives into executable checklists.")))))
 
 (define job-previous
-  `((name (all . "Blue Harbour Logistics"))
+  '((name (all . "Blue Harbour Logistics"))
     (location (en . "Rotterdam, The Netherlands")
               (nl . "Rotterdam, Nederland")
               (es . "Róterdam, Países Bajos"))
@@ -158,10 +177,12 @@
 (define jobs
   (list job-current job-previous))
 
+;; A tiny helper keeps the skills readable and shows why a Lisp persona is
+;; pleasant to maintain: add a string, not another nested alist.
+(define (skill name)
+  `((all . ,name)))
+
 (define skills
-  `(((all . "Guile Scheme"))
-    ((all . "Kubernetes"))
-    ((all . "Terraform"))
-    ((all . "Go"))
-    ((all . "PostgreSQL"))
-    ((all . "CI/CD"))))
+  (map skill
+       '("Guile Scheme" "Kubernetes" "Terraform" "Go"
+         "PostgreSQL" "CI/CD")))

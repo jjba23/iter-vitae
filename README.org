@@ -59,12 +59,13 @@ I can keep going with a lot of motivation. Changelog and release notes live in
 :CUSTOM_ID: demo
 :END:
 
-#+attr_html: :width 860px :alt Animated tour: the same CV rendered in the fatum, ef-cyprus, fundamental and ats themes
+#+attr_html: :width 860px :alt Animated tour: the same CV rendered in the ats, fatum, ef-cyprus and fundamental themes
 [[file:assets/iter-vitae-demo.gif]]
 
 /Four themes, one persona. The same file — [[file:populus/vega.scm][populus/vega.scm]] — rendered with
-=fatum=, =ef-cyprus=, =fundamental= and =ats=; only the =document-theme= symbol
-changes. Every frame is a real screenshot of the generated HTML./
+=ats=, =fatum=, =ef-cyprus= and =fundamental=; only the =document-theme= symbol
+changes. The tour starts with the ATS-safe version, then shows the visual
+themes. Every frame is a real screenshot of the generated HTML./
 
 The demo is not a mockup. [[file:scripts/generate-demo][=scripts/generate-demo=]] renders the persona once
 per theme, captures each page in headless Chromium, and composes the GIF. Run
@@ -617,7 +618,9 @@ and tailored for engineers, computer scientists and techies.
 
 It uses the bundled Olive CSS, Phosphor icons, and Lucida fonts served from the
 project's own site. See [[#on-lucida-fonts][On Lucida fonts]] for the licensing
-details.
+details. Skills become a compact monospaced tag row, section rules keep the eye
+moving down the page, and dedicated print rules remove the screen card and
+keep entries together on A4 paper.
 
 ** ef-cyprus
 :PROPERTIES:
@@ -626,7 +629,9 @@ details.
 
 Simple, clean, light and green tones with advanced typography with varying font
 families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex
-fonts. Inspired by Protesilaos ef-themes for Emacs.
+fonts. Inspired by Protesilaos ef-themes for Emacs. Skills appear as green
+outlined tags, dates use an en dash, and print output drops the screen-only
+accent rule while keeping entries intact across pages.
 
 ** fundamental
 :PROPERTIES:
@@ -634,7 +639,9 @@ fonts. Inspired by Protesilaos ef-themes for Emacs.
 :END:
 
 Minimalistic light and simple theme, with simple sans-serif font for everything
-and basic styles. Minimal dependencies.
+and basic styles. Minimal dependencies. It now gives skills a plain
+comma-separated line, tightens the type scale, and includes print rules that
+remove padding and link underlines so the page exports cleanly to PDF.
 
 ** ats
 :PROPERTIES:
@@ -737,6 +744,29 @@ The ~ats~ theme is the exception: it strips HTML tags and decodes entities so
 automated parsers only see plain text. Keep inline HTML to emphasis — a CV is a
 document, not a web application.
 
+** Portraits (optional)
+:PROPERTIES:
+:CUSTOM_ID: portraits
+:END:
+
+A portrait is entirely optional. Add one line to your persona:
+
+#+begin_src scheme
+;; A path relative to this file, or an https:// URL.
+(define profile-picture "assets/portrait.jpg")
+#+end_src
+
+Local PNG, JPEG, WebP, GIF, AVIF and SVG files are embedded in the generated
+HTML as data URIs, so the CV stays a single self-contained file you can e-mail
+or copy to a server. An ~https://~ URL is passed through unchanged, and a
+~data:image/...~ URI works too. A square image around 400–600 px is plenty;
+keeping it below roughly 200 KB avoids a needlessly large HTML file.
+
+~fatum~, ~ef-cyprus~ and ~fundamental~ show the portrait beside your name in a
+round frame. ~ats~ deliberately omits it: applicant tracking systems cannot use
+photographs, and in many countries adding one invites bias or is discouraged.
+When in doubt, leave the field commented out.
+
 ** Field reference
 :PROPERTIES:
 :CUSTOM_ID: field-reference
@@ -746,12 +776,17 @@ The following variables are read by Iter Vitae to construct a CV:
 
 - ~titles~ :: an alist of ~translation-alist~ with the header of each section,
   in the languages you want. The defaults already cover English, Dutch and
-  Spanish. *Careful:* if you define ~titles~ yourself, you replace the whole
-  default alist, so include every key you use.
+  Spanish. It also holds ~language-name~, the first column heading of the
+  visual language table. *Careful:* if you define ~titles~ yourself, you
+  replace the whole default alist, so include every key you use.
 - ~document-theme~ :: a symbol with the visual theme to apply: ~'fatum~,
   ~'ef-cyprus~, ~'fundamental~ or ~'ats~. See
   [[#supported-document-themes][Supported document themes]].
 - ~display-name~ :: a *required* ~translation-alist~ with the person's name.
+- ~profile-picture~ :: an optional string pointing at a portrait. Use a path
+  relative to the persona file, an absolute path, an ~https://~ URL or a
+  ~data:image/...~ URI. Local images are embedded in the output. See
+  [[#portraits][Portraits (optional)]].
 - ~job-title~ :: a *required* ~translation-alist~ with the job title to
   display.
 - ~job-title-link~ :: an optional ~translation-alist~ with the URL to visit
@@ -770,17 +805,28 @@ The following variables are read by Iter Vitae to construct a CV:
 - ~interests-hobbies~ :: an optional ~list~ of ~translation-alist~ used to
   describe your hobbies and personal interests. The section is hidden when
   empty.
-- ~language-proficiency~ :: an ~alist~ that defines the grading scale for your
-  language skills. It maps a document locale (like ~en~ or ~nl~) to an ~alist~
-  of integer levels (1 to 4) alongside their localized descriptions (for
-  example ~"Elementary Proficiency"~ or ~"Native / Bilingual"~). The wizard
-  generates this table for the locales you select.
+- ~language-proficiency~ :: an optional ~alist~ with the labels for your
+  language scale. It maps a document locale (like ~en~ or ~nl~) to an ~alist~
+  of five integer levels. The defaults use the standard CV scale:
+
+  | Level | English label        | Meaning                                      |
+  |-------+----------------------+----------------------------------------------|
+  |     1 | Elementary           | Basic phrases and familiar topics            |
+  |     2 | Limited working      | Routine conversations with support           |
+  |     3 | Professional         | Comfortable in meetings and day-to-day work  |
+  |     4 | Full professional    | Fluent, precise, and comfortable under pressure |
+  |     5 | Native / bilingual   | First-language or fully bilingual command    |
+
+  Override it only when you need another language or wording. The wizard
+  generates this table for the locales you select, and the visual themes show
+  it as a compact reading / speaking / writing table.
 - ~languages~ :: an ~alist~ detailing the languages you actually speak. Each
   key is a language code mapped to an ~alist~ containing a ~name~ (a
   ~translation-alist~ with the language's display name and optional emoji) and
   a ~proficiency~ field. The ~proficiency~ field is itself an ~alist~ mapping
-  ~reading~, ~speaking~ and ~writing~ to the integer levels you defined in
-  ~language-proficiency~.
+  ~reading~, ~speaking~ and ~writing~ to levels 1–5. It is fine for the three
+  scores to differ: reading is often stronger than speaking, for example.
+  List your strongest language first; recruiters scan the first line.
 - ~education~ :: a ~list~ of ~alist~ data structures detailing your academic
   background, courses and educational internships. Each entry expects ~name~
   (the institution), ~location~, ~position~ (the degree or course name),
@@ -789,8 +835,9 @@ The following variables are read by Iter Vitae to construct a CV:
 - ~short-intro~ :: a ~list~ of ~translation-alist~ that acts as your personal
   summary, biography, or cover-letter excerpt. One entry per paragraph.
 - ~skills~ :: an optional ~list~ of ~translation-alist~ naming the skills and
-  tools you want a scanner to find. The ~ats~ theme renders them as one
-  comma-separated line; other themes currently ignore this field. For example:
+  tools you want a scanner to find. ~fatum~ and ~ef-cyprus~ render them as a
+  row of tags, ~fundamental~ as a comma-separated line, and ~ats~ as one
+  scanner-friendly line. For example:
   ~(((all . "Scala")) ((all . "Kubernetes")) ((all . "PostgreSQL")))~.
 - ~jobs~ :: a ~list~ of ~alist~ data structures detailing your professional
   experience. Each entry expects ~name~ (the employer), ~location~,

@@ -48,7 +48,19 @@
                     (expect-contains html ">B</span>" "driver license")
                     (expect-contains html ">A</span>" "driver license")
                     (expect-contains html "BSc" "degree")
-                    (expect-contains html "2010 - 2014" "education time")))))
+                    (expect-contains html "2010 - 2014" "education time")
+                    (expect-contains html "Skills" "skills heading")
+                    (expect-contains html "Kubernetes" "skills tag")
+                    (expect-contains html "ef-skills" "skills list")))))
+         (test "prints with the green accent and no split entries"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'ef-cyprus)))
+                    (expect-contains html "@media print" "print styles")
+                    (expect-contains html "size: A4" "print page size")
+                    (expect-contains html "break-inside: avoid"
+                                     "entry pagination")
+                    (expect-contains html "ef-page" "printable page")))))
          (test "renders the complete contact block"
                (assert-no-error
                 (lambda ()
@@ -108,7 +120,19 @@
                     (expect-contains html "English" "language")
                     (expect-contains html
                                      "Professional"
-                                     "language proficiency")))))
+                                     "language proficiency")
+                    (expect-contains html "Skills" "skills heading")
+                    (expect-contains html "Kubernetes" "skills tag")
+                    (expect-contains html "fatum-skills" "skills list")))))
+         (test "prints without the screen card or split entries"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'fatum)))
+                    (expect-contains html "@media print" "print styles")
+                    (expect-contains html "size: A4" "print page size")
+                    (expect-contains html "break-inside: avoid"
+                                     "entry pagination")
+                    (expect-contains html "fatum-page" "printable card")))))
          (test "escapes persona text inside its own template"
                (assert-no-error
                 (lambda ()
@@ -165,7 +189,18 @@
                     (expect-contains html "English" "language")
                     (expect-contains html
                                      "Professional"
-                                     "language proficiency")))))
+                                     "language proficiency")
+                    (expect-contains html "Skills" "skills heading")
+                    (expect-contains html "Scala, Kubernetes, PostgreSQL"
+                                     "skills line")))))
+         (test "includes print rules"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'fundamental)))
+                    (expect-contains html "@media print" "print styles")
+                    (expect-contains html "size: A4" "print page size")
+                    (expect-contains html "fundamental-footer"
+                                     "printable footer")))))
          (test "keeps its inline styling"
                (assert-no-error
                 (lambda ()
@@ -354,7 +389,7 @@
                (assert-no-error
                 (lambda ()
                   (let ((html (page rich-persona 'ats #:locale 'nl)))
-                    (expect-contains html "Professioneel Profiel"
+                    (expect-contains html "Professioneel profiel"
                                      "Dutch summary heading")
                     (expect-contains html "Werkervaring"
                                      "Dutch work heading")
@@ -414,12 +449,88 @@
                        (expect-contains html "English" "first language")
                        (expect-contains html "Dutch" "second language")))
                    '(ef-cyprus fatum fundamental ats)))))
+         (test "face variables expand into utility classes"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (let ((html (page rich-persona theme)))
+                       (expect-not-contains html "h2-special-face"
+                                            "literal face name")
+                       (expect-not-contains html "table-face"
+                                            "literal table face name")
+                       (expect-contains html "bg-stone-300"
+                                        "table background")
+                       (expect-contains html "shadow-md"
+                                        "table shadow")))
+                   '(ef-cyprus fatum))))
+         (test "visual themes render an optional profile picture"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (let ((html (page rich-persona theme)))
+                       (expect-contains html "https://example.org/ada.png"
+                                        "profile picture source")
+                       (expect-contains
+                        html
+                        "alt=\"Ada &amp; Bob &lt;CEO&gt;\""
+                        "profile picture alternative text")))
+                   '(ef-cyprus fatum fundamental))
+                  (expect-not-contains (page rich-persona 'ats)
+                                       "ada.png"
+                                       "ATS profile picture"))))
+         (test "themes omit the picture element when no picture is set"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (expect-not-contains (page sample-persona theme)
+                                          "<img"
+                                          "absent profile picture"))
+                   '(ef-cyprus fatum fundamental ats)))))
+         (test "every theme renders configured skills"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (expect-contains (page rich-persona theme)
+                                      "Kubernetes"
+                                      "configured skill"))
+                   '(ef-cyprus fatum fundamental ats)))))
+         (test "visual themes format date ranges with an en dash"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (let* ((job `((name . ((all . "Acme")))
+                                   (location . ((all . "Remote")))
+                                   (position . ((all . "Engineer")))
+                                   (time . ((all . "2020 => now")))
+                                   (experience . (((all . "Built things"))))))
+                            (persona (with-theme
+                                      (acons 'jobs (list job) rich-persona)
+                                      theme))
+                            (html (page persona theme)))
+                       (expect-contains html "2020 – now" "formatted date")
+                       (expect-not-contains html "=>" "raw separator")))
+                   '(ef-cyprus fatum fundamental)))))
+         (test "visual themes omit skills when the persona has none"
+               (assert-no-error
+                (lambda ()
+                  (for-each
+                   (lambda (theme)
+                     (expect-not-contains (page sample-persona theme)
+                                          ">Skills<"
+                                          "empty skills section"))
+                   '(ef-cyprus fatum fundamental)))))
          (test "language tables read reading, speaking, writing"
                (assert-no-error
                 (lambda ()
                   (for-each
                    (lambda (theme)
                      (let ((html (page rich-persona theme)))
+                       (expect-contains html ">Language<" "language column")
                        (expect-true
                         (< (index-of ">Reading<" html "reading heading")
                            (index-of ">Speaking<" html "speaking heading"))
@@ -445,7 +556,7 @@
                     (expect-not-contains html "Music ."
                                         "space before punctuation")
                     (expect-not-contains html "Music.,"
-                                        "comma after a full stop")))))))
+                                        "comma after a full stop"))))))))
 
 (define (spec)
   (dynamic-wind

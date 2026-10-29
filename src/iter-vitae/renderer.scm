@@ -190,6 +190,11 @@
                             (get-setting 'skills))
                     (jobs unquote
                           (get-setting 'jobs))
+                    (profile-picture unquote
+                                     (and html?
+                                          (resolve-profile-picture
+                                           (get-setting 'profile-picture)
+                                           (dirname (canonicalize-path file)))))
                     (document-theme unquote
                                     (get-setting 'document-theme)))))
       (if all-locales?

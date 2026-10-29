@@ -10,6 +10,7 @@
   #:use-module (ice-9 format)
   #:use-module (ice-9 match)
   #:use-module (ice-9 regex)
+  #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-13)
   #:use-module (ice-9 popen)
   #:use-module (ice-9 time)
@@ -22,67 +23,76 @@
 ;; --- Theme Styles ---
 
 (define body-style
-  "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px 20px;")
+  "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.62; color: #1f2933; max-width: 52rem; margin: 0 auto; padding: 48px 28px;")
 
 (define footer-container-style
-  "margin-top: 50px; font-size: 0.8rem; color: #666; text-align: center; border-top: 1px solid #ddd; padding-top: 20px;")
+  "margin-top: 3rem; font-size: 0.8rem; color: #667085; text-align: center; border-top: 1px solid #d9e2ec; padding-top: 1.25rem;")
 
 (define footer-flex-style
-  "display: flex; justify-content: center; gap: 15px; margin-bottom: 10px;")
+  "display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 10px;")
 
 (define link-style
-  "color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;")
+  "color: inherit; text-decoration: none; border-bottom: 1px solid #bcccdc;")
 
 (define email-link-style
   "color: inherit; text-decoration: none;")
 
 (define h1-style
-  "margin: 0 0 5px 0; font-size: 2.5rem; letter-spacing: -0.02em;")
+  "margin: 0 0 0.35rem 0; font-size: clamp(2.1rem, 6vw, 2.8rem); line-height: 1.08; letter-spacing: -0.035em;")
 
 (define h4-style
-  "border-bottom: 1px solid #ddd; padding-bottom: 5px; margin: 35px 0 15px 0; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.1em; color: #666;")
+  "border-bottom: 1px solid #d9e2ec; padding-bottom: 0.35rem; margin: 2.4rem 0 0.9rem 0; text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.12em; color: #52606d; break-after: avoid;")
 
 (define h5-style
-  "margin: 0; font-size: 1.1rem; font-weight: 600;")
+  "margin: 0; font-size: 1.05rem; font-weight: 600; line-height: 1.35;")
 
 (define subtitle-style
-  "font-size: 1.2rem; color: #666;")
+  "font-size: 1.15rem; color: #52606d; margin-bottom: 0.85rem;")
 
 (define p-style
-  "margin: 0 0 10px 0;")
+  "margin: 0 0 0.75rem 0;")
 
 (define section-item-style
-  "margin-bottom: 25px;")
+  "margin-bottom: 1.65rem; break-inside: avoid;")
 
 (define section-header-flex-style
-  "display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px;")
+  "display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.15rem; flex-wrap: wrap;")
 
 (define time-span-style
-  "font-style: italic; color: #666; font-size: 0.9rem;")
+  "color: #667085; font-size: 0.85rem; font-variant-numeric: tabular-nums; white-space: nowrap;")
 
 (define location-div-style
-  "font-style: italic; color: #666; font-size: 0.9rem; margin-bottom: 8px;")
+  "color: #667085; font-size: 0.9rem; margin-bottom: 0.45rem;")
 
 (define ul-style
-  "margin: 5px 0 15px 0; padding-left: 20px;")
+  "margin: 0.4rem 0 0.8rem 0; padding-left: 1.25rem;")
 
 (define li-style
-  "margin-bottom: 4px;")
+  "margin-bottom: 0.3rem;")
 
 (define table-style
-  "width: 100%; border-collapse: collapse; margin-bottom: 15px;")
+  "width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.5rem 0; font-size: 0.95rem;")
 
 (define th-style
-  "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5; font-weight: 600; color: #666;")
+  "text-align: left; padding: 0.5rem 0.4rem; border-bottom: 1px solid #d9e2ec; font-weight: 600; color: #52606d;")
 
 (define td-style
-  "text-align: left; padding: 8px 0; border-bottom: 1px solid #f5f5f5;")
+  "text-align: left; padding: 0.5rem 0.4rem; border-bottom: 1px solid #eef2f6;")
 
 (define main-body-container-style
-  "margin-bottom: 40px;")
+  "margin-bottom: 0;")
 
 (define contact-flex-style
-  "display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.9rem; color: #666; margin-top: 10px;")
+  "display: flex; gap: 0.4rem 1.1rem; flex-wrap: wrap; font-size: 0.9rem; color: #52606d; margin-top: 0.5rem;")
+
+(define identity-style
+  "display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.75rem;")
+
+(define portrait-style
+  "width: 88px; height: 88px; flex: 0 0 auto; border: 2px solid #d9e2ec; border-radius: 50%; object-fit: cover;")
+
+(define fundamental-print-styles
+  "@media print { @page { size: A4; margin: 14mm; } body { max-width: none !important; padding: 0 !important; color: #000 !important; } a { color: inherit !important; text-decoration: none !important; border-bottom: 0 !important; } .fundamental-footer { margin-top: 1.5rem !important; } }" )
 
 ;; --- Templates ---
 
@@ -92,28 +102,42 @@
                                   (meta (@ (name "viewport")
                                            (content
                                             "width=device-width, initial-scale=1.0")))
-                                  (meta (@ (charset "UTF-8"))))
+                                  (meta (@ (charset "UTF-8")))
+                                  (style ,fundamental-print-styles))
                             (body (@ (style ,body-style))
-                                  (div ,@body
-                                       ,(page-footer #:persona persona
-                                                     #:locale locale))))))
+                                  (main ,@body)
+                                  ,(page-footer #:persona persona
+                                                #:locale locale)))))
 
 (define* (page-footer #:key locale persona)
-  `(div (@ (style ,footer-container-style))
-        (div (@ (style ,footer-flex-style))
-             ,(and (personal-link persona 'blog)
-                   (render-blog-link #:locale locale
-                                     #:persona persona))
-             ,(and (personal-link persona 'code)
-                   (render-code-link #:locale locale
-                                     #:persona persona))
-             ,(and (personal-link persona 'linked-in)
-                   (render-linked-in-link #:locale locale
-                                          #:persona persona)))
-        (div (small "Rendered with "
-                    (a (@ (style ,link-style)
-                          (href "https://www.gnu.org/software/guile/"))
-                       "Lisp (Guile Scheme)")))))
+  `(footer (@ (class "fundamental-footer")
+              (style ,footer-container-style))
+           (div (@ (style ,footer-flex-style))
+                ,(and (personal-link persona 'blog)
+                      (render-blog-link #:locale locale
+                                        #:persona persona))
+                ,(and (personal-link persona 'code)
+                      (render-code-link #:locale locale
+                                        #:persona persona))
+                ,(and (personal-link persona 'linked-in)
+                      (render-linked-in-link #:locale locale
+                                             #:persona persona)))
+           (div (small "Rendered with "
+                       (a (@ (style ,link-style)
+                             (href "https://www.gnu.org/software/guile/"))
+                          "Lisp (Guile Scheme)")))))
+
+(define* (render-profile-picture #:key locale persona)
+  (let ((picture (persona-profile-picture persona)))
+    (and picture
+         `(img (@ (style ,portrait-style)
+                  (src ,picture)
+                  (alt ,(plain-text
+                         (assq-ref-all-or-lang (assq-ref persona
+                                                          'display-name)
+                                               locale)))
+                  (width "88")
+                  (height "88"))))))
 
 (define* (render-display-name #:key locale persona)
   `(h1 (@ (style ,h1-style))
@@ -199,6 +223,17 @@
        (assq-ref persona
                  'interests-hobbies)))
 
+(define* (render-skills #:key locale persona)
+  (let ((skills (filter-map
+                 (lambda (skill)
+                   (let ((text (string-trim-both
+                                (assq-ref-all-or-lang skill locale))))
+                     (and (not (string-null? text)) text)))
+                 (or (assq-ref persona 'skills) '()))))
+    (if (null? skills)
+        '()
+        `((p (@ (style ,p-style)) ,(string-join skills ", "))))))
+
 (define* (render-jobs #:key locale persona)
   (map (lambda (job)
          `(div (@ (style ,section-item-style))
@@ -211,8 +246,9 @@
                                                                         'name)
                                                               locale)))
                     (span (@ (style ,time-span-style))
-                          ,(assq-ref-all-or-lang (assq-ref job
-                                                           'time) locale)))
+                          ,(format-date-range
+                            (assq-ref-all-or-lang (assq-ref job
+                                                           'time) locale))))
                (div (@ (style ,location-div-style))
                     ,(assq-ref-all-or-lang (assq-ref job
                                                      'location) locale))
@@ -238,8 +274,9 @@
                                                                education
                                                                'name) locale)))
                     (span (@ (style ,time-span-style))
-                          ,(assq-ref-all-or-lang (assq-ref education
-                                                           'time) locale)))
+                          ,(format-date-range
+                            (assq-ref-all-or-lang (assq-ref education
+                                                           'time) locale))))
                (div (@ (style ,location-div-style))
                     ,(assq-ref-all-or-lang (assq-ref education
                                                      'location) locale))
@@ -253,15 +290,16 @@
                  'education)))
 
 (define* (language-proficiency->string #:key persona locale level)
-  (let* ((lp (assq-ref persona
-                       'language-proficiency))
-         (ll (assq-ref-all-or-lang lp locale)))
-    (assoc-ref ll level)))
+  (language-proficiency-label persona locale level))
 
 (define* (render-languages #:key locale persona)
   `(div (@ (style "overflow-x: auto;"))
         (table (@ (style ,table-style))
-               (thead (tr (th (@ (style ,th-style)) "")
+               (thead (tr (th (@ (style ,th-style))
+                              ,(assq-ref-all-or-lang
+                                (assq-ref (assq-ref persona 'titles)
+                                          'language-name)
+                                locale))
                           (th (@ (style ,th-style))
                               ,(assq-ref-all-or-lang (assq-ref (assq-ref
                                                                 persona
@@ -324,10 +362,13 @@
 
 (define* (fundamental-main-body #:key locale persona)
   `((div (@ (style ,main-body-container-style))
-         ,(render-display-name #:locale locale
-                               #:persona persona)
-         ,(render-job-title #:locale locale
-                            #:persona persona)
+         (div (@ (style ,identity-style))
+              ,(render-profile-picture #:locale locale
+                                       #:persona persona)
+              (div ,(render-display-name #:locale locale
+                                         #:persona persona)
+                   ,(render-job-title #:locale locale
+                                      #:persona persona)))
          (div (@ (style ,contact-flex-style))
               ,(render-email #:locale locale
                              #:persona persona)
@@ -342,6 +383,16 @@
                                          'short-intro) locale))
     ,@(render-short-intro #:locale locale
                           #:persona persona)
+
+    ,@(let ((skills (render-skills #:locale locale
+                                   #:persona persona)))
+         (if (null? skills)
+             '()
+             `((h4 (@ (style ,h4-style))
+                   ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                              'titles)
+                                                    'skills) locale))
+               ,@skills)))
 
     (h4 (@ (style ,h4-style))
         ,(assq-ref-all-or-lang (assq-ref (assq-ref persona

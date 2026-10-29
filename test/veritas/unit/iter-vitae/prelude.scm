@@ -94,6 +94,22 @@
                (assert-equal #:expect #f #:got (tel-url ""))
                (assert-equal #:expect #f #:got (tel-url #f)))))
 
+(define date-suite
+  (suite "date ranges"
+         #:concurrent? #f
+         (test "the Scheme range separator becomes an en dash"
+               (assert-equal #:expect "2020 – now"
+                             #:got (format-date-range "2020 => now"))
+               (assert-equal #:expect "2020 – now"
+                             #:got (format-date-range "2020=>now")))
+         (test "ordinary ranges and whitespace are preserved"
+               (assert-equal #:expect "2020 - now"
+                             #:got (format-date-range " 2020 - now ")))
+         (test "empty and non-string dates become an empty string"
+               (assert-equal #:expect "" #:got (format-date-range ""))
+               (assert-equal #:expect "" #:got (format-date-range #f))
+               (assert-equal #:expect "" #:got (format-date-range 2020)))))
+
 (define persona-accessor-suite
   (suite "persona accessors"
          #:concurrent? #f
@@ -138,12 +154,101 @@
          (test "job-title-link has an empty default"
                (assert-equal #:expect '()
                              #:got (get-setting 'job-title-link)))
+         (test "the default language scale uses five standard levels"
+               (let ((english (assq-ref (get-setting 'language-proficiency) 'en)))
+                 (assert-equal #:expect "Elementary"
+                               #:got (assoc-ref english 1))
+                 (assert-equal #:expect "Full professional"
+                               #:got (assoc-ref english 4))
+                 (assert-equal #:expect "Native / bilingual"
+                               #:got (assoc-ref english 5))))
          (test "an unknown setting is #f instead of raising"
                (assert-no-error
                 (lambda ()
                   (get-setting 'a-setting-that-does-not-exist)))
                (assert-equal #:expect #f
                              #:got (get-setting 'a-setting-that-does-not-exist)))))
+
+;; ---------------------------------------------------------------------------
+;; Language levels
+;; ---------------------------------------------------------------------------
+
+(define language-level-suite
+  (suite "language levels"
+         #:concurrent? #f
+         (test "labels follow the requested document locale"
+               (let ((persona
+                      '((language-proficiency .
+                         ((en (1 . "Elementary") (5 . "Native"))
+                          (nl (1 . "Elementair") (5 . "Moedertaal")))))))
+                 (assert-equal #:expect "Native"
+                               #:got (language-proficiency-label
+                                      persona 'en 5))
+                 (assert-equal #:expect "Moedertaal"
+                               #:got (language-proficiency-label
+                                      persona 'nl 5))))
+         (test "unknown levels and missing scales become #f"
+               (assert-equal #:expect #f
+                             #:got (language-proficiency-label
+                                    '((language-proficiency . ((en (1 . "A")))))
+                                    'en 5))
+               (assert-equal #:expect #f
+                             #:got (language-proficiency-label '() 'en 3)))))
+
+;; ---------------------------------------------------------------------------
+;; Profile pictures
+;; ---------------------------------------------------------------------------
+
+(define profile-picture-suite
+  (suite "profile pictures"
+         #:concurrent? #f
+         (test "remote URLs and data URIs pass through untouched"
+               (assert-equal #:expect "https://example.org/portrait.png"
+                             #:got (resolve-profile-picture
+                                   "https://example.org/portrait.png"))
+               (assert-equal #:expect "data:image/png;base64,abc"
+                             #:got (resolve-profile-picture
+                                   "data:image/png;base64,abc")))
+         (test "a local image becomes a self-contained data URI"
+               (call-with-temp-dir
+                (lambda (root)
+                  (write-file (in-vicinity root "portrait.png") "hello")
+                  (assert-equal #:expect "data:image/png;base64,aGVsbG8="
+                                #:got (resolve-profile-picture
+                                      "portrait.png" root)))))
+         (test "relative paths use the persona directory"
+               (call-with-temp-dir
+                (lambda (root)
+                  (write-file (in-vicinity (in-vicinity root "media")
+                                           "me.svg")
+                              "<svg/>")
+                  (assert-contains #:expect (resolve-profile-picture
+                                             "media/me.svg" root)
+                                   #:got "data:image/svg+xml;base64,"))))
+         (test "missing files and unsupported formats fail loudly"
+               (call-with-temp-dir
+                (lambda (root)
+                  (write-file (in-vicinity root "portrait.bmp") "bitmap")
+                  (assert-error
+                   (lambda ()
+                     (resolve-profile-picture "missing.png" root)))
+                  (assert-error
+                   (lambda ()
+                     (resolve-profile-picture "portrait.bmp" root))))))
+         (test "unknown URI schemes are rejected"
+               (assert-error
+                (lambda ()
+                  (resolve-profile-picture "ftp://example.org/portrait.png"))))
+         (test "empty and non-string values are ignored"
+               (assert-equal #:expect #f #:got (resolve-profile-picture ""))
+               (assert-equal #:expect #f #:got (resolve-profile-picture #f))
+               (assert-equal #:expect #f #:got (resolve-profile-picture 'portrait)))
+         (test "persona-profile-picture trims and validates the field"
+               (assert-equal #:expect "https://example.org/me.png"
+                             #:got (persona-profile-picture
+                                   '((profile-picture . "  https://example.org/me.png  "))))
+               (assert-equal #:expect #f
+                             #:got (persona-profile-picture '((profile-picture . "   ")))))))
 
 ;; ---------------------------------------------------------------------------
 ;; Resources
@@ -291,7 +396,10 @@
   (veritas-run class-suite
                locale-suite
                url-suite
+               date-suite
                persona-accessor-suite
+               language-level-suite
+               profile-picture-suite
                settings-suite
                asset-suite
                filesystem-suite
