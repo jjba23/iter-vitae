@@ -13,6 +13,7 @@
                          driver-licenses
                          interests-hobbies
                          languages
+                         language-proficiency
                          education
                          titles
                          skills
@@ -146,19 +147,19 @@
 (define language-proficiency
   '((en (1 . "Elementary")
         (2 . "Limited working")
-        (3 . "Professional")
+        (3 . "Professional working")
         (4 . "Full professional")
-        (5 . "Native / bilingual"))
+        (5 . "Native or bilingual"))
     (nl (1 . "Elementair")
         (2 . "Beperkt werkzaam")
-        (3 . "Professioneel")
+        (3 . "Professioneel werkzaam")
         (4 . "Volledig professioneel")
-        (5 . "Moedertaal / tweetalig"))
+        (5 . "Moedertaal of tweetalig"))
     (es (1 . "Elemental")
         (2 . "Laboral limitado")
         (3 . "Profesional")
         (4 . "Profesional pleno")
-        (5 . "Nativo / bilingüe"))))
+        (5 . "Nativo o bilingüe"))))
 
 ;; Education and certifications of persona
 ;;
@@ -188,9 +189,9 @@
     (driver-license (en . "Driving licence")
                     (nl . "Rijbewijs")
                     (es . "Permiso de conducir"))
-    (interests-hobbies (en . "Interests & Hobbies")
-                       (nl . "Interesses en hobby's")
-                       (es . "Intereses y aficiones"))
+    (interests-hobbies (en . "Interests")
+                       (nl . "Interesses")
+                       (es . "Intereses"))
     (language (en . "Languages")
               (nl . "Talen")
               (es . "Idiomas"))
@@ -209,9 +210,9 @@
     (writing (en . "Writing")
              (nl . "Schrijven")
              (es . "Expresión escrita"))
-    (short-intro (en . "Who am I?")
-                 (nl . "Wie ben ik?")
-                 (es . "¿Quién soy?"))
+    (short-intro (en . "Profile")
+                 (nl . "Profiel")
+                 (es . "Perfil"))
     (professional-summary (en . "Professional Summary")
                           (nl . "Professioneel profiel")
                           (es . "Resumen profesional"))

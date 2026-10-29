@@ -9,14 +9,9 @@
              ((guix licenses)
               #:prefix license:)
              (guix build-system guile)
-             ((guix build utils)
-              #:select (with-directory-excursion ))
-             (gnu packages)
              (gnu packages base)
              (gnu packages bash)
-             (gnu packages guile)
-             (gnu packages guile-xyz)
-             (gnu packages linux))
+             (gnu packages guile))
 
 (define %source-dir
   (dirname (current-filename)))
@@ -52,6 +47,11 @@
                 (chmod (string-append bin "/iter-vitae") #o755))))
           (add-after 'unpack 'fix-paths
             (lambda* (#:key inputs #:allow-other-keys)
+              ;; The store has no /usr/bin/env, so give the launcher a direct
+              ;; shell shebang instead of relying on the ambient PATH.
+              (substitute* "scripts/iter-vitae"
+                (("#!/usr/bin/env sh")
+                 (string-append "#!" (search-input-file inputs "bin/sh"))))
               (for-each (match-lambda
                           ((pattern program format-string)
                            (substitute* "scripts/iter-vitae"
@@ -60,12 +60,9 @@
                                       (search-input-file inputs
                                                          (string-append "bin/"
                                                           program)))))))
-                        '(("readlink -f " "readlink" "~s -f ")
-                          ("realpath " "realpath" "~s ")
-                          ("dirname " "dirname" "~s ")
-                          ("getopt " "getopt" "~s ")
+                        '(("dirname " "dirname" "~s ")
                           ("exec guile " "guile" "exec ~s "))))))))
-    (inputs (list guile-3.0 bash-minimal coreutils util-linux))
+    (inputs (list guile-3.0 bash-minimal coreutils))
     (synopsis
      "Resume / @acronym{CV, Curriculum Vitae} generator written in Guile Scheme")
     (description

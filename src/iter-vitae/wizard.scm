@@ -18,7 +18,7 @@
   #:use-module (srfi srfi-13)
   #:use-module (iter-vitae defaults)
   #:use-module (iter-vitae prelude)
-  #:export (run-wizard persona-source parse-locales))
+  #:export (run-wizard persona-source parse-locales level-from-answer))
 
 ;; ---------------------------------------------------------------------------
 ;; Terminal styling
@@ -261,14 +261,42 @@
          (hint "⚠ Please choose 1, 2, 3 or 4.")
          (loop))))))
 
+;; The standard five-level CV scale, with a few friendly aliases.  Names are
+;; easier to remember than bare numbers, so both are accepted.
+(define proficiency-choices
+  '((1 "Elementary" ("elementary" "basic"))
+    (2 "Limited working" ("limited" "limited working"))
+    (3 "Professional working" ("professional" "professional working"))
+    (4 "Full professional" ("full" "full professional"))
+    (5 "Native or bilingual" ("native" "bilingual" "native or bilingual"))))
+
+(define (show-proficiency-menu)
+  (hint "Use the standard CV scale (a number or a name works):")
+  (for-each (lambda (choice)
+              (format #t "   ~a  ~a\n"
+                      (cyan (number->string (car choice)))
+                      (cadr choice)))
+            proficiency-choices))
+
+(define (level-from-answer answer)
+  (let* ((value (string-downcase (string-trim-both answer)))
+         (number (string->number value)))
+    (or (and (exact-integer? number) (<= 1 number 5) number)
+        (let ((choice
+               (find (lambda (entry)
+                       (or (string=? value (cadr entry))
+                           (member value (caddr entry))))
+                     proficiency-choices)))
+          (and choice (car choice))))))
+
 (define (ask-level label default)
   (let loop ()
     (let* ((answer (ask label #:default (number->string default)))
-           (level (string->number answer)))
-      (if (and (exact-integer? level) (<= 1 level 5))
+           (level (level-from-answer answer)))
+      (if level
           level
           (begin
-            (hint "⚠ Please type a number from 1 to 5.")
+            (hint "⚠ Choose 1–5, or a name such as \"native\" or \"full\".")
             (loop))))))
 
 ;; ---------------------------------------------------------------------------
@@ -296,23 +324,16 @@
     (time . ,(ask-translated "Period" #:locales locales
                              #:help "For example: 2016 => 2020"))
     (location . ,(ask-translated "Location" #:locales locales))
-    (experience . ,(ask-translated-lines "Highlight" #:locales locales))))
-
-(define (language-code? code)
-  (and (not (string-null? code))
-       (char-alphabetic? (string-ref code 0))
-       (every (lambda (char)
-                (or (char-alphabetic? char)
-                    (char-numeric? char)
-                    (char=? char #\-)))
-              (string->list code))))
+    (experience . ,(ask-translated-lines
+                    "Highlight" #:locales locales
+                    #:help "An achievement, or \"Coursework: ...\" for relevant modules."))))
 
 (define (ask-language-code)
   (let loop ()
     (let ((code (string-downcase
                  (ask "Language code" #:required? #t
                       #:help "A short tag such as en, nl or es."))))
-      (if (language-code? code)
+      (if (locale-code? code)
           code
           (begin
             (hint "⚠ Use letters, numbers or hyphens, e.g. en, nl or pt-BR.")
@@ -322,7 +343,9 @@
   (let ((code (ask-language-code))
         (name (ask-translated "Language name" #:locales locales #:required? #t
                               #:help "For example: English, Dutch, Spanish.")))
-    (hint "Rate reading, speaking and writing from 1 (elementary) to 5 (native or bilingual).")
+    (show-proficiency-menu)
+    (hint "Rate reading, speaking and writing; press Enter for a working level.")
+    (hint "Names such as \"native\" or \"full\" are accepted too.")
     (cons code
           (list (cons 'name name)
                 (cons 'proficiency
@@ -596,27 +619,12 @@
 
 ;; The labels shown inside the language table.  They are selected by the
 ;; document locale, so the generated scale follows the languages chosen in the
-;; wizard rather than the language codes of the rows themselves.
-(define proficiency-labels
-  '((en (1 . "Elementary")
-        (2 . "Limited working")
-        (3 . "Professional")
-        (4 . "Full professional")
-        (5 . "Native / bilingual"))
-    (nl (1 . "Elementair")
-        (2 . "Beperkt werkzaam")
-        (3 . "Professioneel")
-        (4 . "Volledig professioneel")
-        (5 . "Moedertaal / tweetalig"))
-    (es (1 . "Elemental")
-        (2 . "Laboral limitado")
-        (3 . "Profesional")
-        (4 . "Profesional pleno")
-        (5 . "Nativo / bilingüe"))))
-
+;; wizard rather than the language codes of the rows themselves.  The default
+;; table lives in `(iter-vitae defaults)' so the wizard, the themes and the
+;; documentation cannot drift apart.
 (define (render-language-proficiency locale)
-  (let ((labels (or (assq-ref proficiency-labels locale)
-                    (assq-ref proficiency-labels 'en))))
+  (let ((labels (or (assq-ref language-proficiency locale)
+                    (assq-ref language-proficiency 'en))))
     (format #f "(~a ~a)" locale (render-translations labels))))
 
 (define (render-contact contact)

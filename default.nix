@@ -8,7 +8,6 @@
 , stdenv ? pkgs.stdenv
 , guile ? pkgs.guile
 , coreutils ? pkgs.coreutils
-, util-linux ? pkgs.util-linux
 , bash ? pkgs.bash
 , makeWrapper ? pkgs.makeWrapper
 }:
@@ -27,7 +26,6 @@ stdenv.mkDerivation {
   buildInputs = [
     guile
     coreutils
-    util-linux
     bash
   ];
 
@@ -66,7 +64,7 @@ stdenv.mkDerivation {
     find iter-vitae -name "*.scm" | while read -r scm_file; do
       go_file="$CCACHE_DIR/''${scm_file%.scm}.go"
       mkdir -p "$(dirname "$go_file")"
-      guild compile -L "$SITE_DIR" -o "$go_file" "$scm_file" || true
+      guild compile -L "$SITE_DIR" -o "$go_file" "$scm_file"
     done
     cd -
 
@@ -96,7 +94,7 @@ stdenv.mkDerivation {
 
     # Wrap application binary with GUILE_LOAD_PATH & GUILE_LOAD_COMPILED_PATH
     wrapProgram $out/bin/iter-vitae \
-      --prefix PATH : ${lib.makeBinPath [ guile coreutils util-linux bash ]} \
+      --prefix PATH : ${lib.makeBinPath [ guile coreutils bash ]} \
       --prefix GUILE_LOAD_PATH : "$out/share/guile/site/3.0" \
       --prefix GUILE_LOAD_COMPILED_PATH : "$out/lib/guile/3.0/site-ccache"
 

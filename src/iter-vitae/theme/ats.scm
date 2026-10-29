@@ -37,8 +37,8 @@
 (define ats-styles
   "\
 @page {
-  size: Letter portrait;
-  margin: 0.75in;
+  size: A4 portrait;
+  margin: 11mm;
 }
 
 html { background: #fff; }
@@ -111,6 +111,10 @@ a {
   break-inside: avoid;
 }
 
+.language-list {
+  break-inside: avoid;
+}
+
 .entry:last-child {
   margin-bottom: 0;
 }
@@ -125,13 +129,43 @@ h3 {
   break-after: avoid;
 }
 
+p,
+li {
+  orphans: 2;
+  widows: 2;
+}
+
 @media print {
   body {
     padding: 0;
+    font-size: 10pt;
+    line-height: 1.32;
   }
 
   main {
     max-width: none;
+  }
+
+  h2 {
+    margin: 9pt 0 3pt 0;
+    break-after: avoid;
+  }
+
+  h3 {
+    margin: 6pt 0 1pt 0;
+  }
+
+  ul {
+    margin: 1pt 0 5pt 16pt;
+  }
+
+  li {
+    margin-bottom: 1pt;
+  }
+
+  .entry {
+    margin-bottom: 6pt;
+    break-inside: avoid;
   }
 }
 ")
@@ -374,7 +408,7 @@ h3 {
           (or (assq-ref persona 'languages) '()))))
     (if (null? items)
         '()
-        `((ul ,@items)))))
+        `((ul (@ (class "language-list")) ,@items)))))
 
 ;; Two interests written as sentences read badly when joined with a comma
 ;; ("... Org mode., Playing bass ...").  Use a space when an item already

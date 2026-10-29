@@ -114,6 +114,19 @@
                           (read-file (in-vicinity destination "index.html"))
                           "Ada Example"
                           "rendered name"))))))))
+         (test "accepts both numbers and names for the proficiency scale"
+               (assert-no-error
+                (lambda ()
+                  (expect-equal 3 (level-from-answer "3") "numeric level")
+                  (expect-equal 3 (level-from-answer "professional")
+                                "short level name")
+                  (expect-equal 5 (level-from-answer "Native or bilingual")
+                                "full level name")
+                  (expect-equal 4 (level-from-answer "FULL")
+                                "case-insensitive alias")
+                  (expect-equal #f (level-from-answer "6") "out-of-range level")
+                  (expect-equal #f (level-from-answer "fluent-ish")
+                                "unknown level"))))
          (test "parses and validates locale lists"
                (assert-no-error
                 (lambda ()
@@ -323,7 +336,7 @@
                     (expect-contains source "(define skills" "skills")
                     (expect-contains source "(define languages" "languages")
                     (expect-contains source
-                                     "(5 . \"Native / bilingual\")"
+                                     "(5 . \"Native or bilingual\")"
                                      "proficiency scale")
                     (expect-contains source "(define address-lines" "addresses")
                     (expect-contains source "(define driver-licenses" "driving")

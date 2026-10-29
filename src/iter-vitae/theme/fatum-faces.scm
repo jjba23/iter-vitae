@@ -5,13 +5,6 @@
 
 (define-module (iter-vitae theme fatum-faces)
   #:declarative? #t
-  #:use-module (ice-9 popen)
-  #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 time)
-  #:use-module (ice-9 format)
-  #:use-module (ice-9 string-fun)
-  #:use-module (ice-9 iconv)
-  #:use-module (ice-9 futures)
   #:use-module (iter-vitae prelude)
   #:export (hr-face p-face
                     bullet-face

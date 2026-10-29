@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # iter-vitae
 #
@@ -7,149 +7,85 @@
 
 # Commentary:
 #
-# This bash script provides a convenient and user-friendly wrapper
-# around the command-line usage of `iter-vitae`, allowing the
-# Guile Scheme application to behave and feel like any other
-# executable or binary that users may install to their systems.
+# A small POSIX shell launcher around the Guile application.  It only locates
+# the installed modules and resources; option parsing is left to Guile, which
+# keeps the user-facing and library interfaces in one place.
 #
-# This also helps installing `iter-vitae` in a convenient fashion
-# to the Guix store and it allows us to decouple the user-facing
-# command-line interface from the internal Guile Scheme arguments
-# to the main program and library.
-#
-# Some of the rationale behind the `SCRIPT_DIR` and `STORE_DIR`
-# can be explained due to the need of reliably and reproducibly
-# deploying source code and other resources to the Guix store
-# and have access to those at runtime.
+# The previous version depended on GNU getopt, GNU realpath and `readlink -f',
+# so it failed on macOS, the BSDs and minimal containers.  This version uses
+# only `cd', `pwd', `dirname' and `exec' from POSIX.
 
-set -euo pipefail
+set -eu
 
-script_dir=$(dirname "$0")
-store_dir=$(readlink -f "$script_dir/..")
+# `CDPATH= command` is an environment assignment, not a broken `VAR= value`.
+# shellcheck disable=SC1007
+script_dir=$(CDPATH= cd -P "$(dirname "$0")" && pwd)
+# shellcheck disable=SC1007
+store_dir=$(CDPATH= cd -P "${script_dir}/.." && pwd)
 scheme_sources_dir="${store_dir}/share/guile/site/3.0"
 resources_dir="${store_dir}/share/resources"
-scripts_dir="${store_dir}/share/scripts"
+
+# A source checkout has the modules in src/ and the assets in resources/.
+# Distribution packages place both below share/, which wins when present.
+if [ ! -d "${scheme_sources_dir}/iter-vitae" ]; then
+  scheme_sources_dir="${store_dir}/src"
+fi
+if [ ! -d "${resources_dir}" ]; then
+  resources_dir="${store_dir}/resources"
+fi
 
 red_text='\033[0;31m'
 reset_text='\033[0m'
 
 log_error() {
-  if [ -z "${1}" ]; then
+  if [ -z "${1:-}" ]; then
     log_error "log_error was called without a message!"
     return 1
   fi
-
-  echo -e "${red_text}[error] $1${reset_text}" >&2
+  printf '%b[error] %s%b\n' "${red_text}" "$1" "${reset_text}" >&2
 }
 
 log_info() {
-  if [ -z "${1}" ]; then
+  if [ -z "${1:-}" ]; then
     log_error "log_info was called without a message!"
     return 1
   fi
-
-  echo -e "$1"
+  printf '%s\n' "$1"
 }
 
 show_help() {
   cat "${resources_dir}/help.txt"
 }
 
-parsed_options=$(getopt -n "iter-vitae" -o l:d:f:r:F:ih \
-  --long locale:,locales:,destination:,file:,resources:,format:,init,all-locales,help -- "$@")
-
-eval set -- "${parsed_options}"
-
-locale_arg=""
-locales_arg=""
-destination_arg=""
-file_arg=""
-resources_arg="${resources_dir}"
-format_arg=""
-init_arg=""
-
-guile_cmd_args=(
-  "-L" "${scheme_sources_dir}"
-  "-c" "((@(iter-vitae main) main))"
-)
-
-while true; do
-  case "${1}" in
-  -l | --locale)
-    locale_arg="${2}"
-    [[ -n "${locale_arg}" ]] && guile_cmd_args+=("--locale" "${locale_arg}")
-    shift 2
-    ;;
-  --locales)
-    locales_arg="${2}"
-    [[ -n "${locales_arg}" ]] && guile_cmd_args+=("--locales" "${locales_arg}")
-    shift 2
-    ;;
-  -d | --destination)
-    destination_arg="${2}"
-    [[ -n "${destination_arg}" ]] && guile_cmd_args+=("--destination" "${destination_arg}")
-    shift 2
-    ;;
-  -f | --file)
-    file_arg="${2}"
-    shift 2
-    ;;
-  -r | --resources)
-    resources="${2}"
-    if [[ -n "${resources}" ]]; then
-      resources_arg="${resources}"
-      shift 2
-    fi
-    ;;
-  -F | --format)
-    format_arg="${2}"
-    [[ -n "${format_arg}" ]] && guile_cmd_args+=("--format" "${format_arg}")
-    shift 2
-    ;;
-  -i | --init)
-    init_arg="1"
-    guile_cmd_args+=("--init")
-    shift
-    ;;
-  --all-locales)
-    guile_cmd_args+=("--all-locales")
-    shift
-    ;;
+# Honour --help before requiring a persona, just like the previous launcher.
+for argument in "$@"; do
+  case "${argument}" in
   -h | --help)
     show_help
     exit 0
     ;;
   --)
-    shift
     break
-    ;;
-  *)
-    log_error "Internal error: unrecognized option '${1}'"
-    show_help
-    exit 1
     ;;
   esac
 done
 
-# The resources
-guile_cmd_args+=("--resources" "${resources_arg}")
-
-# The Curriculum Vitae file.  The wizard may create it, so it is not required
-# there and its parent directory need not exist yet.
-if [[ -n "${file_arg}" ]]; then
-  if [[ -n "${init_arg}" ]]; then
-    guile_cmd_args+=("--file" "$(realpath -m "${file_arg}")")
-  else
-    guile_cmd_args+=("--file" "$(realpath "${file_arg}")")
-  fi
-elif [[ -z "${init_arg}" ]]; then
-  log_error "Error: The file argument is required. Use -f or --file." >&2
-  show_help
-  exit 1
+# Supply the bundled stylesheet directory unless the caller chose one.  Adding
+# a default argument is safer than duplicating Guile's option parser here.
+has_resources=0
+for argument in "$@"; do
+  case "${argument}" in
+  -r | -r?* | --resources | --resources=*)
+    has_resources=1
+    ;;
+  esac
+done
+if [ "${has_resources}" -eq 0 ]; then
+  set -- --resources "${resources_dir}" "$@"
 fi
 
 log_info "-------------------------------------------------"
-log_info "Starting Iter Vitae: guile ${guile_cmd_args[*]}"
+log_info "Starting Iter Vitae: guile -L ${scheme_sources_dir} $*"
 
-# Run Guile application
-exec guile "${guile_cmd_args[@]}"
+exec guile -L "${scheme_sources_dir}" \
+  -c '((@(iter-vitae main) main))' "$@"

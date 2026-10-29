@@ -160,7 +160,9 @@
                                #:got (assoc-ref english 1))
                  (assert-equal #:expect "Full professional"
                                #:got (assoc-ref english 4))
-                 (assert-equal #:expect "Native / bilingual"
+                 (assert-equal #:expect "Professional working"
+                               #:got (assoc-ref english 3))
+                 (assert-equal #:expect "Native or bilingual"
                                #:got (assoc-ref english 5))))
          (test "an unknown setting is #f instead of raising"
                (assert-no-error
@@ -379,15 +381,15 @@
   (suite "logging"
          #:concurrent? #f
          (test "log-info formats its arguments"
-               (assert-equal #:expect "\nhello 42"
+               (assert-equal #:expect "\nhello 42\n"
                              #:got (with-output-to-string
                                      (lambda () (log-info "hello ~a" 42)))))
          (test "log-error prefixes the message"
-               (assert-equal #:expect "\n[error] boom"
+               (assert-equal #:expect "\n[error] boom\n"
                              #:got (with-output-to-string
                                      (lambda () (log-error "boom")))))
          (test "log formats its arguments"
-               (assert-equal #:expect "\n1 + 2 = 3"
+               (assert-equal #:expect "\n1 + 2 = 3\n"
                              #:got (with-output-to-string
                                      (lambda () (log "~a + ~a = ~a"
                                                      1 2 3)))))))

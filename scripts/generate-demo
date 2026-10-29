@@ -111,6 +111,8 @@ tmp=$(mktemp -d "${TMPDIR:-/tmp}/iter-vitae-demo.XXXXXX")
 trap 'rm -rf "$tmp"' EXIT
 mkdir -p "$tmp/html" "$tmp/shots"
 
+# The comma in --window-size is part of the value, not an array separator.
+# shellcheck disable=SC2054
 chrome_args=(--headless=new
              --disable-gpu
              --disable-dev-shm-usage
@@ -119,7 +121,7 @@ chrome_args=(--headless=new
              --hide-scrollbars
              --force-device-scale-factor=1
              --virtual-time-budget=8000
-             --window-size=${capture_width},${capture_height})
+             "--window-size=${capture_width},${capture_height}")
 
 if [[ $(id -u) -eq 0 ]]; then
   chrome_args+=(--no-sandbox)
@@ -130,7 +132,8 @@ capture() {
   local html=$tmp/html/$theme/index.html
   local shot=$tmp/shots/$theme.png
   local log=$tmp/chrome-$theme.log
-  local url="file://$(printf '%s' "$html" | sed 's/ /%20/g')"
+  local url
+  url="file://$(printf '%s' "$html" | sed 's/ /%20/g')"
 
   rm -f "$shot"
   if ! "$browser" "${chrome_args[@]}" \

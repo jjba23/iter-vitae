@@ -39,7 +39,7 @@ themes and emits a printable document.
 %prep
 %autosetup -n %{name}-%{version}
 
-# The launcher is a bash script; point it at the interpreter path
+# The launcher is a POSIX sh script; point it at the interpreter path
 # openSUSE packages are expected to use instead of /usr/bin/env.
 sed -i '1s|^#!%{_bindir}/env \(.*\)$|#!%{_bindir}/\1|' scripts/iter-vitae
 

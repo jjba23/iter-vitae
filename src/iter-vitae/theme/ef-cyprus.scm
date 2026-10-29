@@ -5,20 +5,11 @@
 
 (define-module (iter-vitae theme ef-cyprus)
   #:declarative? #t
-  #:use-module (web uri)
-  #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 format)
-  #:use-module (ice-9 match)
-  #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-13)
-  #:use-module (ice-9 popen)
-  #:use-module (ice-9 time)
   #:use-module (iter-vitae theme ef-cyprus-faces)
   #:use-module (iter-vitae prelude)
-  #:use-module (ice-9 string-fun)
-  #:use-module (ice-9 iconv)
-  #:use-module (ice-9 threads)
   #:export (ef-cyprus-html-template ef-cyprus-main-body))
 
 ;; Small, theme-owned layer over the generated Olive stylesheet.  It keeps the
@@ -179,7 +170,11 @@
 }
 
 @media print {
-  @page { size: A4; margin: 14mm; }
+  @page { size: A4; margin: 12mm; }
+
+  html {
+    font-size: 13.5px;
+  }
 
   html,
   body {
@@ -187,9 +182,12 @@
   }
 
   body {
+    display: block !important;
     padding: 0 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    font-size: 10pt;
+    line-height: 1.38;
   }
 
   .ef-page {
@@ -199,17 +197,62 @@
     border-top: 0 !important;
   }
 
+  .ef-header {
+    padding-bottom: 0.75rem;
+    break-inside: avoid;
+    break-after: avoid;
+  }
+
+  .ef-identity {
+    gap: 0.9rem;
+  }
+
+  .ef-section-title,
+  .ef-section-title::after {
+    break-after: avoid;
+  }
+
   .ef-section-title::after {
     background: #ddd;
   }
 
+  .ef-section-icon {
+    display: none !important;
+  }
+
   .ef-entry,
   .ef-skills,
-  .ef-table {
+  .ef-table,
+  .ef-table tr,
+  .ef-education {
     break-inside: avoid;
   }
 
+  .ef-entry {
+    padding-top: 0.4rem;
+  }
+
+  .ef-entry + .ef-entry {
+    margin-top: 0.3rem;
+  }
+
+  .ef-table {
+    margin: 0.45rem 0 0.6rem !important;
+    font-size: 8.5pt;
+  }
+
+  .ef-page hr {
+    margin: 0.45rem 0 !important;
+  }
+
+  .ef-table th,
+  .ef-table td {
+    padding: 0.25rem 0.3rem;
+  }
+
   .ef-portrait {
+    width: 4.25rem;
+    height: 4.25rem;
     border-color: #ccc;
     box-shadow: none;
   }
@@ -220,7 +263,13 @@
   }
 
   .ef-footer {
-    margin-top: 1.25rem;
+    display: none !important;
+  }
+
+  p,
+  li {
+    orphans: 2;
+    widows: 2;
   }
 }
 ")
@@ -280,10 +329,10 @@
                  (div (@ (class ,(mk-class '(flex flex-row gap-3 flex-wrap
                                                   justify-center))))
                       (small (@ (class ,address-face))
-                             "this Curriculum Vitae was rendered with "
+                             "Made with "
                              (a (@ (class ,small-a-face)
                                    (href "https://codeberg.org/jjba23/iter-vitae"))
-                                "Lisp (Guile Scheme) code")))))))
+                                "Iter Vitae")))))))
 
 (define* (render-profile-picture #:key locale persona)
   (let ((picture (persona-profile-picture persona)))
@@ -447,19 +496,23 @@
                                                           gap-2 items-center
                                                           align-center))))
                               (h5 (@ (class ,h5-strong-face))
-                                  ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'position)
-                                                         locale))
-                              (span "@")
-                              (h5 (@ (class ,h5-face))
-                                  ,(assq-ref-all-or-lang (assq-ref job
-                                                                   'name)
-                                                         locale))
-                              (em (@ (class ,h5-em-face))
-                                  ,(format #f "(~a)"
-                                           (assq-ref-all-or-lang (assq-ref job
-                                                                  'location)
-                                                                 locale))))
+                                  ,(string-append
+                                    (assq-ref-all-or-lang (assq-ref job
+                                                                     'position)
+                                                           locale)
+                                    ", ")
+                                  (span (@ (class ,h5-face))
+                                        ,(assq-ref-all-or-lang (assq-ref job
+                                                                         'name)
+                                                               locale)))
+                              ,@(let ((location
+                                       (assq-ref-all-or-lang (assq-ref job
+                                                                       'location)
+                                                             locale)))
+                                  (if (string-null? location)
+                                      '()
+                                      `((em (@ (class ,h5-em-face))
+                                            ,(format #f "— ~a" location))))))
                          (span (@ (class ,(mk-class '(ef-date pl-2 text-sm
                                                                md:text-md
                                                                font-light))))
@@ -487,20 +540,25 @@
                          (div (@ (class ,(mk-class '(flex flex-row flex-wrap
                                                           gap-2 items-center))))
                               (h5 (@ (class ,h5-strong-face))
-                                  ,(assq-ref-all-or-lang (assq-ref education
-                                                                   'position)
-                                                         locale))
-                              (span "@")
-                              (h5 (@ (class ,h5-face))
-                                  ,(assq-ref-all-or-lang (assq-ref education
-                                                                   'name)
-                                                         locale))
-                              (em (@ (class ,h5-em-face))
-                                  ,(format #f "(~a)"
-                                           (assq-ref-all-or-lang (assq-ref
-                                                                  education
-                                                                  'location)
-                                                                 locale))))
+                                  ,(string-append
+                                    (assq-ref-all-or-lang (assq-ref education
+                                                                     'position)
+                                                           locale)
+                                    ", ")
+                                  (span (@ (class ,h5-face))
+                                        ,(assq-ref-all-or-lang (assq-ref
+                                                               education
+                                                               'name)
+                                                              locale)))
+                              ,@(let ((location
+                                       (assq-ref-all-or-lang (assq-ref
+                                                              education
+                                                              'location)
+                                                             locale)))
+                                  (if (string-null? location)
+                                      '()
+                                      `((em (@ (class ,h5-em-face))
+                                            ,(format #f "— ~a" location))))))
                          (span (@ (class ,(mk-class '(ef-date pl-2 text-sm
                                                                md:text-md
                                                                font-light))))
@@ -598,39 +656,48 @@
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
 
-    (div (@ (class ,(mk-class '(mt-8))))
-         ,@(ef-section-heading #:locale locale
-                               #:persona persona
-                               #:title-key 'short-intro
-                               #:icon 'ph-user))
-    ,(render-short-intro #:locale locale
-                         #:persona persona)
+    ,@(if (null? (or (assq-ref persona 'short-intro) '()))
+          '()
+          `((div (@ (class ,(mk-class '(mt-8))))
+                 ,@(ef-section-heading #:locale locale
+                                       #:persona persona
+                                       #:title-key 'short-intro
+                                       #:icon 'ph-user))
+            ,@(render-short-intro #:locale locale
+                                  #:persona persona)))
 
     ,@(render-skills #:locale locale
                      #:persona persona)
 
-    ,@(ef-section-heading #:locale locale
-                          #:persona persona
-                          #:title-key 'work-experience
-                          #:icon 'ph-briefcase)
-    ,(render-jobs #:locale locale
-                  #:persona persona)
+    ,@(if (null? (or (assq-ref persona 'jobs) '()))
+          '()
+          `(,@(ef-section-heading #:locale locale
+                                  #:persona persona
+                                  #:title-key 'work-experience
+                                  #:icon 'ph-briefcase)
+            ,@(render-jobs #:locale locale
+                           #:persona persona)))
 
-    (hr (@ (class ,hr-face)))
-    ,@(ef-section-heading #:locale locale
-                          #:persona persona
-                          #:title-key 'education
-                          #:icon 'ph-student)
-    ,(render-education #:locale locale
-                       #:persona persona)
+    ,@(if (null? (or (assq-ref persona 'education) '()))
+          '()
+          `((div (@ (class "ef-education"))
+                 (hr (@ (class ,hr-face)))
+                 ,@(ef-section-heading #:locale locale
+                                       #:persona persona
+                                       #:title-key 'education
+                                       #:icon 'ph-student)
+                 ,@(render-education #:locale locale
+                                     #:persona persona))))
 
-    (hr (@ (class ,hr-face)))
-    ,@(ef-section-heading #:locale locale
-                          #:persona persona
-                          #:title-key 'language
-                          #:icon 'ph-translate)
-    ,(render-languages #:persona persona
-                       #:locale locale)
+    ,@(if (null? (or (assq-ref persona 'languages) '()))
+          '()
+          `((hr (@ (class ,hr-face)))
+            ,@(ef-section-heading #:locale locale
+                                  #:persona persona
+                                  #:title-key 'language
+                                  #:icon 'ph-translate)
+            ,(render-languages #:persona persona
+                               #:locale locale)))
 
     ,@(if (nil? (assq-ref persona 'driver-licenses))
           '()

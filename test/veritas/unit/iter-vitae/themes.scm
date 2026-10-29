@@ -37,7 +37,7 @@
                     (expect-contains html "Languages" "language heading")
                     (expect-contains html "Driving" "driving heading")
                     (expect-contains html
-                                     "Interests &amp; Hobbies"
+                                     "Interests"
                                      "interests heading")
                     (expect-contains html "Acme" "job")
                     (expect-contains html "Test University" "education")
@@ -79,7 +79,7 @@
                   (let ((html (page sample-persona 'ef-cyprus)))
                     (expect-not-contains html "Driving" "driving section")
                     (expect-not-contains html
-                                        "Interests &amp; Hobbies"
+                                        "Interests"
                                         "interests section")
                     (expect-not-contains html
                                         "linkedin.com"
@@ -112,14 +112,14 @@
                     (expect-contains html "Languages" "language heading")
                     (expect-contains html "Driving" "driving heading")
                     (expect-contains html
-                                     "Interests &amp; Hobbies"
+                                     "Interests"
                                      "interests heading")
                     (expect-contains html "Acme" "job")
                     (expect-contains html "Wrote tests" "job detail")
                     (expect-contains html "Test University" "education")
                     (expect-contains html "English" "language")
                     (expect-contains html
-                                     "Professional"
+                                     "Professional working"
                                      "language proficiency")
                     (expect-contains html "Skills" "skills heading")
                     (expect-contains html "Kubernetes" "skills tag")
@@ -181,14 +181,14 @@
                     (expect-contains html "Languages" "language heading")
                     (expect-contains html "Driving" "driving heading")
                     (expect-contains html
-                                     "Interests &amp; Hobbies"
+                                     "Interests"
                                      "interests heading")
                     (expect-contains html "Acme" "job")
                     (expect-contains html "Wrote tests" "job detail")
                     (expect-contains html "Test University" "education")
                     (expect-contains html "English" "language")
                     (expect-contains html
-                                     "Professional"
+                                     "Professional working"
                                      "language proficiency")
                     (expect-contains html "Skills" "skills heading")
                     (expect-contains html "Scala, Kubernetes, PostgreSQL"
@@ -295,8 +295,10 @@
                                      "ATS-safe font stack")
                     (expect-contains html "font-size: 11pt"
                                      "standard body size")
-                    (expect-contains html "size: Letter portrait"
-                                     "US Letter page size")))))
+                    (expect-contains html "size: A4 portrait"
+                                     "A4 page size")
+                    (expect-contains html "class=\"language-list\""
+                                     "language list pagination hook")))))
          (test "renders contact details as selectable text"
                (assert-no-error
                 (lambda ()

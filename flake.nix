@@ -44,7 +44,6 @@
             packages = with pkgs; [
               guile
               coreutils
-              util-linux
             ];
           };
         });

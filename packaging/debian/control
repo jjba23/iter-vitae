@@ -28,7 +28,6 @@ Depends:
  ${shlibs:Depends},
  guile-3.0,
  guile-library,
- bash,
  coreutils
 Description: Resume and curriculum vitae generator written in Guile Scheme
  Iter Vitae generates a resume or curriculum vitae from a CV described in

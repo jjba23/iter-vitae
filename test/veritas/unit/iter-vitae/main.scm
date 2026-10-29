@@ -115,7 +115,7 @@
                           #:got "Ada Voorbeeld")
                          vc)
                         ((assert-contains #:expect output
-                                          #:got "rendering locale nl")
+                                          #:got "rendering ef-cyprus for nl")
                          vc)))))))
          (test "writes a text resume with --format text"
                (lambda (vc)

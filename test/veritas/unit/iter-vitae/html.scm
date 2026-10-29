@@ -112,14 +112,11 @@
                     (expect-contains html "Built things" "job detail")
                     (expect-contains html "Test University" "education")
                     (expect-contains html "English" "language")
-                    (expect-contains html "Professional"
+                    (expect-contains html "Professional working"
                                      "language proficiency")
-                    (expect-contains html
-                                     "Interests &amp; Hobbies"
+                    (expect-contains html "Interests"
                                      "interests heading")
-                    (expect-contains html
-                                     "Lisp (Guile Scheme) code"
-                                     "footer")))))
+                    (expect-contains html "Iter Vitae" "footer")))))
          (test "fatum renders the same persona with its own theme"
                (assert-no-error
                 (lambda ()
@@ -255,8 +252,7 @@
                 (lambda ()
                   (let ((html (page sample-persona)))
                     (expect-not-contains html "Driving" "driving section")
-                    (expect-not-contains html
-                                        "Interests &amp; Hobbies"
+                    (expect-not-contains html "Interests"
                                         "interests section")))))
          (test "missing resource files raise instead of silently rendering"
                (assert-error

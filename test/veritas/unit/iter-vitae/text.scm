@@ -42,7 +42,7 @@
                                      "skills line")
                     (expect-contains resume "Driving licence: B, A"
                                      "driver license")
-                    (expect-contains resume "Interests & Hobbies: Testing, Lisp"
+                    (expect-contains resume "Interests: Testing, Lisp"
                                      "interests")))))
          (test "keeps contact details as visible text"
                (assert-no-error

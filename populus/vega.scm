@@ -62,26 +62,26 @@
   '(((en . "Restoring old bicycles, long-distance cycling and mapping every repair in Org mode.")
      (nl . "Oude fietsen restaureren, lange fietstochten maken en elke reparatie in Org mode bijhouden.")
      (es . "Restaurar bicicletas antiguas, hacer rutas largas en bicicleta y documentar cada reparación en Org mode."))
-    ((en . "Playing bass in a small jazz trio 🎻.")
-     (nl . "Basspelen in een klein jazztrio 🎻.")
-     (es . "Tocar el bajo en un pequeño trío de jazz 🎻."))))
+    ((en . "Playing bass in a small jazz trio 🎸.")
+     (nl . "Basspelen in een klein jazztrio 🎸.")
+     (es . "Tocar el bajo en un pequeño trío de jazz 🎸."))))
 
 (define language-proficiency
   '((en (1 . "Elementary")
         (2 . "Limited working")
-        (3 . "Professional")
+        (3 . "Professional working")
         (4 . "Full professional")
-        (5 . "Native / bilingual"))
+        (5 . "Native or bilingual"))
     (nl (1 . "Elementair")
         (2 . "Beperkt werkzaam")
-        (3 . "Professioneel")
+        (3 . "Professioneel werkzaam")
         (4 . "Volledig professioneel")
-        (5 . "Moedertaal / tweetalig"))
+        (5 . "Moedertaal of tweetalig"))
     (es (1 . "Elemental")
         (2 . "Laboral limitado")
         (3 . "Profesional")
         (4 . "Profesional pleno")
-        (5 . "Nativo / bilingüe"))))
+        (5 . "Nativo o bilingüe"))))
 
 (define languages
   '(    (en (name (en . "🇬🇧 English")
@@ -125,7 +125,7 @@
     (experience ((en . "Specialised in distributed systems; thesis on incremental build graphs for declarative deployments.")
                  (nl . "Gespecialiseerd in gedistribueerde systemen; scriptie over incrementele build-graphs voor declaratieve deployments.")
                  (es . "Especialización en sistemas distribuidos; tesis sobre grafos de build incrementales para despliegues declarativos."))
-                ((all . "Go, Rust, distributed systems, formal verification")))))
+                ((all . "Coursework: Go, Rust, distributed systems, formal verification")))))
 
 (define vega-education-leiden
   '((name (all . "Hogeschool Leiden"))
@@ -137,7 +137,7 @@
           (nl . "September 2012 => Juli 2016")
           (es . "Septiembre 2012 => Julio 2016"))
     (experience ((en . "Graduated with honours; built the student association's ticketing system."))
-                ((all . "Java, SQL, GNU/Linux, networking")))))
+                ((all . "Coursework: Java, SQL, GNU/Linux, networking")))))
 
 (define education
   (list vega-education-delft vega-education-leiden))

@@ -102,7 +102,7 @@
   (time-machine-manifest-shell
    (list "guix" "pack" "--file=./guix.scm" "--format=docker"
          "--image-tag=iter-vitae" "-S" "/bin=bin"
-         "bash" "coreutils" "util-linux-with-udev" "guile")))
+         "bash" "coreutils" "guile")))
 
 (define (push-docker-latest)
   "Push the latest locally generated Docker image to Dockerhub."

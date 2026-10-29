@@ -5,30 +5,11 @@
 
 (define-module (iter-vitae html)
   #:declarative? #t
-  #:use-module (web server)
-  #:use-module (web request)
-  #:use-module (web response)
-  #:use-module (web uri)
   #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 format)
-  #:use-module (ice-9 match)
-  #:use-module (ice-9 regex)
-  #:use-module (sxml ssax input-parse)
-  #:use-module (sxml ssax)
-  #:use-module (sxml transform)
   #:use-module (srfi srfi-13)
-  #:use-module (ice-9 popen)
-  #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 time)
+  #:use-module (sxml transform)
   #:use-module (iter-vitae prelude)
-  #:use-module (ice-9 string-fun)
-  #:use-module (ice-9 iconv)
-  #:use-module (iter-vitae prelude)
-  #:use-module (iter-vitae theme ef-cyprus)
-  #:use-module (iter-vitae theme fatum)
-  #:use-module (iter-vitae theme fundamental)
-  #:use-module (iter-vitae theme ats)
-  #:use-module (ice-9 threads)
+  #:use-module (iter-vitae theme registry)
   #:export (iter-vitae-curriculum-page sxml->xml))
 
 ;; ====== Serialize (SXML) ======
@@ -316,28 +297,17 @@ formatting."
 ;; ================================
 
 (define* (iter-vitae-curriculum-page #:key locale persona (resources "resources"))
-  (let* ((requested-theme (assq-ref persona
+  (let* (         (requested-theme (assq-ref persona
                                     'document-theme))
          ;; 1. Resolve unknown themes to the default before deciding how the
          ;; page is serialized.  Almost every theme keeps the documented inline
          ;; HTML support, so only the plain-text ATS theme escapes persona text.
-         (theme (case requested-theme
-                  ((fundamental) 'fundamental)
-                  ((fatum) 'fatum)
-                  ((ats) 'ats)
-                  (else 'ef-cyprus)))
+         (theme (normalize-theme requested-theme))
          (escape? (if (eq? theme 'ats) #t 'inline-html))
          (title (assq-ref-all-or-lang (assq-ref persona
                                                 'display-name) locale))
          ;; 2. Determine the correct template and body procedures based on the theme
-         (procs (case theme
-                  ((fundamental)
-                   (cons fundamental-html-template fundamental-main-body))
-                  ((fatum)
-                   (cons fatum-html-template fatum-main-body))
-                  ((ats)
-                   (cons ats-html-template ats-main-body))
-                  (else (cons ef-cyprus-html-template ef-cyprus-main-body))))
+         (procs (theme-procedures theme))
          (template-fn (car procs))
          (body-fn (cdr procs)))
     

@@ -13,7 +13,6 @@
   #:use-module (ice-9 format)
   #:use-module (ice-9 match)
   #:use-module (ice-9 iconv)
-  #:use-module (ice-9 popen)
   #:use-module (ice-9 textual-ports)
   #:use-module (ice-9 regex)
   #:use-module (ice-9 ftw)
@@ -40,7 +39,7 @@
                         plain-text
                         make-directories
                         delete-file-tree
-                        syscall))
+                        temporary-directory))
 
 ;; A setting is taken from the persona module when it defines it, and from the
 ;; defaults module otherwise.  Missing bindings (a setting that exists in
@@ -264,7 +263,7 @@
     (and value (not (string-null? value)) value)))
 
 (define (log-message msg)
-  (display (format #f "\n~a" msg)))
+  (display (format #f "\n~a\n" msg)))
 
 (define (log msg . args)
   (log-message (apply format
@@ -279,11 +278,6 @@
   (log-message (format #f "[error] ~a"
                        (apply format
                               (append (list #f msg) args)))))
-
-(define (syscall cmd)
-  (let* ((process (open-input-pipe cmd))
-         (process-output (get-string-all process)))
-    (close-pipe process) process-output))
 
 (define* (build-asset-library files)
   (let* ((lib '()))
@@ -385,6 +379,14 @@
       (else
        (make-directories (dirname path))
        (mkdir path)))))
+
+;; The platform's temporary directory.  TMPDIR is the POSIX convention; Windows
+;; sets TEMP or TMP instead, and /tmp is the last-resort fallback.
+(define (temporary-directory)
+  (or (getenv "TMPDIR")
+      (getenv "TEMP")
+      (getenv "TMP")
+      "/tmp"))
 
 ;; Delete a file or a directory tree without following symlinks.  This mirrors
 ;; `rm -rf' without going through a shell, so destinations are never parsed as

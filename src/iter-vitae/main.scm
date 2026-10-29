@@ -23,6 +23,7 @@
                                 (value #t))
                         (init (single-char #\i))
                         (all-locales)
+                        (all-themes)
                         (locales (value #t))
                         (file (single-char #\p)
                               (value #t))))
@@ -40,6 +41,7 @@
                              'locale "en"))
          (locales (option-ref options 'locales #f))
          (all-locales? (option-ref options 'all-locales #f))
+         (all-themes? (option-ref options 'all-themes #f))
          (init (option-ref options 'init #f)))
     (log-info
      "Iter Vitae: Generate an attractive, modern and customizable Curriculum Vitae/Resume")
@@ -55,4 +57,5 @@
                              #:resources resources
                              #:format format
                              #:all-locales? all-locales?
+                             #:all-themes? all-themes?
                              #:file file)))))

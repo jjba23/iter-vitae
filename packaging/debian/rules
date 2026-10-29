@@ -25,7 +25,7 @@ override_dh_dwz:
 
 override_dh_auto_configure:
 	# Nothing to configure: Scheme sources plus (for applications) a
-	# bash launcher, installed by hand below.
+	# POSIX sh launcher, installed by hand below.
 
 override_dh_auto_build:
 	mkdir -p $(BUILD_SITE)/iter-vitae $(BUILD_CCACHE)/iter-vitae

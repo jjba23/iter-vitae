@@ -11,6 +11,9 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *** Added
 
+- `--format pdf`: print a CV to A4 with headless Chromium/Chrome. The browser is discovered portably on GNU/Linux, macOS and Windows, and `ITER_VITAE_BROWSER` overrides it. `--all-themes --format pdf` writes one PDF per theme (`dist/ats/resume.pdf`, `dist/fatum/resume.pdf`, and so on), and combining it with `--all-locales` writes one per theme and translation.
+- `--all-themes`: render every built-in theme into its own directory. The theme list now lives in one registry shared by the renderer, the HTML dispatcher and this option.
+- The wizard prints the standard language scale and accepts either a level number or a name (`elementary`, `limited`, `professional`, `full`, `native`, or the full label). The generated proficiency table comes from the same defaults as the themes, so the two cannot drift apart.
 - `--init` (`-i`): an interactive wizard that builds a persona file. It covers every content field (contact details, links, address, summary, skills, jobs, education, languages, interests and driving licences), lets you choose a theme, offers an optional step for renaming section headings, shows a review before writing, and asks before overwriting an existing file. It uses `./my-cv.scm` when `--file` is omitted.
 - The wizard can build a persona in several languages. It asks for a comma-separated list of locale codes, asks each translatable question once per language (pressing Enter reuses the first language), and writes real translation alists instead of an `(all . "...")` fallback. The new `--locales` option pre-answers the language question, for example `iter-vitae --init --locales en,nl,es`.
 - The generated language-proficiency table now follows the selected document locales, with English, Dutch and Spanish labels built in.
@@ -21,6 +24,8 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *** Modified
 
+- Print output for every theme was tightened for A4: 12mm margins (11mm for `ats`), 10–10.5pt print type, smaller language tables, no decorative icons or credit footer, headings kept with their content, language rows kept together, and `orphans`/`widows` protection. The visual themes switch to normal document flow for print, and education entries are grouped so a heading never ends up on the previous sheet. A modest CV now fits the ATS theme on one A4 page.
+- Copy is consistent across themes: `Profile` replaces `Who am I?`, `Interests` replaces `Interests & Hobbies`, `Professional working` and `Native or bilingual` match the standard five-level scale, role and employer are separated by a comma, and every footer says `Made with Iter Vitae`. Empty sections are hidden instead of printing a heading with nothing under it.
 - The README was reorganized around a generated four-theme demo, with a reproducible `scripts/generate-demo` workflow and no legacy remote screenshots or logos. Installation, usage, theme and field-reference material was preserved and expanded.
 - All visual themes now render the optional `skills` field: `fatum` and `ef-cyprus` as tag rows, `fundamental` as a comma-separated line. Date ranges written with `=>` display as an en dash in visual themes.
 - `fatum` gained a printable card layout, hairline section rules, monospaced skill tags, a lighter language table and A4 print rules. `ef-cyprus` gained matching green-accented tags and print rules, while `fundamental` received a tighter type scale, print styles and footer markup. `ats` keeps entries from splitting across printed pages. The README tour now opens with `ats` (the ATS-safe version) before the visual themes, and the demo frames are tall enough to show the full page.
@@ -29,11 +34,15 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *** Fixed
 
+- The launcher is now POSIX `sh` and no longer assumes GNU `getopt`, `realpath` or `readlink -f`; it also runs directly from a source checkout. Guix, Nix, Arch and openSUSE recipes no longer carry the unused util-linux dependency, the Guix build rewrites the launcher shebang to the store shell, and the Nix build now fails on a compile error instead of swallowing it. The installed `/usr/bin` and store-prefix layouts were both exercised directly.
+- PDF and temporary-file handling is more portable: temporary directories follow `TMPDIR`, then `TEMP`/`TMP`, browser discovery also checks per-user Windows Chrome, Edge and Chromium installs, an existing PDF is removed before printing so a failure cannot look like success, and the root-only sandbox flag is guarded on platforms without `getuid`.
+- Persona paths are resolved before `load`, so `--file populus/vega.scm` works from the repository as documented rather than being searched on Guile's module path.
 - All themes now declare the document language, accept bare job-title links and normalize them to `https://`, and list language proficiency columns in reading, speaking, writing order.
 - The `ats` theme removes the stray space left before punctuation when it strips an emoji, joins sentence-style interests with a space, and opens external links safely.
-- The English short-intro heading is now punctuated as "Who am I?". Section headings and the driving-licence copy were tightened across English, Dutch and Spanish (for example "Driving licence" is no longer repeated in the value).
+- Section headings and the driving-licence copy were tightened across English, Dutch and Spanish (for example "Profile" replaces "Who am I?" and "Driving licence" is no longer repeated in the value). Education keyword lines now start with "Coursework:" so they read as context rather than stray bullets, and the bundled personas use consistent, shorter achievement bullets.
 - Persona files generated by the wizard now use the renderer's `languages` shape, so language names and proficiency levels no longer come out empty.
 - The wizard's generated header now uses the persona name and locale in the right places and quotes the example portrait path correctly.
+- Launcher and demo scripts are `shellcheck`-clean, and the Nix expressions parse without evaluation errors.
 
 ---------
 

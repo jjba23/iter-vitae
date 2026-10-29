@@ -18,14 +18,15 @@
 
 (define* (render-expression file destination resources
                             #:key (locale 'en) (output-format "html")
-                            (all-locales? #f))
+                            (all-locales? #f) (all-themes? #f))
   (format #f
-          "((@(iter-vitae renderer) render-curriculum) #:locale '~a #:destination ~s #:resources ~s #:format ~s #:all-locales? ~a #:file ~s)"
+          "((@(iter-vitae renderer) render-curriculum) #:locale '~a #:destination ~s #:resources ~s #:format ~s #:all-locales? ~a #:all-themes? ~a #:file ~s)"
           locale
           destination
           resources
           output-format
           (if all-locales? "#t" "#f")
+          (if all-themes? "#t" "#f")
           file))
 
 (define* (render #:key (root (make-temp-dir))
@@ -35,7 +36,8 @@
                  (resources-name "resources")
                  (locale 'en)
                  (output-format "html")
-                 (all-locales? #f))
+                 (all-locales? #f)
+                 (all-themes? #f))
   "Prepare a persona and resource tree under @var{root}, then render it."
   (let* ((file (in-vicinity root "persona.scm"))
          (resources (make-resources (in-vicinity root resources-name)))
@@ -50,7 +52,9 @@
                                                 #:output-format
                                                 output-format
                                                 #:all-locales?
-                                                all-locales?))))
+                                                all-locales?
+                                                #:all-themes?
+                                                all-themes?))))
       (values status output file resources destination))))
 
 (define (index-path destination)
@@ -64,6 +68,30 @@
 
 (define (read-text destination)
   (call-with-input-file (text-path destination) get-string-all))
+
+(define (read-file path)
+  (call-with-input-file path get-string-all))
+
+;; A browser shim lets the PDF tests run without Chromium while still checking
+;; the exact executable, argv flags and output path the real renderer uses.
+(define (fake-browser root)
+  (let ((path (in-vicinity root "fake-browser"))
+        (log (in-vicinity root "browser-args")))
+    (write-file
+     path
+     (format #f "#!/bin/sh
+printf '%s\\n' \"$@\" >> ~s
+output=''
+for argument in \"$@\"; do
+  case \"$argument\" in
+    --print-to-pdf=*) output=${argument#--print-to-pdf=} ;;
+  esac
+done
+[ -n \"$output\" ] || exit 1
+printf '%s\\n' '%PDF-1.4' '%% fake' > \"$output\"
+" log))
+    (chmod path #o755)
+    (values path log)))
 
 (define renderer-suite
   (suite "renderer"
@@ -164,9 +192,9 @@
                                               "Dutch text in English CV")
                          (expect-not-contains dutch "Ada Example"
                                               "English text in Dutch CV"))
-                       (expect-contains output "rendering locale en"
+                       (expect-contains output "rendering ef-cyprus for en"
                                         "English render log")
-                       (expect-contains output "rendering locale nl"
+                       (expect-contains output "rendering ef-cyprus for nl"
                                         "Dutch render log")))))))
          (test "renders one text resume per persona locale"
                (assert-no-error
@@ -290,7 +318,7 @@
                                       "-c"
                                       (render-expression
                                        file destination resources
-                                       #:output-format "pdf"))))
+                                       #:output-format "docx"))))
                          (expect-true (not (zero? status))
                                       "unknown format should fail")
                          (expect-true (file-exists? keep)
@@ -340,6 +368,78 @@
                                       "shell metacharacters must not run")
                          (expect-true (file-exists? (index-path destination))
                                       "index.html should exist"))))))))
+         (test "renders every theme to a PDF with the configured browser"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (let-values (((browser log) (fake-browser root)))
+                       (dynamic-wind
+                        (lambda () #t)
+                        (lambda ()
+                          (setenv "ITER_VITAE_BROWSER" browser)
+                          (let-values (((status output file resources destination)
+                                        (render #:root root
+                                                #:output-format "pdf"
+                                                #:all-themes? #t)))
+                            (expect-equal 0 status "PDF exit status")
+                            (for-each
+                             (lambda (theme)
+                               (expect-true
+                                (file-exists?
+                                 (in-vicinity
+                                  (in-vicinity destination
+                                               (symbol->string theme))
+                                  "resume.pdf"))
+                                (format #f "~a PDF" theme)))
+                             '(ats fatum ef-cyprus fundamental))
+                            (expect-true
+                             (not (file-exists?
+                                   (in-vicinity destination "resume.pdf")))
+                             "no root PDF")
+                            (let ((arguments (read-file log)))
+                              (expect-contains arguments "--headless=new"
+                                               "headless flag")
+                              (expect-contains arguments
+                                               "--no-pdf-header-footer"
+                                               "no browser header")
+                              (expect-contains arguments
+                                               "--print-to-pdf="
+                                               "print flag")
+                              (expect-contains arguments "file://"
+                                               "file URL")
+                              (expect-contains
+                               arguments
+                               (in-vicinity (in-vicinity destination "ats")
+                                            "resume.pdf")
+                               "ATS output path"))
+                            (expect-contains output "rendering ats for en"
+                                             "theme log")))
+                        (lambda ()
+                          (unsetenv "ITER_VITAE_BROWSER")))))))))
+         (test "rejects --all-themes with plain text before clearing output"
+               (assert-no-error
+                (lambda ()
+                  (call-with-temp-dir
+                   (lambda (root)
+                     (let* ((file (in-vicinity root "persona.scm"))
+                            (resources (make-resources
+                                        (in-vicinity root "resources")))
+                            (destination (in-vicinity root "dist"))
+                            (keep (in-vicinity destination "keep.txt")))
+                       (persona-file file (with-theme sample-persona 'ef-cyprus))
+                       (write-file keep "keep")
+                       (let-values (((status output)
+                                     (run-guile
+                                      "-c"
+                                      (render-expression
+                                       file destination resources
+                                       #:output-format "text"
+                                       #:all-themes? #t))))
+                         (expect-true (not (zero? status))
+                                      "text/all-themes should fail")
+                         (expect-true (file-exists? keep)
+                                      "destination should survive"))))))))
          (test "renders the persona with every theme"
                (assert-no-error
                 (lambda ()

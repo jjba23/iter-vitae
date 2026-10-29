@@ -5,19 +5,9 @@
 
 (define-module (iter-vitae theme fundamental)
   #:declarative? #t
-  #:use-module (web uri)
-  #:use-module (ice-9 textual-ports)
-  #:use-module (ice-9 format)
-  #:use-module (ice-9 match)
-  #:use-module (ice-9 regex)
   #:use-module (srfi srfi-1)
   #:use-module (srfi srfi-13)
-  #:use-module (ice-9 popen)
-  #:use-module (ice-9 time)
   #:use-module (iter-vitae prelude)
-  #:use-module (ice-9 string-fun)
-  #:use-module (ice-9 iconv)
-  #:use-module (ice-9 threads)
   #:export (fundamental-html-template fundamental-main-body))
 
 ;; --- Theme Styles ---
@@ -92,7 +82,62 @@
   "width: 88px; height: 88px; flex: 0 0 auto; border: 2px solid #d9e2ec; border-radius: 50%; object-fit: cover;")
 
 (define fundamental-print-styles
-  "@media print { @page { size: A4; margin: 14mm; } body { max-width: none !important; padding: 0 !important; color: #000 !important; } a { color: inherit !important; text-decoration: none !important; border-bottom: 0 !important; } .fundamental-footer { margin-top: 1.5rem !important; } }" )
+  "@media print {
+  @page { size: A4; margin: 12mm; }
+
+  html {
+    font-size: 13.5px;
+  }
+
+  body {
+    max-width: none !important;
+    padding: 0 !important;
+    color: #000 !important;
+    font-size: 10pt;
+    line-height: 1.45;
+  }
+
+  h4 {
+    margin-top: 1.6rem !important;
+    margin-bottom: 0.55rem !important;
+    break-after: avoid;
+  }
+
+  div[style*=\"break-inside: avoid\"] {
+    margin-bottom: 0.9rem !important;
+    break-inside: avoid;
+  }
+
+  table,
+  tr,
+  ul {
+    break-inside: avoid;
+  }
+
+  table {
+    margin: 0.4rem 0 0.7rem !important;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  p,
+  li {
+    orphans: 2;
+    widows: 2;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: none !important;
+    border-bottom: 0 !important;
+  }
+
+  .fundamental-footer {
+    display: none !important;
+  }
+}" )
 
 ;; --- Templates ---
 
@@ -122,10 +167,10 @@
                 ,(and (personal-link persona 'linked-in)
                       (render-linked-in-link #:locale locale
                                              #:persona persona)))
-           (div (small "Rendered with "
+           (div (small "Made with "
                        (a (@ (style ,link-style)
-                             (href "https://www.gnu.org/software/guile/"))
-                          "Lisp (Guile Scheme)")))))
+                             (href "https://codeberg.org/jjba23/iter-vitae"))
+                          "Iter Vitae")))))
 
 (define* (render-profile-picture #:key locale persona)
   (let ((picture (persona-profile-picture persona)))
@@ -377,12 +422,14 @@
               ,(render-address-lines #:locale locale
                                      #:persona persona)))
     
-    (h4 (@ (style ,h4-style))
-        ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                   'titles)
-                                         'short-intro) locale))
-    ,@(render-short-intro #:locale locale
-                          #:persona persona)
+    ,@(if (null? (or (assq-ref persona 'short-intro) '()))
+          '()
+          `((h4 (@ (style ,h4-style))
+                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                           'titles)
+                                                 'short-intro) locale))
+            ,@(render-short-intro #:locale locale
+                                  #:persona persona)))
 
     ,@(let ((skills (render-skills #:locale locale
                                    #:persona persona)))
@@ -394,36 +441,42 @@
                                                     'skills) locale))
                ,@skills)))
 
-    (h4 (@ (style ,h4-style))
-        ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                   'titles)
-                                         'work-experience) locale))
-    ,@(render-jobs #:locale locale
-                   #:persona persona)
+    ,@(if (null? (or (assq-ref persona 'jobs) '()))
+          '()
+          `((h4 (@ (style ,h4-style))
+                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                           'titles)
+                                                 'work-experience) locale))
+            ,@(render-jobs #:locale locale
+                           #:persona persona)))
 
-    (h4 (@ (style ,h4-style))
-        ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                   'titles)
-                                         'education) locale))
-    ,@(render-education #:locale locale
-                        #:persona persona)
+    ,@(if (null? (or (assq-ref persona 'education) '()))
+          '()
+          `((h4 (@ (style ,h4-style))
+                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                           'titles)
+                                                 'education) locale))
+            ,@(render-education #:locale locale
+                                #:persona persona)))
 
-    (h4 (@ (style ,h4-style))
-        ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                   'titles)
-                                         'language) locale))
-    ,(render-languages #:persona persona
-                       #:locale locale)
+    ,@(if (null? (or (assq-ref persona 'languages) '()))
+          '()
+          `((h4 (@ (style ,h4-style))
+                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                           'titles)
+                                                 'language) locale))
+            ,(render-languages #:persona persona
+                               #:locale locale)))
 
-    ,(unless (nil? (assq-ref persona
-                             'driver-licenses))
-       `((h4 (@ (style ,h4-style))
-             ,(string-append (assq-ref-all-or-lang (assq-ref (assq-ref persona
-                                                              'titles)
-                                                             'driver-license)
-                                                   locale) ":"))
-         ,(render-driver-licenses #:locale locale
-                                  #:persona persona)))
+    ,@(if (nil? (assq-ref persona 'driver-licenses))
+          '()
+          `((h4 (@ (style ,h4-style))
+                ,(assq-ref-all-or-lang (assq-ref (assq-ref persona
+                                                           'titles)
+                                                 'driver-license)
+                                      locale))
+            ,(render-driver-licenses #:locale locale
+                                     #:persona persona)))
 
     ,(unless (nil? (assq-ref persona
                              'interests-hobbies))

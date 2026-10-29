@@ -1,11 +1,10 @@
-
 +----------------------------------------------------------------------------+
 Iter Vitae:
     Generate an attractive, modern and customizable Curriculum Vitae / Resume.
-    
+
     See more at: https://codeberg.org/jjba23/iter-vitae
     Software licensed under the MIT License.
-    
+
 USAGE: iter-vitae [OPTIONS]
 OPTIONS:
     -f, --file FILE
@@ -28,12 +27,25 @@ OPTIONS:
         Render one CV for every locale defined in the persona. Each output
         goes into its own directory, e.g. ./dist/en/ and ./dist/nl/.
 
+    --all-themes
+        Render every built-in theme. Each output goes into its own directory:
+        ./dist/ats/, ./dist/fatum/, ./dist/ef-cyprus/ and
+        ./dist/fundamental/. Combine with --all-locales for
+        ./dist/THEME/LOCALE/. Plain text cannot be combined with this option.
+
     -d, --destination DIRECTORY
         Specify the output directory for the generated CV. Defaults to "./dist".
-        
+
     -F, --format FORMAT
-        Select the output format: 'html' (default, writes index.html)
-        or 'text' (writes resume.txt for text-only uploads).
+        Select the output format:
+          html  index.html (default)
+          text  resume.txt for text-only uploads
+          pdf   resume.pdf, printed on A4 by headless Chromium/Chrome
+        PDF output needs Google Chrome, Chromium, Edge or Brave. Set
+        ITER_VITAE_BROWSER to the executable if it is not found.
+
+    -r, --resources DIRECTORY
+        Where the bundled stylesheets live. Normally detected automatically.
 
     -h, --help
         Display this help message and exit.
@@ -47,13 +59,14 @@ EXAMPLES:
     iter-vitae --all-locales -f ~/documents/my-cv.scm -d ~/documents/dist
 
     iter-vitae -l nl -f ~/documents/my-cv.scm -d ~/documents/dist
-    
-    iter-vitae --locale en \
-        --file ~/Documents/my-cv.scm \
-        --destination ~/Documents
 
-    iter-vitae --format text \
-        --file ~/Documents/my-cv.scm \
-        --destination ~/Documents/dist
+    iter-vitae --format pdf \
+        -f ~/documents/my-cv.scm -d ~/documents/dist
+
+    iter-vitae --all-themes --format pdf \
+        -f ~/documents/my-cv.scm -d ~/documents/comparison
+
+    iter-vitae --all-themes --all-locales --format pdf \
+        -f ~/documents/my-cv.scm -d ~/documents/comparison
 
 +----------------------------------------------------------------------------+

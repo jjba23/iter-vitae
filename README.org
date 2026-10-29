@@ -12,7 +12,7 @@
   <a href="https://www.gnu.org/software/guile/"><img src="https://img.shields.io/badge/Guile-3.0-f0c040.svg?style=flat-square" alt="Guile 3.0" /></a>
   <a href="#from-the-guix-channel"><img src="https://img.shields.io/badge/Guix-channel-6f4e9c.svg?style=flat-square" alt="GNU Guix channel" /></a>
   <a href="#from-the-nix-flake"><img src="https://img.shields.io/badge/Nix-flake-5277C3.svg?style=flat-square" alt="Nix flake" /></a>
-  <a href="#what-gets-written"><img src="https://img.shields.io/badge/output-HTML%20%2B%20plain%20text-0f766e.svg?style=flat-square" alt="HTML and plain-text output" /></a>
+  <a href="#what-gets-written"><img src="https://img.shields.io/badge/output-HTML%20%C2%B7%20PDF%20%C2%B7%20text-0f766e.svg?style=flat-square" alt="HTML, PDF and plain-text output" /></a>
 </p>
 #+end_export
 
@@ -37,7 +37,7 @@ be a programmer: the wizard writes the Scheme for you.
 
 Your CV is not a document you fight with every spring. It is a small,
 version-controlled source file that can become a beautiful web page, a
-US-Letter-ready PDF, or a plain-text attachment for an application form.
+print-ready A4 PDF, or a plain-text attachment for an application form.
 #+end_quote
 
 It is free software (MIT), it runs without an account, and it is built to serve
@@ -226,8 +226,15 @@ iter-vitae --all-locales --file my-cv.scm --destination dist
 
 That writes ~dist/en/index.html~, ~dist/nl/index.html~ and so on, one directory
 per locale found in the persona. With ~--format text~ the files are
-~dist/en/resume.txt~ and ~dist/nl/resume.txt~. A persona that only uses the
-~(all . "…")~ fallback gets one directory named after ~--locale~.
+~dist/en/resume.txt~ and ~dist/nl/resume.txt~; with ~--format pdf~ they are
+~dist/en/resume.pdf~ and so on. A persona that only uses the ~(all . "…")~
+fallback gets one directory named after ~--locale~.
+
+For a printable A4 PDF:
+
+#+begin_src shell
+iter-vitae --format pdf --file my-cv.scm --destination dist
+#+end_src
 
 Want plain text for an application form?
 
@@ -267,11 +274,12 @@ To run Iter Vitae:
 - *Guile Scheme 3.0* — the whole program is written in the GNU extension
   language, and this is its only real dependency. The SXML modules it uses for
   rendering are part of Guile itself.
-- *Bash, coreutils and util-linux* — the ~iter-vitae~ launcher is a small Bash
-  wrapper around the Guile program; it resolves paths with ~readlink~ and
-  ~realpath~, and parses options with ~getopt~.
-- *A web browser* — ideally one that can print to PDF, such as GNU IceCat or
-  Firefox.
+- *A POSIX shell and coreutils* — the ~iter-vitae~ launcher is a small
+  portable wrapper. It no longer needs GNU ~readlink~, ~realpath~ or ~getopt~,
+  so it works on macOS, the BSDs and minimal containers as well as GNU/Linux.
+- *A web browser* — GNU IceCat or Firefox to read the HTML. For ~--format pdf~,
+  install Chromium, Google Chrome, Microsoft Edge or Brave; the launcher finds
+  it on ~PATH~ or through ~ITER_VITAE_BROWSER~.
 - *No network* — rendering is entirely local. The =fatum= and =ef-cyprus=
   themes do load web fonts and icon fonts from the network /when the page is
   opened/, so use =fundamental= or =ats= on an air-gapped machine, or host
@@ -507,8 +515,9 @@ iter-vitae [OPTIONS]
 | ~-l~, ~--locale~ CODE     | ~en~     | Language to render (~en~, ~nl~, ~es~, …).                        |
 | ~--locales~ CODES         |          | Languages for the wizard, e.g. ~en,nl,es~; first is primary.      |
 | ~--all-locales~           |          | Render one CV per persona locale under ~DEST/LOCALE/~.            |
+| ~--all-themes~            |          | Render every theme under ~DEST/THEME/~ (HTML or PDF).             |
 | ~-d~, ~--destination~ DIR | ~./dist~ | Output directory. It is emptied before each run.                |
-| ~-F~, ~--format~ FORMAT   | ~html~   | ~html~ writes ~index.html~; ~text~ writes ~resume.txt~.          |
+| ~-F~, ~--format~ FORMAT   | ~html~   | ~html~, ~text~ or ~pdf~ (A4, via headless Chromium/Chrome).       |
 | ~-r~, ~--resources~ DIR   | bundled  | Where the theme stylesheets live; source runs only.             |
 | ~-h~, ~--help~            |          | Print the help text and exit.                                   |
 
@@ -530,6 +539,12 @@ iter-vitae --locale nl --file ~/documents/my-cv.scm --destination ~/documents/di
 # Render every language the persona defines
 iter-vitae --all-locales --file ~/documents/my-cv.scm --destination ~/documents/dist
 
+# One A4 PDF
+iter-vitae --format pdf --file ~/documents/my-cv.scm --destination ~/documents/dist
+
+# Every theme as an A4 PDF, for comparison
+iter-vitae --all-themes --format pdf --file ~/documents/my-cv.scm --destination ~/documents/themes
+
 # Plain text for an online application form
 iter-vitae --format text --file ~/documents/my-cv.scm --destination ~/documents/dist
 
@@ -546,11 +561,15 @@ iter-vitae --file ./my-cv.scm --destination ./dist/acme
 With ~--format html~ (the default) you get a single ~index.html~: all styles
 are inlined, there is no JavaScript, and the page opens correctly from
 ~file://~. With ~--format text~ you get a plain ~resume.txt~ instead, and the
-visual theme is ignored, because plain text has no styling.
+visual theme is ignored, because plain text has no styling. With ~--format
+pdf~ you get an A4 ~resume.pdf~, printed by headless Chromium/Chrome with no
+browser headers or footers.
 
 With ~--all-locales~ those files live one level deeper: ~dist/en/index.html~
-and ~dist/nl/index.html~, or ~dist/en/resume.txt~ and ~dist/nl/resume.txt~ for
-text output.
+and ~dist/nl/index.html~, or ~dist/en/resume.pdf~ and ~dist/nl/resume.pdf~ for
+PDF output. With ~--all-themes~ every theme gets its own directory:
+~dist/ats/index.html~, ~dist/fatum/index.html~ and so on. Combine both options
+for ~dist/ats/en/resume.pdf~, ~dist/fatum/en/resume.pdf~, and so on.
 
 #+begin_quote
 *Careful:* the destination directory is deleted and recreated on every run, so
@@ -569,9 +588,37 @@ Open the generated file in a free browser such as GNU IceCat or Firefox:
 firefox ./dist/index.html
 #+end_src
 
-To get a PDF, use the browser's /Print → Save to PDF/. The =ats= theme is
-tuned for US Letter paper and prints cleanly, without headers, footers or
-decorations; for a text-first document, use =ats= or the plain-text output.
+To get a PDF without opening a browser, use the built-in print path:
+
+#+begin_src shell
+iter-vitae --format pdf --file ~/documents/my-cv.scm --destination ~/documents/dist
+#+end_src
+
+It prints on A4 with no browser headers or footers and writes
+~dist/resume.pdf~. Every theme has print rules for page breaks, headings,
+tables, margins and typography: page margins are 12mm (11mm for =ats=), printed
+type is 10–10.5pt, section rules tighten, and decorative footers and icons are
+removed. The visual themes switch from a screen layout to normal document flow
+when printed, so entries and their headings stay together instead of leaving a
+half-empty page. Chromium, Google Chrome, Microsoft Edge and Brave are
+detected portably. If yours lives somewhere unusual, point
+~ITER_VITAE_BROWSER~ at it:
+
+#+begin_src shell
+ITER_VITAE_BROWSER=/opt/chromium/chrome iter-vitae --format pdf \
+    --file ~/documents/my-cv.scm --destination ~/documents/dist
+#+end_src
+
+To compare every theme at once:
+
+#+begin_src shell
+iter-vitae --all-themes --format pdf \
+    --file ~/documents/my-cv.scm --destination ~/documents/themes
+#+end_src
+
+The output is ~themes/ats/resume.pdf~, ~themes/fatum/resume.pdf~,
+~themes/ef-cyprus/resume.pdf~ and ~themes/fundamental/resume.pdf~. Add
+~--all-locales~ to get a PDF for each translation as well.
 
 To publish it, copy ~dist/~ to your web server, or serve it locally while you
 iterate:
@@ -595,7 +642,7 @@ or =ats=.
 | ~fatum~       | Typographic, technical, slightly retro                   | Engineers, computer scientists      |
 | ~ef-cyprus~   | Light, green accents, IBM Plex, icon fonts               | A clean modern CV, any field        |
 | ~fundamental~ | No frills, one sans-serif font, minimal dependencies     | Plain, fast, offline-safe documents |
-| ~ats~         | One column, Arial 11pt, no tables, no icons, no assets   | US applicant tracking systems       |
+| ~ats~         | One column, Arial 11pt, no tables, no icons, no assets   | Applicant tracking systems          |
 
 Pick one in your persona file:
 
@@ -647,19 +694,20 @@ remove padding and link underlines so the page exports cleanly to PDF.
 :CUSTOM_ID: ats
 :END:
 
-An Applicant Tracking System first theme, designed for American job
-applications and automated resume screeners.
+An Applicant Tracking System first theme, designed for automated resume
+screeners and online application forms.
 
-It uses one column, Arial at a normal 11pt body size, plain block elements,
-selectable contact text, and the conventional headings recruiters and parsers
-expect: *Professional Summary*, *Skills*, *Work Experience*, *Education*,
-*Languages* and *Additional Information*.
+It uses one column, Arial at a normal 11pt body size on screen (10pt when
+printed), plain block elements, selectable contact text, and the conventional
+headings recruiters and parsers expect: *Professional Summary*, *Skills*,
+*Work Experience*, *Education*, *Languages* and *Additional Information*.
 
 There are no tables, images, icon fonts, web fonts, headers, footers or
 external assets. Inline HTML in persona fields is stripped so parsers receive
 plain text, and work and education entries are ordinary headings with bullet
-lists. The page prints cleanly to US Letter paper, so it can be exported to a
-text-based PDF from the browser.
+lists. It prints cleanly to A4 without headers, footers or decorations, and a
+modest one-page CV stays on one sheet instead of spilling a final section onto
+a second page.
 
 #+begin_src scheme
 (define document-theme 'ats)
@@ -808,13 +856,13 @@ The following variables are read by Iter Vitae to construct a CV:
   language scale. It maps a document locale (like ~en~ or ~nl~) to an ~alist~
   of five integer levels. The defaults use the standard CV scale:
 
-  | Level | English label        | Meaning                                      |
-  |-------+----------------------+----------------------------------------------|
-  |     1 | Elementary           | Basic phrases and familiar topics            |
-  |     2 | Limited working      | Routine conversations with support           |
-  |     3 | Professional         | Comfortable in meetings and day-to-day work  |
-  |     4 | Full professional    | Fluent, precise, and comfortable under pressure |
-  |     5 | Native / bilingual   | First-language or fully bilingual command    |
+  | Level | English label         | Meaning                                         |
+  |-------+-----------------------+-------------------------------------------------|
+  |     1 | Elementary            | Basic phrases and familiar topics               |
+  |     2 | Limited working       | Routine conversations with support              |
+  |     3 | Professional working  | Comfortable in meetings and day-to-day work     |
+  |     4 | Full professional     | Fluent, precise, and comfortable under pressure |
+  |     5 | Native or bilingual   | First-language or fully bilingual command       |
 
   Override it only when you need another language or wording. The wizard
   generates this table for the locales you select, and the visual themes show
@@ -912,6 +960,12 @@ driving licences. You choose a theme, and an optional advanced step lets you
 rename section headings. Press Enter to skip an optional question; press
 Ctrl-C at any point to leave without writing anything. The wizard never
 overwrites an existing file without asking.
+
+For each language, the wizard prints the standard five-level scale and accepts
+either its number or its name: *elementary*, *limited working*, *professional
+working*, *full professional*, or *native or bilingual*. Short answers such as
+~3~, ~professional~, ~full~ and ~native~ work too, so no one has to memorise
+the numbers.
 
 ** Several languages from the start
 
