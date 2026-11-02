@@ -36,6 +36,7 @@
                         load-asset-library
                         asset-css
                         self-hosted-faces
+                        font-base
                         decode-html-entities
                         plain-text
                         make-directories

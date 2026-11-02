@@ -1351,10 +1351,10 @@ Work Sans and Source Serif 4 are variable fonts, so one file per style carries
 the whole weight axis; JuliaMono ships static weights, hence two files split at
 600.
 
-The faces are declared by @code{self-hosted-faces} in @code{(iter-vitae
-prelude)}, which points at a base URL rather than at a font service: this
-project's own host of the files by default, and any other base a persona names
-through the @code{font-base} parameter.
+The faces are declared by ~self-hosted-faces~ in ~(iter-vitae prelude)~, which
+points at a base URL rather than at a font service: this project's own host of
+the files by default, and any other base a persona names by rebinding the
+~font-base~ parameter.
 
 #+begin_src scheme
 (font-base "https://example.org/fonts/")
