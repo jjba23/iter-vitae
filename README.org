@@ -640,7 +640,7 @@ or =ats=.
 | Theme         | Mood                                                    | Good for                            |
 |---------------+---------------------------------------------------------+-------------------------------------|
 | ~fatum~       | Typographic, technical, slightly retro                   | Engineers, computer scientists      |
-| ~ef-cyprus~   | Light, green accents, IBM Plex, icon fonts               | A clean modern CV, any field        |
+| ~ef-cyprus~   | Light, green accents, serif and mono faces, icon fonts   | A clean modern CV, any field        |
 | ~fundamental~ | No frills, one sans-serif font, minimal dependencies     | Plain, fast, offline-safe documents |
 | ~ats~         | One column, Arial 11pt, no tables, no icons, no assets   | Applicant tracking systems          |
 
@@ -662,9 +662,10 @@ side by side in time.
 Joe's (jjbigorra@gmail.com / jjba23) custom theme, showcasing the hacker nature
 and tailored for engineers, computer scientists and techies.
 
-It uses the bundled Olive CSS, Phosphor icons, and Lucida fonts served from the
-project's own site. See [[#on-lucida-fonts][On Lucida fonts]] for the licensing
-details. Skills become a compact monospaced tag row, section rules keep the eye
+It uses the bundled Olive CSS, Phosphor icons, and the three self-hosted
+families every theme is set in -- Work Sans, Source Serif 4 and JuliaMono. See
+[[#on-fonts][On fonts]] for where they come from. Skills become a compact
+monospaced tag row, section rules keep the eye
 moving down the page, and dedicated print rules remove the screen card and
 keep entries together on A4 paper.
 
@@ -674,8 +675,9 @@ keep entries together on A4 paper.
 :END:
 
 Simple, clean, light and green tones with advanced typography with varying font
-families and weights combined. Using Olive CSS and Phosphor icons, and IBM Plex
-fonts. Inspired by Protesilaos ef-themes for Emacs. Skills appear as green
+families and weights combined. Using Olive CSS and Phosphor icons, and the
+self-hosted Work Sans, Source Serif 4 and JuliaMono. Inspired by Protesilaos
+ef-themes for Emacs. Skills appear as green
 outlined tags, dates use an en dash, and print output drops the screen-only
 accent rule while keeping entries intact across pages.
 
@@ -1328,21 +1330,39 @@ The bundled Olive CSS stylesheets in ~resources/css/~ come from the
 [[https://codeberg.org/jjba23/olive-css][olive-css]] project and remain under the GNU Lesser General Public License v3
 or later, as their own file headers state.
 
-** On Lucida fonts
+** On fonts
 :PROPERTIES:
-:CUSTOM_ID: on-lucida-fonts
+:CUSTOM_ID: on-fonts
 :END:
 
-Lucida fonts are proprietary typefaces originally developed by Bigelow &
-Holmes. They remain a long-time favorite for many people and are very legible in
-many situations and hardware/software. While they are bundled pre-installed on
-many operating systems and platforms, they remain proprietary fonts.
+Every theme is set in three libre families, all under the SIL Open Font License
+1.1:
 
-You may use these font files under principles of fair use or for local
-development and non-commercial purposes, provided it is not for profit and used
-without securing a proper commercial license where required by law. Users and
-contributors are solely responsible for ensuring their usage complies with
-applicable software licensing terms and intellectual property rights.
+- *Work Sans* for prose -- the `font-sans' of a document, and the face a
+  heading, a role and a skills list are set in where the theme does not say
+  otherwise;
+- *Source Serif 4* for serif text -- long-form prose, and the `font-serif'
+  utility, which the `fatum' theme reaches for;
+- *JuliaMono* for code -- the `font-mono' utility, which sets a skill tag, a
+  code span and a date column in the `fatum' theme and the monospaced run in
+  `ef-cyprus'.
+
+Work Sans and Source Serif 4 are variable fonts, so one file per style carries
+the whole weight axis; JuliaMono ships static weights, hence two files split at
+600.
+
+The faces are declared by @code{self-hosted-faces} in @code{(iter-vitae
+prelude)}, which points at a base URL rather than at a font service: this
+project's own host of the files by default, and any other base a persona names
+through the @code{font-base} parameter.
+
+#+begin_src scheme
+(font-base "https://example.org/fonts/")
+#+end_src
+
+A document that never loads them still reads: the utility classes fall back to
+the system's own sans, serif and monospace faces. No proprietary font is
+bundled, served or named anywhere in this project.
 
 * On Reproducibility: Why GNU Guix?
 :PROPERTIES:

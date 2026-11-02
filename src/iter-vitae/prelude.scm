@@ -35,6 +35,7 @@
                         build-asset-library
                         load-asset-library
                         asset-css
+                        self-hosted-faces
                         decode-html-entities
                         plain-text
                         make-directories
@@ -323,6 +324,52 @@
                                                  "")))))
           (hash-set! css-cache path css)
           css))))
+
+;;; ====== The faces a document is set in ======
+;;;
+;;; Work Sans, Source Serif 4 and JuliaMono: the three families Olive CSS names
+;;; as its `font-sans', `font-serif' and `font-mono', all of them libre (SIL
+;;; Open Font License 1.1) and all of them served from one base URL rather than
+;;; asked of a font service.  A document therefore renders the same offline and
+;;; tells no third party who read it.
+;;;
+;;; The default base is this project's own host of the files.  A persona that
+;;; serves its own copies names another base, and a document that never loads
+;;; them still reads: the utility classes fall back to the system's own sans,
+;;; serif and monospace faces.
+(define font-base
+  (make-parameter "https://jointhefreeworld.org/static-assets/fonts/"))
+
+;; One face per family, style and subset.  Work Sans and Source Serif 4 are
+;; variable fonts, so a single file carries the whole weight axis; JuliaMono
+;; ships static weights, hence two files split at 600.
+(define font-face-specs
+  '(("JuliaMono" normal "300 500" "juliamono-normal-latin.woff2")
+    ("JuliaMono" normal "600 900" "juliamono-bold-latin.woff2")
+    ("Work Sans" normal "100 900" "work-sans-normal-latin.woff2")
+    ("Work Sans" italic "100 900" "work-sans-italic-latin.woff2")
+    ("Source Serif 4" normal "200 900" "source-serif-4-normal-latin.woff2")
+    ("Source Serif 4" italic "200 900" "source-serif-4-italic-latin.woff2")))
+
+(define* (self-hosted-faces #:key (base #f))
+  "The `@@font-face' block that declares the three families, each file
+addressed from @var{base} -- the `font-base' parameter unless one is given."
+  (let ((base (or base (font-base))))
+    (string-join (map (lambda (spec)
+                        (let ((family (list-ref spec 0))
+                              (style (list-ref spec 1))
+                              (weight (list-ref spec 2))
+                              (file (list-ref spec 3)))
+                          (format #f "@font-face {
+  font-family: '~a';
+  font-style: ~a;
+  font-weight: ~a;
+  font-display: swap;
+  src: url('~a~a') format('woff2');
+}
+" family style weight base file)))
+                      font-face-specs)
+                 "\n")))
 
 ;; Convert a persona string that may contain the inline HTML documented in the
 ;; README into plain text.  The ATS theme uses this so tags and HTML entities

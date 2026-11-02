@@ -99,7 +99,7 @@
   border-radius: 9999px;
   background: #fbf9f4;
   color: #4b4437;
-  font-family: 'Lucida Sans Typewriter', ui-monospace, monospace;
+  font-family: 'JuliaMono', ui-monospace, monospace;
   font-size: 0.78rem;
   line-height: 1.25;
   white-space: nowrap;
@@ -166,7 +166,7 @@
   border-radius: 0.25rem;
   background: #f4f1ea;
   color: #3f4652;
-  font-family: 'Lucida Sans Typewriter', ui-monospace, monospace;
+  font-family: 'JuliaMono', ui-monospace, monospace;
   font-size: 0.9em;
 }
 
@@ -296,90 +296,12 @@
 (define* (fatum-html-template #:key title body locale persona resources)
   `("<!DOCTYPE html>" (html (@ (lang ,(locale-code locale)))
                             (head (title ,title)
-                                  (link (@ (rel preconnect)
-                                           (href
-                                            "https://fonts.googleapis.com")))
-                                  (link (@ (rel preconnect)
-                                           (href "https://fonts.gstatic.com")
-                                           (crossorigin "")))
-                                  (link (@ (rel stylesheet)
-                                           (href
-                                            "https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap")))
                                   (link (@ (rel stylesheet)
                                            (type text/css)
                                            (href
                                             "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
                                   (style
-                                   "
-/* --- Lucida Sans --- */
-
-@font-face {
-  font-family: 'Lucida Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANS.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lucida Sans';
-  font-style: italic;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSI.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lucida Sans';
-  font-style: normal;
-  font-weight: 600;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSD.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lucida Sans';
-  font-style: italic;
-  font-weight: 600;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LSANSDI.woff') format('woff');
-}
-
-/* --- Lucida Sans Typewriter --- */
-
-@font-face {
-  font-family: 'Lucida Sans Typewriter';
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPE.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lucida Sans Typewriter';
-  font-style: oblique;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEO.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lucida Sans Typewriter';
-  font-style: normal;
-  font-weight: 700;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEB.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lucida Sans Typewriter';
-  font-style: oblique;
-  font-weight: 700;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/LTYPEBO.woff') format('woff');
-}
-
-/* --- Lucida Sans Unicode --- */
-
-@font-face {
-  font-family: 'Lucida Sans Unicode';
-  font-style: normal;
-  font-weight: 400;
-  src: url('https://jointhefreeworld.org/static-assets/fonts/l_10646.woff') format('woff');
-}
-")
+                                   ,(self-hosted-faces))
                                   (meta (@ (name "viewport")
                                            (content
                                             "width=device-width, initial-scale=1.0")))

@@ -13,7 +13,7 @@
   #:export (ef-cyprus-html-template ef-cyprus-main-body))
 
 ;; Small, theme-owned layer over the generated Olive stylesheet.  It keeps the
-;; green accent and the IBM Plex rhythm consistent on screen and in print.
+;; green accent and the typographic rhythm consistent on screen and in print.
 (define ef-cyprus-styles
   "\
 :root { color-scheme: light; }
@@ -154,7 +154,7 @@
   border-radius: 0.25rem;
   background: #eef3ea;
   color: #3f5138;
-  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-family: 'JuliaMono', ui-monospace, monospace;
   font-size: 0.9em;
 }
 
@@ -277,19 +277,11 @@
 (define* (ef-cyprus-html-template #:key title body locale persona resources)
   `("<!DOCTYPE html>" (html (@ (lang ,(locale-code locale)))
                             (head (title ,title)
-                                  (link (@ (rel preconnect)
-                                           (href
-                                            "https://fonts.googleapis.com")))
-                                  (link (@ (rel preconnect)
-                                           (href "https://fonts.gstatic.com")
-                                           (crossorigin "")))
-                                  (link (@ (rel stylesheet)
-                                           (href
-                                            "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap")))
                                   (link (@ (rel stylesheet)
                                            (type text/css)
                                            (href
                                             "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css")))
+                                  (style ,(self-hosted-faces))
                                   (meta (@ (name "viewport")
                                            (content
                                             "width=device-width, initial-scale=1.0")))
