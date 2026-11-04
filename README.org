@@ -16,6 +16,9 @@
 </p>
 #+end_export
 
+#+attr_html: :width 160 :alt Iter Vitae logo
+[[file:logo.svg]]
+
 *Iter Vitae* — Latin for “the journey of a life” — turns a single Guile Scheme
 file into a modern, multilingual /Curriculum Vitae/: a polished HTML page for
 humans, a clean plain-text resume for robots, and one document for every
