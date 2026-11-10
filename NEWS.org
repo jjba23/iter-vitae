@@ -48,6 +48,10 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *[Released]*
 
+** v1.4.3 (2026-11-10)
+
+- `.github/FUNDING.yml` now carries a `custom` funding URL that points at [[https://buymeacoffee.com/jjbigorra][Buy Me a Coffee]], so the repository shows a Sponsor button.
+
 ** v1.0.1 (2026-10-22)
 
 *** Added
