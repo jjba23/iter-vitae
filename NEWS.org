@@ -48,6 +48,10 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *[Released]*
 
+** v1.5.1 (2026-11-12)
+
+- Builds against the channels this project builds against: the jointhefreeworld collection at v1.0.4, and Guix master `3b4e873`.
+
 ** v1.5.0 (2026-11-12)
 
 *** Added
