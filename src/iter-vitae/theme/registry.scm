@@ -13,12 +13,13 @@
   #:use-module (iter-vitae theme ef-cyprus)
   #:use-module (iter-vitae theme fatum)
   #:use-module (iter-vitae theme fundamental)
+  #:use-module (iter-vitae theme lapis)
   #:export (document-themes normalize-theme theme-procedures))
 
 ;; ATS comes first because it is the version to inspect before sending a CV to
 ;; an automated application system.  The other themes follow in visual order.
 (define document-themes
-  '(ats fatum ef-cyprus fundamental))
+  '(ats fatum lapis ef-cyprus fundamental))
 
 (define (normalize-theme theme)
   "Return @var{theme} when it is known, otherwise the default theme."
@@ -33,6 +34,8 @@
      (cons ats-html-template ats-main-body))
     ((fatum)
      (cons fatum-html-template fatum-main-body))
+    ((lapis)
+     (cons lapis-html-template lapis-main-body))
     ((fundamental)
      (cons fundamental-html-template fundamental-main-body))
     (else

@@ -392,7 +392,7 @@ printf '%s\\n' '%PDF-1.4' '%% fake' > \"$output\"
                                                (symbol->string theme))
                                   "resume.pdf"))
                                 (format #f "~a PDF" theme)))
-                             '(ats fatum ef-cyprus fundamental))
+                             '(ats fatum lapis ef-cyprus fundamental))
                             (expect-true
                              (not (file-exists?
                                    (in-vicinity destination "resume.pdf")))
@@ -456,7 +456,7 @@ printf '%s\\n' '%PDF-1.4' '%% fake' > \"$output\"
                                         (format #f "~a exit status" theme))
                           (expect-true (file-exists? (index-path destination))
                                        (format #f "~a index.html" theme))))
-                      '(ef-cyprus fatum fundamental ats)))))))
+                      '(ef-cyprus fatum lapis fundamental ats)))))))
          (test "a missing persona file is reported as a failure"
                (assert-no-error
                 (lambda ()

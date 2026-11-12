@@ -166,6 +166,97 @@
                                      "short intro")))))))
 
 ;; ---------------------------------------------------------------------------
+;; lapis
+;; ---------------------------------------------------------------------------
+
+(define lapis-suite
+  (suite "lapis theme"
+         #:concurrent? #f
+         (test "renders every scheduled section"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'lapis)))
+                    (expect-contains html "Work Experience" "work heading")
+                    (expect-contains html "Education" "education heading")
+                    (expect-contains html "Languages" "language heading")
+                    (expect-contains html "Driving" "driving heading")
+                    (expect-contains html
+                                     "Interests"
+                                     "interests heading")
+                    (expect-contains html "Acme" "job")
+                    (expect-contains html "Wrote tests" "job detail")
+                    (expect-contains html "Test University" "education")
+                    (expect-contains html "English" "language")
+                    (expect-contains html
+                                     "Professional working"
+                                     "language proficiency")
+                    (expect-contains html "Skills" "skills heading")
+                    (expect-contains html "Kubernetes" "skills tag")
+                    (expect-contains html "lapis-skills" "skills list")))))
+         (test "prints without the screen card or split entries"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'lapis)))
+                    (expect-contains html "@media print" "print styles")
+                    (expect-contains html "size: A4" "print page size")
+                    (expect-contains html "break-inside: avoid"
+                                     "entry pagination")
+                    (expect-contains html "lapis-page" "printable card")))))
+         (test "sets body copy in Source Serif 4 and labels in JuliaMono"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'lapis)))
+                    (expect-contains html "font-serif" "serif face")
+                    (expect-contains html "font-mono" "monospace face")
+                    (expect-contains html
+                                     "<h1 class=\"font-light font-serif"
+                                     "serif display name")
+                    (expect-not-contains html
+                                        "font-sans"
+                                        "sans-serif body face")))))
+         (test "keeps the palette to greys and blues"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'lapis)))
+                    (expect-contains html "prussian-blue" "blue accent")
+                    (expect-contains html "jeans-blue" "blue link")
+                    (for-each (lambda (warm)
+                                (expect-not-contains html warm warm))
+                              '("#b08d3f" "#f4efe4" "#8a6d35"
+                                "#ddd5c5" "#fbf9f4"))))))
+         (test "escapes persona text inside its own template"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'lapis)))
+                    (expect-contains html
+                                     "Ada &amp; Bob &lt;CEO&gt;"
+                                     "escaped display name")
+                    (expect-not-contains html
+                                        "Ada & Bob <CEO>"
+                                        "raw display name")))))
+         (test "renders all configured personal links"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona 'lapis)))
+                    (expect-contains html
+                                     "https://blog.example.org"
+                                     "blog link")
+                    (expect-contains html
+                                     "https://codeberg.org/ada"
+                                     "code link")
+                    (expect-contains html
+                                     "https://linkedin.com/in/ada"
+                                     "linked-in link")))))
+         (test "supports a persona without optional sections"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page sample-persona 'lapis)))
+                    (expect-not-contains html "Driving" "driving section")
+                    (expect-contains html
+                                     "I write software."
+                                     "short intro")))))))
+
+;; ---------------------------------------------------------------------------
 ;; fundamental
 ;; ---------------------------------------------------------------------------
 
@@ -429,7 +520,7 @@
                      (expect-contains (page rich-persona theme #:locale 'nl)
                                       "<html lang=\"nl\">"
                                       "Dutch lang attribute"))
-                   '(ef-cyprus fatum fundamental ats)))))
+                   '(ef-cyprus fatum lapis fundamental ats)))))
          (test "every theme normalizes the job-title link"
                (assert-no-error
                 (lambda ()
@@ -439,7 +530,7 @@
                       (page rich-persona theme)
                       "href=\"https://example.org/job\""
                       "absolute job-title link"))
-                   '(ef-cyprus fatum fundamental ats)))))
+                   '(ef-cyprus fatum lapis fundamental ats)))))
          (test "every theme renders all address lines and languages"
                (assert-no-error
                 (lambda ()
@@ -450,7 +541,7 @@
                        (expect-contains html "Testville" "second address line")
                        (expect-contains html "English" "first language")
                        (expect-contains html "Dutch" "second language")))
-                   '(ef-cyprus fatum fundamental ats)))))
+                   '(ef-cyprus fatum lapis fundamental ats)))))
          (test "face variables expand into utility classes"
                (assert-no-error
                 (lambda ()
@@ -465,7 +556,7 @@
                                         "table background")
                        (expect-contains html "shadow-md"
                                         "table shadow")))
-                   '(ef-cyprus fatum))))
+                   '(ef-cyprus fatum lapis))))
          (test "visual themes render an optional profile picture"
                (assert-no-error
                 (lambda ()
@@ -478,7 +569,7 @@
                         html
                         "alt=\"Ada &amp; Bob &lt;CEO&gt;\""
                         "profile picture alternative text")))
-                   '(ef-cyprus fatum fundamental))
+                   '(ef-cyprus fatum lapis fundamental))
                   (expect-not-contains (page rich-persona 'ats)
                                        "ada.png"
                                        "ATS profile picture"))))
@@ -490,7 +581,7 @@
                      (expect-not-contains (page sample-persona theme)
                                           "<img"
                                           "absent profile picture"))
-                   '(ef-cyprus fatum fundamental ats)))))
+                   '(ef-cyprus fatum lapis fundamental ats)))))
          (test "every theme renders configured skills"
                (assert-no-error
                 (lambda ()
@@ -499,7 +590,7 @@
                      (expect-contains (page rich-persona theme)
                                       "Kubernetes"
                                       "configured skill"))
-                   '(ef-cyprus fatum fundamental ats)))))
+                   '(ef-cyprus fatum lapis fundamental ats)))))
          (test "visual themes format date ranges with an en dash"
                (assert-no-error
                 (lambda ()
@@ -516,7 +607,7 @@
                             (html (page persona theme)))
                        (expect-contains html "2020 – now" "formatted date")
                        (expect-not-contains html "=>" "raw separator")))
-                   '(ef-cyprus fatum fundamental)))))
+                   '(ef-cyprus fatum lapis fundamental)))))
          (test "visual themes omit skills when the persona has none"
                (assert-no-error
                 (lambda ()
@@ -525,7 +616,7 @@
                      (expect-not-contains (page sample-persona theme)
                                           ">Skills<"
                                           "empty skills section"))
-                   '(ef-cyprus fatum fundamental)))))
+                   '(ef-cyprus fatum lapis fundamental)))))
          (test "language tables read reading, speaking, writing"
                (assert-no-error
                 (lambda ()
@@ -541,7 +632,7 @@
                         (< (index-of ">Speaking<" html "speaking heading")
                            (index-of ">Writing<" html "writing heading"))
                         "speaking before writing")))
-                   '(ef-cyprus fatum fundamental)))))
+                   '(ef-cyprus fatum lapis fundamental)))))
          (test "ats tidies punctuation left by removed emoji"
                (assert-no-error
                 (lambda ()
@@ -566,6 +657,7 @@
     (lambda ()
       (veritas-run ef-cyprus-suite
                    fatum-suite
+                   lapis-suite
                    fundamental-suite
                    ats-suite
                    shared-suite))

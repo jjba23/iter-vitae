@@ -248,7 +248,9 @@
   (format #t "  ~a  ~a  ~a\n"
           (cyan "3") (bold "fatum") (grey "bold and technical, for engineers"))
   (format #t "  ~a  ~a  ~a\n"
-          (cyan "4") (bold "ats") (grey "plain text, for online application systems"))
+          (cyan "4") (bold "lapis") (grey "fatum in greys and blues, serif and mono faces"))
+  (format #t "  ~a  ~a  ~a\n"
+          (cyan "5") (bold "ats") (grey "plain text, for online application systems"))
   (hint "Not sure? Press Enter for ef-cyprus.")
   (let loop ()
     (let ((answer (string-downcase (ask "Theme" #:default "1"))))
@@ -256,9 +258,10 @@
         ((member answer '("1" "ef-cyprus")) 'ef-cyprus)
         ((member answer '("2" "fundamental")) 'fundamental)
         ((member answer '("3" "fatum")) 'fatum)
-        ((member answer '("4" "ats")) 'ats)
+        ((member answer '("4" "lapis")) 'lapis)
+        ((member answer '("5" "ats")) 'ats)
         (else
-         (hint "⚠ Please choose 1, 2, 3 or 4.")
+         (hint "⚠ Please choose 1, 2, 3, 4 or 5.")
          (loop))))))
 
 ;; The standard five-level CV scale, with a few friendly aliases.  Names are

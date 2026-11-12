@@ -135,6 +135,21 @@
                                      "phone link")
                     (expect-contains html "Test University" "education")
                     (expect-contains html "Wrote tests" "job detail")))))
+         (test "lapis renders the same persona with its own theme"
+               (assert-no-error
+                (lambda ()
+                  (let ((html (page rich-persona #:theme 'lapis)))
+                    (expect-contains html
+                                     "lapis-page"
+                                     "lapis page hook")
+                    (expect-contains html
+                                     "Ada &amp; Bob &lt;CEO&gt;"
+                                     "escaped display name")
+                    (expect-not-contains html
+                                        ".ef-test-marker"
+                                        "ef-cyprus stylesheet")
+                    (expect-contains html "Test University" "education")
+                    (expect-contains html "Wrote tests" "job detail")))))
          (test "fundamental renders without external theme assets"
                (assert-no-error
                 (lambda ()

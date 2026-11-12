@@ -29,7 +29,7 @@ OPTIONS:
 
     --all-themes
         Render every built-in theme. Each output goes into its own directory:
-        ./dist/ats/, ./dist/fatum/, ./dist/ef-cyprus/ and
+        ./dist/ats/, ./dist/fatum/, ./dist/lapis/, ./dist/ef-cyprus/ and
         ./dist/fundamental/. Combine with --all-locales for
         ./dist/THEME/LOCALE/. Plain text cannot be combined with this option.
 

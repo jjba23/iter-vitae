@@ -64,7 +64,7 @@ I can keep going with a lot of motivation. Changelog and release notes live in
 #+attr_html: :width 860px :alt Animated tour: the same CV rendered in the ats, fatum, ef-cyprus and fundamental themes
 [[file:assets/iter-vitae-demo.gif]]
 
-/Four themes, one persona. The same file — [[file:populus/vega.scm][populus/vega.scm]] — rendered with
+/Four of the five themes, one persona. The same file — [[file:populus/vega.scm][populus/vega.scm]] — rendered with
 =ats=, =fatum=, =ef-cyprus= and =fundamental=; only the =document-theme= symbol
 changes. The tour starts with the ATS-safe version, then shows the visual
 themes. Every frame is a real screenshot of the generated HTML./
@@ -94,8 +94,8 @@ repository:
   split: your persona file is the model, the theme is the view. Change your job
   without touching a single style; change your style without touching a single
   line of content.
-- *One source, four themes.* Switch =document-theme= from ='fatum= to
-  ='ef-cyprus=, ='fundamental= or ='ats= and re-render. The content stays; the
+- *One source, five themes.* Switch =document-theme= from ='fatum= to
+  ='lapis=, ='ef-cyprus=, ='fundamental= or ='ats= and re-render. The content stays; the
   presentation changes completely.
 - *Multilingual by design.* Every piece of prose is a translation alist, so one
   file holds all your languages: ~en~, ~nl~, ~es~, ~de~, ~ca~, whatever you
@@ -203,7 +203,7 @@ iter-vitae --init --file my-cv.scm
 
 It asks for your name, job title, contact details, links, address, summary,
 skills, jobs, education, languages, interests and driving licences. You also
-pick one of the four themes, and an optional advanced step lets you rename
+pick one of the five themes, and an optional advanced step lets you rename
 section headings in every language. Press Enter to skip an optional question;
 the wizard shows a review before writing. Without ~--file~, it writes
 ~./my-cv.scm~, and it asks before replacing a file that already exists.
@@ -283,10 +283,10 @@ To run Iter Vitae:
 - *A web browser* — GNU IceCat or Firefox to read the HTML. For ~--format pdf~,
   install Chromium, Google Chrome, Microsoft Edge or Brave; the launcher finds
   it on ~PATH~ or through ~ITER_VITAE_BROWSER~.
-- *No network* — rendering is entirely local. The =fatum= and =ef-cyprus=
-  themes do load web fonts and icon fonts from the network /when the page is
-  opened/, so use =fundamental= or =ats= on an air-gapped machine, or host
-  those fonts yourself.
+- *No network* — rendering is entirely local. The =fatum=, =lapis= and
+  =ef-cyprus= themes do load web fonts and icon fonts from the network /when
+  the page is opened/, so use =fundamental= or =ats= on an air-gapped machine,
+  or host those fonts yourself.
 
 To hack on Iter Vitae you additionally want [[https://codeberg.org/jjba23/maak][Maak]] (the task runner),
 [[https://codeberg.org/jjba23/veritas][Veritas]] (the test framework) and ~guile-documenta~ (the API documentation
@@ -620,7 +620,8 @@ iter-vitae --all-themes --format pdf \
 #+end_src
 
 The output is ~themes/ats/resume.pdf~, ~themes/fatum/resume.pdf~,
-~themes/ef-cyprus/resume.pdf~ and ~themes/fundamental/resume.pdf~. Add
+~themes/lapis/resume.pdf~, ~themes/ef-cyprus/resume.pdf~ and
+~themes/fundamental/resume.pdf~. Add
 ~--all-locales~ to get a PDF for each translation as well.
 
 To publish it, copy ~dist/~ to your web server, or serve it locally while you
@@ -643,6 +644,7 @@ or =ats=.
 | Theme         | Mood                                                    | Good for                            |
 |---------------+---------------------------------------------------------+-------------------------------------|
 | ~fatum~       | Typographic, technical, slightly retro                   | Engineers, computer scientists      |
+| ~lapis~       | fatum's calmer sibling: greys and blues, serif prose     | Engineers who print and read a lot  |
 | ~ef-cyprus~   | Light, green accents, serif and mono faces, icon fonts   | A clean modern CV, any field        |
 | ~fundamental~ | No frills, one sans-serif font, minimal dependencies     | Plain, fast, offline-safe documents |
 | ~ats~         | One column, Arial 11pt, no tables, no icons, no assets   | Applicant tracking systems          |
@@ -654,7 +656,7 @@ Pick one in your persona file:
 #+end_src
 
 An unknown symbol falls back to =ef-cyprus=, so a typo never leaves you without
-a document. The animated tour at the top of this README shows all four themes
+a document. The animated tour at the top of this README shows four of them
 side by side in time.
 
 ** fatum
@@ -671,6 +673,33 @@ families every theme is set in -- Work Sans, Source Serif 4 and JuliaMono. See
 monospaced tag row, section rules keep the eye
 moving down the page, and dedicated print rules remove the screen card and
 keep entries together on A4 paper.
+
+** lapis
+:PROPERTIES:
+:CUSTOM_ID: lapis
+:END:
+
+Lapis is Latin for stone, and lapis lazuli is the blue stone the theme is
+named after. It is fatum's calmer sibling: the same layout, the same card and
+the same print rules, with the warm olive accents replaced by greys and blues
+and the typography turned around.
+
+Prose is set in Source Serif 4, and everything that reads as data -- the role,
+the section labels, the dates, the skill tags and the table headers -- in
+JuliaMono. Where fatum sets a paragraph in Work Sans, lapis uses the serif;
+where fatum sets a heading in the sans face, lapis uses the mono face in
+capitals. The palette comes from the Olive tokens: =onyx= for text, =stone= for
+surfaces and hairlines, =lapis-lazuli= for the accent rule and the section
+icons, and =jeans-blue= for links.
+
+It reuses the bundled Olive stylesheet and the Phosphor icons, so switching
+between fatum and lapis costs nothing and keeps both themes in step:
+
+#+begin_src scheme
+(define document-theme 'lapis)
+#+end_src
+
+Lapis is the theme the author's own CV is published in.
 
 ** ef-cyprus
 :PROPERTIES:
@@ -814,7 +843,7 @@ or copy to a server. An ~https://~ URL is passed through unchanged, and a
 ~data:image/...~ URI works too. A square image around 400–600 px is plenty;
 keeping it below roughly 200 KB avoids a needlessly large HTML file.
 
-~fatum~, ~ef-cyprus~ and ~fundamental~ show the portrait beside your name in a
+~fatum~, ~lapis~, ~ef-cyprus~ and ~fundamental~ show the portrait beside your name in a
 round frame. ~ats~ deliberately omits it: applicant tracking systems cannot use
 photographs, and in many countries adding one invites bias or is discouraged.
 When in doubt, leave the field commented out.
@@ -1242,7 +1271,7 @@ looking at ~resources/help.txt~.
 - *My theme is ignored* :: An unknown ~document-theme~ symbol falls back to
   =ef-cyprus=. Check the spelling, and remember it is a symbol (~'ats~), not a
   string.
-- *Fonts or icons are missing* :: =fatum= and =ef-cyprus= load web fonts and
+- *Fonts or icons are missing* :: =fatum=, =lapis= and =ef-cyprus= load web fonts and
   Phosphor icons from the network when the page is displayed. =fundamental=
   and =ats= are fully self-contained.
 - *The ATS output lost my emoji and my italics* :: That is deliberate:
@@ -1336,10 +1365,11 @@ Every theme is set in three libre families, all under the SIL Open Font License
   heading, a role and a skills list are set in where the theme does not say
   otherwise;
 - *Source Serif 4* for serif text -- long-form prose, and the `font-serif'
-  utility, which the `fatum' theme reaches for;
+  utility, which the `fatum' theme reaches for and which sets all of the prose
+  in `lapis';
 - *JuliaMono* for code -- the `font-mono' utility, which sets a skill tag, a
-  code span and a date column in the `fatum' theme and the monospaced run in
-  `ef-cyprus'.
+  code span and a date column in the `fatum' theme, the `lapis' labels,
+  headings and dates, and the monospaced run in `ef-cyprus'.
 
 Work Sans and Source Serif 4 are variable fonts, so one file per style carries
 the whole weight axis; JuliaMono ships static weights, hence two files split at

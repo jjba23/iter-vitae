@@ -272,6 +272,7 @@
 ;; - ef-cyprus: a light colored and green accent theme
 ;; - fundamental: a no-frills vanilla HTML, simple, effective
 ;; - fatum: a hacker inspired visual for engineers, computer scientists and techies
+;; - lapis: fatum's grey and blue counterpart, set in Source Serif 4 and JuliaMono
 ;; - ats: a single-column, plain-text-first theme for US applicant tracking systems
 (define document-theme
   'ef-cyprus)

@@ -22,7 +22,7 @@
 ;; (define profile-picture "../assets/portrait.jpg")
 
 (define document-theme
-  'fatum)
+  'lapis)
 
 (define display-name
   '((all . "Josep Bigorra")))
