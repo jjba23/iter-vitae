@@ -11,7 +11,6 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 
 *** Added
 
-- `lapis` theme: fatum's calmer sibling, named after the blue stone. It keeps fatum's card layout, skills row and A4 print rules but limits the palette to greys and blues (Olive's `onyx`, `stone`, `lapis-lazuli` and `jeans-blue` tokens) and turns the typography around: Source Serif 4 for prose, JuliaMono for the role, section labels, dates, skill tags and table headers. It reuses the bundled Olive stylesheet, so switching between `fatum` and `lapis` costs nothing. `lapis` is now the theme of the author's own CV (`populus/joe.scm`), and the wizard offers it as choice 4 (with `ats` moving to 5).
 - `--format pdf`: print a CV to A4 with headless Chromium/Chrome. The browser is discovered portably on GNU/Linux, macOS and Windows, and `ITER_VITAE_BROWSER` overrides it. `--all-themes --format pdf` writes one PDF per theme (`dist/ats/resume.pdf`, `dist/fatum/resume.pdf`, and so on), and combining it with `--all-locales` writes one per theme and translation.
 - `--all-themes`: render every built-in theme into its own directory. The theme list now lives in one registry shared by the renderer, the HTML dispatcher and this option.
 - The wizard prints the standard language scale and accepts either a level number or a name (`elementary`, `limited`, `professional`, `full`, `native`, or the full label). The generated proficiency table comes from the same defaults as the themes, so the two cannot drift apart.
@@ -48,6 +47,12 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 ---------
 
 *[Released]*
+
+** v1.5.0 (2026-11-12)
+
+*** Added
+
+- `lapis` theme: fatum's calmer sibling, named after the blue stone. It keeps fatum's card layout, skills row and A4 print rules but limits the palette to greys and blues (Olive's `onyx`, `stone`, `lapis-lazuli` and `jeans-blue` tokens) and turns the typography around: Source Serif 4 for prose, JuliaMono for the role, section labels, dates, skill tags and table headers. It reuses the bundled Olive stylesheet, so switching between `fatum` and `lapis` costs nothing. `lapis` is now the theme of the author's own CV (`populus/joe.scm`), and the wizard offers it as choice 4 (with `ats` moving to 5).
 
 ** v1.4.3 (2026-11-10)
 
