@@ -57,7 +57,7 @@ concurrently by default.")
 (packages->manifest (list guile-3.0-latest
                           darkhttpd
                           direvent
-                          texinfo
+                          (specification->package "texinfo")
                           guile-veritas
                           watchexec
                           (specification->package "guile-dokgen")))
