@@ -289,7 +289,7 @@ To run Iter Vitae:
   or host those fonts yourself.
 
 To hack on Iter Vitae you additionally want [[https://codeberg.org/jjba23/maak][Maak]] (the task runner),
-[[https://codeberg.org/jjba23/veritas][Veritas]] (the test framework) and ~guile-documenta~ (the API documentation
+[[https://codeberg.org/jjba23/veritas][Veritas]] (the test framework) and ~guile-dokgen~ (the API documentation
 generator). All of them are in ~manifest.scm~. See
 [[#testing][Testing and development]].
 
