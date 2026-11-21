@@ -3,6 +3,34 @@
 ;; SPDX-License-Identifier: MIT
 ;; Copyright © Josep Bigorra <jjbigorra@gmail.com>
 
+;;; Commentary:
+;;;
+;;; This module turns a persona file into the documents a reader gets.
+;;;
+;;; The persona is loaded as the module @code{(iter-vitae persona)}, and every
+;;; setting is read from it with @code{get-setting}, falling back to
+;;; @code{(iter-vitae defaults)} for anything the file leaves out.  The chosen
+;;; theme, a pair of procedures in @code{(iter-vitae theme registry)}, turns
+;;; those settings into SXML, and a writer renders it: @code{html.scm}
+;;; serialises the page, @code{text.scm} flattens the ATS body, and
+;;; @code{pdf.scm} prints the HTML through a browser.
+;;;
+;;; ```mermaid
+;;; flowchart LR
+;;;   persona["persona .scm"] --> settings["get-setting + defaults"]
+;;;   settings --> theme["theme registry: persona to SXML"]
+;;;   theme --> html["html.scm: index.html"]
+;;;   theme --> text["text.scm: resume.txt"]
+;;;   html --> pdf["pdf.scm: resume.pdf"]
+;;; ```
+;;;
+;;; @code{--all-locales} and @code{--all-themes} write the same document once
+;;; per locale and once per theme below one freshly cleared destination, which
+;;; is why the destination's lifecycle belongs to the caller here and not to a
+;;; writer.
+
+;;; Code:
+
 (define-module (iter-vitae renderer)
   #:declarative? #f
   #:use-module (ice-9 regex)

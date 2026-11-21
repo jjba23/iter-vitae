@@ -1101,10 +1101,20 @@ For the curious, a render is four small steps:
 4. ~html.scm~ serialises the SXML to ~index.html~, or ~text.scm~ flattens the
    ATS body into ~resume.txt~.
 
+That path, drawn:
+
+#+attr_html: :width 720 :alt Iter Vitae's render pipeline: a persona file becomes settings, the settings become SXML through a theme, and a writer serialises it to HTML, text or PDF
+[[file:resources/diagrams/render-pipeline.svg]]
+
+The diagram is generated from [[file:resources/diagrams/render-pipeline.mmd][resources/diagrams/render-pipeline.mmd]] by
+~maak diagrams~, which renders every mermaid source under ~resources/diagrams~
+to the SVG beside it. The same diagram sits in the ~;;; Commentary:~ block of
+~src/iter-vitae/renderer.scm~, so it also reaches the API documentation.
+
 There is no build step, no bundler, no JavaScript in the output and no service
 to run: one Guile process reads one Scheme file and writes one document. The
 whole program is a handful of modules under ~src/iter-vitae/~, and
-[[https://jointhefreeworld.org/api-docs/iter-vitae/API.html][the API documentation]] covers every exported procedure.
+[[https://jointhefreeworld.org/api-docs/iter-vitae/index.html][the API documentation]] covers every exported procedure.
 
 * The Manifesto
 :PROPERTIES:
@@ -1173,6 +1183,7 @@ maak
 | ~maak repl~             | Start a development REPL.                                       |
 | ~maak fmt~              | Format the sources with ~guix style~.                           |
 | ~maak docs~             | Generate the API documentation.                                 |
+| ~maak diagrams~         | Render the mermaid sources under ~resources/diagrams~ to SVG.    |
 | ~maak deploy~           | Render, publish and deploy the site.                            |
 | ~maak package-docker~   | Build a container image with ~guix pack~.                       |
 | ~maak container-build~  | Build the ~Dockerfile~ image with Podman.                       |
@@ -1204,14 +1215,19 @@ The simplest way to run everything is through Maak:
 maak test
 #+end_src
 
-Or invoke the runner directly from a Guix shell:
+Or invoke the runner directly from the pinned Guix shell:
 
 #+begin_src shell
 VERITAS_TEST_TYPE=unit \
-    guix shell -m manifest.scm -- \
+    guix time-machine --channels=channels.scm -- shell -m manifest.scm -- \
     guile --fresh-auto-compile -L ./src -L ./test \
     -c '((@ (veritas runner) run-tests))'
 #+end_src
+
+The shell is the pinned one because the manifest names packages from the
+=jointhefreeworld= channel as well as from Guix, and only the channels file
+declares both. Plain ~guix shell -m manifest.scm~ would look for
+~guile-dokgen~ in the channels your own Guix is configured with.
 
 The suite covers the pure helpers in ~(iter-vitae prelude)~, the SXML
 serializer, every bundled theme, the renderer and the command-line entrypoint.
@@ -1232,9 +1248,17 @@ Useful Veritas environment variables while iterating:
 :END:
 
 The technical Guile Scheme API documentation for Iter Vitae is generated from
-the sources and published here:
+the sources with [[https://github.com/jjba23/guile-dokgen][dokgen]] and published
+here:
 
-https://jointhefreeworld.org/api-docs/iter-vitae/API.html
+https://jointhefreeworld.org/api-docs/iter-vitae/index.html
+
+~maak docs~ writes it: ~doc/api/index.texi~ is extracted from every exported
+procedure, macro, parameter, record type and variable in ~src/iter-vitae~,
+together with the diagram its ~;;; Commentary:~ blocks carry, and
+~doc/api-dist/index.html~ is that chapter rendered as one page with
+=dokgen.css= and =dokgen.js= beside it. Nothing in the chapter is written by
+hand.
 
 You can see the program's help by invoking it with the ~--help~ argument or by
 looking at ~resources/help.txt~.
@@ -1246,7 +1270,7 @@ looking at ~resources/help.txt~.
 
 - ~iter-vitae --help~ prints every option, with examples.
 - [[file:resources/help.txt][resources/help.txt]] holds the same text.
-- [[https://jointhefreeworld.org/api-docs/iter-vitae/API.html][The API documentation]] describes the Scheme procedures behind the program.
+- [[https://jointhefreeworld.org/api-docs/iter-vitae/index.html][The API documentation]] describes the Scheme procedures behind the program.
 - [[file:NEWS.org][NEWS.org]] lists what changed, release by release.
 - [[https://lucidplan.jointhefreeworld.org/tickets/iter-vitae][The backlog and Kanban board]] show what is planned and what is being worked
   on.

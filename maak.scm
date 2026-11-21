@@ -6,6 +6,8 @@
 (define-module (maak)
   #:use-module (maak maak)
   #:use-module ((ice-9 rdelim) #:select (read-line))
+  ;; `scandir' names the mermaid sources `maak diagrams' renders.
+  #:use-module (ice-9 ftw)
   ;; The container helpers are imported under a prefix because the tasks
   ;; below are named the way maak exposes them on the command line, and a
   ;; task may not shadow the helper it calls.
@@ -49,26 +51,69 @@
 
 (define (test)
   "Run the Veritas unit test suite."
-  (manifest-shell (list "guile" "--fresh-auto-compile" "-L" "./src" "-L" "./test"
-                        "-c" "'((@ (veritas runner) run-tests))'")
-                  #:env '("VERITAS_TEST_TYPE=unit"
-                          "VERITAS_RUN_BENCHMARKS=false")
-                  #:verbose? #t))
+  ;; The manifest names a package from the jointhefreeworld channel, and
+  ;; `guile-dokgen' is one, so the shell has to be the pinned one that
+  ;; declares that channel: the ambient Guix knows only the channels the user
+  ;; configured, and would not resolve the specification.
+  (time-machine-manifest-shell
+   (list "guile" "--fresh-auto-compile" "-L" "./src" "-L" "./test"
+         "-c" "'((@ (veritas runner) run-tests))'")
+   #:env '("VERITAS_TEST_TYPE=unit"
+           "VERITAS_RUN_BENCHMARKS=false")
+   #:verbose? #t))
 
 (define (repl)
   "Development REPL."
-  (manifest-shell (list "guile" "-L" "./src"
-                        "-c" "'((@ (ares server) run-nrepl-server))'")))
+  (time-machine-manifest-shell (list "guile" "-L" "./src"
+                                     "-c" "'((@ (ares server) run-nrepl-server))'")))
 
 (define (docs)
-  "Generate technical API documentation for Maak."
+  "Generate Iter Vitae's API reference and render it as HTML."
   (delete-file-recursively "doc")
-  (time-machine-manifest-shell (list "documenta" "api"
-                                     (~ "./src/~a" project-name)))
-  (time-machine-manifest-shell (list "texi2any" "-v" "--html"
-                                     (~ "--css-ref=~a" api-docs-css-url)
-                                     "./doc/api/index.texi"))
-  (mv "./index" "./doc/api-dist"))
+  (time-machine-manifest-shell
+   (list "dokgen" "api"
+         "--destination" "doc/api"
+         (~ "./src/~a" project-name))
+   #:verbose? #t)
+  (mkdir-p "doc/api-dist")
+  ;; `--no-split' writes one page, so the stylesheet and the script the
+  ;; chapter points at are copied beside it rather than into a directory per
+  ;; node.  The diagrams dokgen drew go with them, because the chapter names
+  ;; them as `diagrams/...' relative to itself.
+  (time-machine-manifest-shell
+   (list "texi2any" "-v" "--html" "--no-split"
+         (~ "--css-ref=~a" api-docs-css-url)
+         "-I" "doc/api"
+         "-c" (shell-quote
+               (string-append
+                "EXTRA_HEAD="
+                "<link rel=\"stylesheet\" href=\"dokgen.css\">"
+                "<script src=\"dokgen.js\" defer></script>"))
+         "-o" "doc/api-dist/index.html"
+         "./doc/api/index.texi")
+   #:verbose? #t)
+  (for-each (lambda (asset)
+              (when (file-exists? (~ "doc/api/~a" asset))
+                (cp (~ "doc/api/~a" asset) "doc/api-dist"
+                    #:force? #t #:verbose? #t)))
+            '("dokgen.css" "dokgen.js"))
+  (when (file-exists? "doc/api/diagrams")
+    (cp "doc/api/diagrams" "doc/api-dist" #:force? #t #:verbose? #t)))
+
+(define (diagrams)
+  "Render every mermaid source under resources/diagrams to the SVG beside it."
+  (for-each
+   (lambda (name)
+     (let* ((source (in-vicinity "resources/diagrams" name))
+            (image (string-append (string-drop-right source 4) ".svg")))
+       ((@ (maak maak) run)
+        (list "mmdc" "-i" source "-o" image
+              "--backgroundColor" "transparent")
+        #:verbose? #t)))
+   (scandir "resources/diagrams"
+            (lambda (name)
+              (and (not (member name '("." "..")))
+                   (string-suffix? ".mmd" name))))))
 
 (define (deploy)
   "Deploy Iter Vitae."

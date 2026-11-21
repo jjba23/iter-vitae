@@ -21,6 +21,7 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 - The wizard uses colours, emoji section markers and plain-language hints in a terminal; styling is disabled automatically when output is redirected and can be turned off with `NO_COLOR=1`.
 - Optional `profile-picture` support. A persona can point at a local PNG, JPEG, WebP, GIF, AVIF or SVG image, an `https://` URL or a `data:image/...` URI. Local files are embedded as data URIs so the generated CV remains one self-contained HTML file. `fatum`, `ef-cyprus` and `fundamental` show a round portrait beside the name; `ats` omits it.
 - Language proficiency now uses the standard five-level CV scale: elementary, limited working, professional, full professional, and native/bilingual. The default labels cover English, Dutch and Spanish, and `language-proficiency-label` is shared by every renderer. The visual tables gained a localized language-column header, and the ATS/plain-text output spells each level out in words.
+- `maak diagrams` renders every mermaid source under `resources/diagrams` to the SVG beside it, and `resources/diagrams/render-pipeline.svg` is the first one: the render pipeline the README shows. The same diagram sits in the `;;; Commentary:` block of `(iter-vitae renderer)`, so `maak docs` draws it into the API reference too.
 
 *** Modified
 
@@ -31,6 +32,8 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 - `fatum` gained a printable card layout, hairline section rules, monospaced skill tags, a lighter language table and A4 print rules. `ef-cyprus` gained matching green-accented tags and print rules, while `fundamental` received a tighter type scale, print styles and footer markup. `ats` keeps entries from splitting across printed pages. The README tour now opens with `ats` (the ATS-safe version) before the visual themes, and the demo frames are tall enough to show the full page.
 - The visual themes now share a consistent portrait header, and `fatum` is centred at a readable width on wide screens. Job titles and language tables now receive their full face styling instead of a literal class name. The bundled personas have cleaner commentary, named education entries and more consistent translations.
 - The project is now licensed under the MIT License, including its documentation and examples. Sources and build files carry the consistent `SPDX-License-Identifier: MIT` header (`;; iter-vitae` in Scheme, `# iter-vitae` elsewhere) instead of the full licence boilerplate, and the Arch and openSUSE recipes install the top-level `LICENSE` file (`debian/copyright` remains the Debian licence record).
+- The API reference is generated with `dokgen` instead of `documenta`, and rendered as one page: `maak docs` writes `doc/api/index.texi` and `doc/api-dist/index.html`, with `dokgen.css`, `dokgen.js` and the drawn diagrams beside it. The published reference is therefore `api-docs/iter-vitae/index.html` rather than `.../API.html`.
+- `channels.scm` pins Guix `5cea8de` and adds the `jointhefreeworld` channel, which is where `guile-dokgen` comes from. `maak test`, `maak repl` and `maak docs` run inside `guix time-machine`, because the manifest names a package that only that channel provides.
 
 *** Fixed
 
@@ -47,6 +50,13 @@ This project adheres loosely to [[https://semver.org/spec/v2.0.0.html][Semantic 
 ---------
 
 *[Released]*
+
+** v1.5.3 (2026-11-21)
+
+- The API reference is generated with `dokgen` instead of `documenta`, and rendered as one page: `maak docs` writes `doc/api/index.texi` and `doc/api-dist/index.html`, with `dokgen.css`, `dokgen.js` and the drawn diagrams beside it. The published reference is therefore `api-docs/iter-vitae/index.html` rather than `.../API.html`.
+- `channels.scm` pins Guix `5cea8de` and adds the `jointhefreeworld` channel, which is where `guile-dokgen` comes from. `maak test`, `maak repl` and `maak docs` run inside `guix time-machine`, because the manifest names a package that only that channel provides.
+- `maak diagrams` renders every mermaid source under `resources/diagrams` to the SVG beside it, and `resources/diagrams/render-pipeline.svg` is the first one: the render pipeline the README shows.
+- The `(iter-vitae renderer)` commentary now opens with a `;;; Commentary:` block that explains how a persona becomes a document and draws the pipeline, written in Texinfo markup so dokgen renders it as prose rather than as raw comments.
 
 ** v1.5.1 (2026-11-12)
 

@@ -1,0 +1,12 @@
+flowchart LR
+%% iter-vitae --- one render, from persona file to document
+%% SPDX-License-Identifier: MIT
+%% Copyright © Josep Bigorra <jjbigorra@gmail.com>
+%% Rendered to render-pipeline.svg by `maak diagrams'.  The same diagram sits in
+%% the `;;; Commentary:' block of src/iter-vitae/renderer.scm, which is where the
+%% API documentation picks it up.
+  persona["persona .scm"] --> settings["get-setting + defaults"]
+  settings --> theme["theme registry: persona to SXML"]
+  theme --> html["html.scm: index.html"]
+  theme --> text["text.scm: resume.txt"]
+  html --> pdf["pdf.scm: resume.pdf"]
